@@ -18,6 +18,8 @@ osu-vs-player 用于同屏回放多个 osu replay，并实时显示replay信息�
 
 - 0.3.2 - [【50光标同屏】50 Top plays on Halozy - 源流懐古 [Higan Torrent]](https://www.bilibili.com/video/av41365133)
 
+- 0.3.3 - [【50光标同屏】50 Top plays on FREEDOM DiVE [FOUR DIMENSIONS]](https://www.bilibili.com/video/av41820400)
+
 ## 如何运行（仅 Windows） ##
 
 1. 从 [releases](https://github.com/wasupandceacar/osu-vs-player/releases) 下载压缩包。
@@ -45,6 +47,8 @@ osu-vs-player 用于同屏回放多个 osu replay，并实时显示replay信息�
 - ```BaseY``` - 左侧信息的基准 Y 坐标
 - ```ShowMouse1``` - 左侧是否显示第一个鼠标按键（M1）
 - ```ShowMouse2``` - 左侧是否显示第二个鼠标按键（M2）
+- ```ShowRealTimePP``` - 计算每帧的实时PP，而不是每次判定 object 后再刷新PP
+- ```RealTimePPGap``` - 一个object判定后刷新实时PP的最大时间长度
 
 ### RecordInfoUI ###
 
@@ -75,7 +79,7 @@ osu-vs-player 用于同屏回放多个 osu replay，并实时显示replay信息�
 - ```EnableHT``` - 开启 ```HT``` 模式
 - ```EnableEZ``` - 开启 ```EZ``` 模式
 - ```EnableHR``` - 开启 ```HR``` 模式
-- ```EnableHD``` - 开启 ```HD``` 模式
+- ```EnableHD``` - 开启 ```HD``` 模式（可能和ppy效果有偏差）
 
 ### BreakandQuit ###
 
