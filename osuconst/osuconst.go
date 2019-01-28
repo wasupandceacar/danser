@@ -59,4 +59,7 @@ const AR_MAX = 10.0
 const FADE_IN_DURATION_MULTIPLIER = 0.4
 const FADE_OUT_DURATION_MULTIPLIER = 0.3
 
+// stackleniency参数
+const BASE_STACK_OFFSET = -6.4
+
 
