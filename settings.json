@@ -6,8 +6,8 @@
 	"VSplayer": {
 		"PlayerInfo": {
 			"Players": 50,
-			"SpecifiedPlayers": true,
-			"SpecifiedLine": "16"
+			"SpecifiedPlayers": false,
+			"SpecifiedLine": "23"
 		},
 		"PlayerInfoUI": {
 			"BaseSize": 6,
@@ -35,8 +35,8 @@
 			"CursorColorSkipNum": 13
 		},
 		"MapInfo": {
-			"Title": "FREEDOM DiVE",
-			"Difficulty": "FOUR DIMENSIONS"
+			"Title": "AXION",
+			"Difficulty": "AXION_REBORN"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -47,19 +47,19 @@
 		},
 		"BreakandQuit": {
 			"EnableBreakandQuit": true,
-			"PlayerFadeTime": 2000,
-			"SameTimeOffset": 36,
-			"MissMult": 1.5
+			"PlayerFadeTime": 1700,
+			"SameTimeOffset": 22,
+			"MissMult": 1.15
 		},
 		"ReplayandCache": {
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
-			"ReadResultCache": false,
+			"ReadResultCache": true,
 			"ReplayDebug": false
 		},
 		"ErrorFix": {
-			"EnableErrorFix": true,
+			"EnableErrorFix": false,
 			"ErrorFixFile": "error.err"
 		}
 	},

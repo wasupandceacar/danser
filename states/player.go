@@ -300,17 +300,17 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 			t1 := time.Now()
 			log.Println("解析第", rnum, "个replay")
 			result, totalresult, mods := hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, replays[k], hitjudge.FilterError(rnum, errs))
-			// 初始化acc、rank和pp
-			player.controller[k].SetAcc(DEFAULT_ACC)
-			if score.IsSilver(mods) {
-				player.controller[k].SetRank(*render.RankXH)
-			}else {
-				player.controller[k].SetRank(*render.RankX)
-			}
-			player.controller[k].SetPP(DEFAULT_PP)
-			// 设置初始显示
-			player.controller[k].SetIsShow(true)
 			if !settings.VSplayer.ReplayandCache.ReplayDebug {
+				// 初始化acc、rank和pp
+				player.controller[k].SetAcc(DEFAULT_ACC)
+				if score.IsSilver(mods) {
+					player.controller[k].SetRank(*render.RankXH)
+				}else {
+					player.controller[k].SetRank(*render.RankX)
+				}
+				player.controller[k].SetPP(DEFAULT_PP)
+				// 设置初始显示
+				player.controller[k].SetIsShow(true)
 				player.controller[k].SetHitResult(result)
 				player.controller[k].SetTotalResult(totalresult)
 			}
@@ -322,6 +322,10 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 			log.Println("解析第", rnum, "个replay完成，耗时", time.Now().Sub(t1), "，总耗时", time.Now().Sub(t))
 		}
 	}
+
+	//player.controller[1].GetHitResult()[4].IsBreak = true
+	//player.controller[2].GetHitResult()[4].IsBreak = true
+	//player.controller[3].GetHitResult()[4].IsBreak = true
 
 	if settings.VSplayer.ReplayandCache.ReplayDebug {
 		log.Println("Debug Replay 结束，直接退出")
@@ -542,7 +546,7 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 				// 如果真实offset大于等于读到的offset，更新
 				if true_offset >= float64(offset) {
 					// 如果是HR，上下翻转
-					if (player.controller[k].GetMods()&16 > 0){
+					if (player.controller[k].GetMods()&MOD_HR > 0){
 						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(posX), float64(PLAYFIELD_HEIGHT - posY)))
 					}else {
 						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(posX), float64(posY)))
@@ -710,6 +714,8 @@ func (pl *Player) Draw(delta float64) {
 	blurVal := 0.0
 
 	cameras := pl.camera.GenRotated(settings.DIVIDES, -2*math.Pi/float64(settings.DIVIDES))
+
+	breakcamera := pl.camera.GenRotatedX(2, math.Pi)[1]
 
 	if settings.Playfield.BlurEnable {
 		blurVal = pl.blurGlider.GetValue()
@@ -1009,6 +1015,7 @@ func (pl *Player) Draw(delta float64) {
 		namecolor := colors1[colornum]
 		// 如果设置不显示，开始降低透明度
 		if settings.VSplayer.BreakandQuit.EnableBreakandQuit && (!pl.controller[k].GetIsShow()) {
+			pl.batch.SetCamera(breakcamera)
 			namecolor[3] = float32(math.Max(0.0, float64(namecolor[3]) - (pl.progressMsF - pl.controller[k].GetDishowTime()) / settings.VSplayer.BreakandQuit.PlayerFadeTime))
 			// 显示断连者名字
 			pl.batch.SetColor(float64(namecolor[0]), float64(namecolor[1]), float64(namecolor[2]), float64(namecolor[3]))
@@ -1018,6 +1025,7 @@ func (pl *Player) Draw(delta float64) {
 			pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
 			pl.batch.SetScale(2.75 * pl.misssize, pl.misssize)
 			pl.batch.DrawUnit(*render.Hit0)
+			pl.batch.SetCamera(pl.scamera.GetProjectionView())
 		}
 		if !settings.VSplayer.PlayerInfoUI.ShowRealTimePP{
 			pl.controller[k].SetPP(pl.controller[k].GetTotalResult()[0].PP.Total)

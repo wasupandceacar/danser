@@ -147,6 +147,22 @@ func (camera *Camera) GenRotated(rotations int, rotOffset float64) []mgl32.Mat4 
 	return camera.cache
 }
 
+func (camera *Camera) GenRotatedX(rotations int, rotOffset float64) []mgl32.Mat4 {
+
+	if len(camera.cache) != rotations || camera.rebuildCache {
+		if len(camera.cache) != rotations {
+			camera.cache = make([]mgl32.Mat4, rotations)
+		}
+
+		for i := 0; i < rotations; i++ {
+			camera.cache[i] = camera.projection.Mul4(mgl32.HomogRotate3DX(float32(i) * float32(rotOffset))).Mul4(camera.view)
+		}
+		camera.rebuildCache = false
+	}
+
+	return camera.cache
+}
+
 func (camera Camera) GetProjectionView() mgl32.Mat4 {
 	return camera.projectionView
 }

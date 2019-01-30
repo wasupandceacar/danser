@@ -50,7 +50,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 	OD100 := b.OD100
 	OD50 := b.OD50
 	ODMiss := b.ODMiss
-	convert_CS := 32 * (1 - 0.7 * (b.CircleSize - 5) / 5)
+	convert_CS := float2unit(32 * (1 - 0.7 * (b.CircleSize - 5) / 5))
 
 	// 如果replay是HR，改变OD和CS，并上下翻转replay的Y坐标
 	if mods&MOD_HR > 0 {
@@ -59,7 +59,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 		OD100 = beatmap.AdjustOD(OD_100_BASE - ( newOD * OD_100_MULT ) + OD_PRECISION_FIX)
 		OD50 = beatmap.AdjustOD(OD_50_BASE - ( newOD * OD_50_MULT ) + OD_PRECISION_FIX)
 		ODMiss = beatmap.AdjustOD(OD_MISS_BASE - ( newOD * OD_MISS_MULT ) + OD_PRECISION_FIX)
-		convert_CS = 32 * (1 - 0.7 * (math.Min(CS_HR_HENSE * b.CircleSize, CS_MAX) - 5) / 5)
+		convert_CS = float2unit(32 * (1 - 0.7 * (math.Min(CS_HR_HENSE * b.CircleSize, CS_MAX) - 5) / 5))
 		makeReplayHR(r)
 	}
 
@@ -70,7 +70,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 		OD100 = beatmap.AdjustOD(OD_100_BASE - ( newOD * OD_100_MULT ) + OD_PRECISION_FIX)
 		OD50 = beatmap.AdjustOD(OD_50_BASE - ( newOD * OD_50_MULT ) + OD_PRECISION_FIX)
 		ODMiss = beatmap.AdjustOD(OD_MISS_BASE - ( newOD * OD_MISS_MULT ) + OD_PRECISION_FIX)
-		convert_CS = 32 * (1 - 0.7 * (math.Min(b.CircleSize * CS_EZ_HENSE, 10) - 5) / 5)
+		convert_CS = float2unit(32 * (1 - 0.7 * (math.Min(b.CircleSize * CS_EZ_HENSE, 10) - 5) / 5))
 	}
 
 	// 计数
@@ -89,7 +89,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 	keyindex := 3
 	time := r[1].Time + r[2].Time
 	for k := 0; k < len(b.HitObjects); k++ {
-	//for k := 0; k < 1326; k++ {
+	//for k := 0; k < 299; k++ {
 		//log.Println("Object", k+1)
 		obj :=  b.HitObjects[k]
 		if obj != nil {
@@ -467,7 +467,7 @@ func isPressed(hit *rplpa.ReplayData) bool {
 func isInCircle(hit *rplpa.ReplayData, requirepos bmath.Vector2d, CS float64) bool {
 	realpos := bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY))
 	// 加入少量误差
-	return bmath.Vector2d.Dst(realpos, requirepos) <= (CS + 0.05)
+	return bmath.Vector2d.Dst(realpos, requirepos) <= CS
 }
 
 // 是否超过object的最后时间点
@@ -697,4 +697,8 @@ func fixError(error Error, result []ObjectResult, count300 int, count100 int, co
 		break
 	}
 	return reresult, recount300, recount100, recount50, recountMiss, remaxcombo, renowcombo, retotalhits
+}
+
+func float2unit(num float64) float64 {
+	return math.Ceil(num*100) / 100
 }
