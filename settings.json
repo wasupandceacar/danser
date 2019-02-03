@@ -47,7 +47,7 @@
 		},
 		"BreakandQuit": {
 			"EnableBreakandQuit": true,
-			"PlayerFadeTime": 1700,
+			"PlayerFadeTime": 1500,
 			"SameTimeOffset": 22,
 			"MissMult": 1.15
 		},

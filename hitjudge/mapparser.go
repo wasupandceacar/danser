@@ -276,6 +276,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 					log.Println("Circle count as Miss", "Object", k+1)
 					countMiss += 1
 					nowcombo = 0
+					totalhits = append(totalhits, 0)
 					keyindex = nearestindex
 					time = lasttime
 				}
