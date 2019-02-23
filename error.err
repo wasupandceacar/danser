@@ -1,10 +1,18 @@
 [
      {
-          "ReplayIndex": 16,
-          "ObjectIndex": 1420,
+          "ReplayIndex": 1,
+          "ObjectIndex": 306,
           "Result": 0,
           "IsBreak": false,
-          "MaxComboOffset": 0,
-          "NowComboOffset": 0
+          "MaxComboOffset": 1,
+          "NowComboOffset": 1
+     },
+     {
+          "ReplayIndex": 1,
+          "ObjectIndex": 504,
+          "Result": 0,
+          "IsBreak": false,
+          "MaxComboOffset": 1,
+          "NowComboOffset": 1
      }
 ]

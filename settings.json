@@ -13,14 +13,14 @@
 			"BaseSize": 6,
 			"BaseX": 14,
 			"BaseY": 696,
-			"ShowMouse1": false,
+			"ShowMouse1": true,
 			"ShowMouse2": false,
 			"ShowRealTimePP": true,
 			"RealTimePPGap": 800
 		},
 		"RecordInfoUI": {
 			"Recorder": "wasupandceacar",
-			"RecordTime": "2019.1.20",
+			"RecordTime": "2019.2.21",
 			"RecordBaseX": 1019,
 			"RecordBaseY": 35,
 			"RecordBaseSize": 18,
@@ -28,15 +28,15 @@
 		},
 		"PlayerFieldUI": {
 			"HitFadeTime": 200,
-			"SpinnerMinusTime": 1800,
+			"SpinnerMinusTime": 1300,
 			"SpinnerMult": 380,
 			"ReverseFadeTime": 30,
 			"CursorColorNum": 25,
 			"CursorColorSkipNum": 13
 		},
 		"MapInfo": {
-			"Title": "AXION",
-			"Difficulty": "AXION_REBORN"
+			"Title": "Rainbow Dash Likes Girls (Stay Gay Pony Girl)",
+			"Difficulty": "Holy Shit! It's Rainbow Dash!!"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -55,11 +55,11 @@
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
-			"ReadResultCache": true,
+			"ReadResultCache": false,
 			"ReplayDebug": false
 		},
 		"ErrorFix": {
-			"EnableErrorFix": false,
+			"EnableErrorFix": true,
 			"ErrorFixFile": "error.err"
 		}
 	},

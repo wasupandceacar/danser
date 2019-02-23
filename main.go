@@ -261,13 +261,17 @@ func main() {
 	mainthread.CallQueueCap = 100000
 	mainthread.Run(run)
 
-	//r := replay.ExtractReplay("replay-osu_807074_2432526116.osr")
-	//for k := 0; k < 40; k++ {
-	//	log.Println(*r.ReplayData[k].KeyPressed)
+	//f, err := os.Open("2.osu")
+	//if err != nil {
+	//	panic(err)
 	//}
-
-	//files, _ := replay.GetOsrFiles()
-	//log.Println(files)
-
-	//log.Println(bmath.Vector2d{433.8265895953757, 313.2369942196532}.Dst(bmath.Vector2d{420,219.3333}))
+	//bm := oppai.Parse(f)
+	//oppai.PPInfo(bm, &oppai.Parameters{
+	//	Combo:  903,
+	//	Mods:   8,
+	//	N300:   625,
+	//	N100:   2,
+	//	N50:    0,
+	//	Misses: 0,
+	//})
 }

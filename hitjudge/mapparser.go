@@ -89,7 +89,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 	keyindex := 3
 	time := r[1].Time + r[2].Time
 	for k := 0; k < len(b.HitObjects); k++ {
-	//for k := 0; k < 299; k++ {
+	//for k := 0; k < 504; k++ {
 		//log.Println("Object", k+1)
 		obj :=  b.HitObjects[k]
 		if obj != nil {
@@ -535,7 +535,7 @@ func isTickHit(start int, starttime int64, r []*rplpa.ReplayData, requirehittime
 			// 寻找正确的点
 			// 可选起始点，结束点，中间点，目前暂未判断出到底那个点才是正确的判断点，暂时使用中间点
 			realhit := getTickRangeJudgePoint(requirehittime, hit, r[index+1], realhittime)
-			//realhit := r[index+1]
+			//realhit := r[index]
 			//log.Println("Tick Judge Range Find Require Point", realhit.KeyPressed, realhit, requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(realhit.MosueX), float64(realhit.MouseY)), requirepos), CS)
 			if isInCircle(realhit, requirepos, CS) {
 				// 在圈内
