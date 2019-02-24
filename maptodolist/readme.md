@@ -8,14 +8,14 @@
 - [x]  [源流懐古(HW)](https://osu.ppy.sh/s/180138) 完美
 - [x]  [fdfd](https://osu.ppy.sh/s/39804) FC人数较多 
 - [x]  [彩虹小马](https://osu.ppy.sh/s/57255) 坨坨滑条折返绘制出现反向问题
-- [ ]  [axion(扶老二)](https://osu.ppy.sh/s/115193) 较短，断连显示频繁
+- [ ]  **[axion(扶老二)](https://osu.ppy.sh/s/115193) 较短，断连显示频繁**
 - [ ]  [摩天楼](https://osu.ppy.sh/s/100348)
 - [ ]  [女武神(arles)](https://osu.ppy.sh/s/378400) 集体断尾
 - [ ]  [happy song](https://osu.ppy.sh/s/744593) 断的比较后
-- [ ]  [飞升(Kroytz)](https://osu.ppy.sh/s/368060)
+- [ ]  **[飞升(Kroytz)](https://osu.ppy.sh/s/368060)**
 - [ ]  [Crystalia](https://osu.ppy.sh/s/691220)
-- [ ]  [Teo(Kroytz)](https://osu.ppy.sh/s/721804) 断尾非常集中
-- [ ]  [孤高](https://osu.ppy.sh/s/28705)
+- [ ]  **[Teo(Kroytz)](https://osu.ppy.sh/s/721804) 断尾非常集中**
+- [ ]  **[孤高](https://osu.ppy.sh/s/28705)**
 - [ ]  [Hoshi o Kakeru Adventure](https://osu.ppy.sh/s/677573) 知名度太低
 - [ ]  [冻僵](https://osu.ppy.sh/s/158023) HT FC 太多
 - [ ]  [deltamax](https://osu.ppy.sh/s/18315) 太短，断连显示极为频繁
@@ -32,9 +32,9 @@
 - [ ]  [Packet Hero](https://osu.ppy.sh/s/404910) 集体断尾
 - [ ]  [Light it up](https://osu.ppy.sh/s/650738) 知名度太低
 - [ ]  [Owata \(^o^)/](https://osu.ppy.sh/s/399096) 知名度太低
-- [ ]  [量子海](https://osu.ppy.sh/s/372850)
+- [ ]  **[量子海](https://osu.ppy.sh/s/372850)**
 - [ ]  [量子海(Crystal)](https://osu.ppy.sh/s/405167)
-- [ ]  [多巴胺](https://osu.ppy.sh/s/210316)
+- [ ]  **[多巴胺](https://osu.ppy.sh/s/210316)**
 - [ ]  [雪司机(Snow Drive)](https://osu.ppy.sh/s/291154)
 - [ ]  [TRY UNITE](https://osu.ppy.sh/s/319815)
 
