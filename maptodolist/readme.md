@@ -35,6 +35,8 @@
 - [ ]  [量子海](https://osu.ppy.sh/s/372850)
 - [ ]  [量子海(Crystal)](https://osu.ppy.sh/s/405167)
 - [ ]  [多巴胺](https://osu.ppy.sh/s/210316)
+- [ ]  [雪司机(Snow Drive)](https://osu.ppy.sh/s/291154)
+- [ ]  [TRY UNITE](https://osu.ppy.sh/s/319815)
 
 ## 有人FC HR 图 ##
 - [ ]  [Ange du Blanc Pur](https://osu.ppy.sh/s/564165)
@@ -63,3 +65,6 @@
 - [ ]  [Euphoria](https://osu.ppy.sh/s/890438)
 - [ ]  [17RPG](https://osu.ppy.sh/s/304888)
 - [ ]  [解构星](https://osu.ppy.sh/s/292083)
+- [ ]  [雪司机(Lemur)](https://osu.ppy.sh/s/379783) 曲奇曾经FC
+- [ ]  [Smiling](https://osu.ppy.sh/s/450363)
+- [ ]  [Katayoku no tori](https://osu.ppy.sh/s/478303) 
