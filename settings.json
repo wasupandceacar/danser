@@ -28,15 +28,15 @@
 		},
 		"PlayerFieldUI": {
 			"HitFadeTime": 200,
-			"SpinnerMinusTime": 1300,
+			"SpinnerMinusTime": 1500,
 			"SpinnerMult": 380,
 			"ReverseFadeTime": 30,
 			"CursorColorNum": 25,
 			"CursorColorSkipNum": 13
 		},
 		"MapInfo": {
-			"Title": "Rainbow Dash Likes Girls (Stay Gay Pony Girl)",
-			"Difficulty": "Holy Shit! It's Rainbow Dash!!"
+			"Title": "AXION",
+			"Difficulty": "AXION_REBORN"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -55,12 +55,16 @@
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
-			"ReadResultCache": false,
+			"ReadResultCache": true,
 			"ReplayDebug": false
 		},
 		"ErrorFix": {
-			"EnableErrorFix": true,
+			"EnableErrorFix": false,
 			"ErrorFixFile": "error.err"
+		},
+		"Skin": {
+			"EnableSkin": true,
+			"SkinDir": "skin\\cookiezi3\\"
 		}
 	},
 	"Graphics": {

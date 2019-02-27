@@ -80,6 +80,11 @@ type errorfix struct {
 	ErrorFixFile		string
 }
 
+type skin struct {
+	EnableSkin		bool
+	SkinDir			string
+}
+
 type vsplayer struct {
 	PlayerInfo		*playerinfo
 	PlayerInfoUI	*playerinfoUI
@@ -90,6 +95,7 @@ type vsplayer struct {
 	BreakandQuit	*breakandquit
 	ReplayandCache	*replayandcache
 	ErrorFix		*errorfix
+	Skin			*skin
 }
 
 //endregion

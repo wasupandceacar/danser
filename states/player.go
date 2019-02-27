@@ -1138,7 +1138,7 @@ func (pl *Player) Draw(delta float64) {
 		pl.batch.SetTranslation(bmath.NewVec2d(pl.rankbaseX, pl.rankbaseY - pl.lineoffset * float64(k)))
 		pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
 		pl.batch.SetScale(settings.VSplayer.PlayerInfoUI.BaseSize, settings.VSplayer.PlayerInfoUI.BaseSize)
-		pl.batch.DrawUnit(pl.controller[k].GetRank())
+		pl.batch.DrawUnitC(pl.controller[k].GetRank())
 		// 渲染pp
 		pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
 		pl.font.Draw(pl.batch, pl.ppbaseX, pl.fontbaseY - pl.lineoffset * float64(k), pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetPP()) + " pp")

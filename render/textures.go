@@ -1,8 +1,9 @@
 package render
 
 import (
-	"danser/utils"
 	"danser/render/texture"
+	"danser/settings"
+	"danser/utils"
 )
 
 var Atlas *texture.TextureAtlas
@@ -38,31 +39,79 @@ var RankD *texture.TextureRegion
 func LoadTextures() {
 	Atlas = texture.NewTextureAtlas(8192, 4)
 	Atlas.Bind(16)
-	Circle, _ = utils.LoadTextureToAtlas(Atlas, "assets/textures/hitcircle.png")
-	Spinner, _ = utils.LoadTextureToAtlas(Atlas, "assets/textures/spinner.png")
-	ApproachCircle, _ = utils.LoadTextureToAtlas(Atlas, "assets/textures/approachcircle.png")
-	CircleFull, _ = utils.LoadTextureToAtlas(Atlas, "assets/textures/hitcircle-full.png")
-	CircleOverlay, _ = utils.LoadTextureToAtlas(Atlas, "assets/textures/hitcircleoverlay.png")
-	SliderReverse, _ = utils.LoadTextureToAtlas(Atlas, "assets/textures/reversearrow.png")
-	SliderTick, _ = utils.LoadTextureToAtlas(Atlas, "assets/textures/sliderscorepoint.png")
-	SliderBall, _ = utils.LoadTextureToAtlas(Atlas, "assets/textures/sliderball.png")
-	CursorTex, _ = utils.LoadTextureToAtlas(Atlas, "assets/textures/cursor.png")
-	CursorTop, _ = utils.LoadTextureToAtlas(Atlas, "assets/textures/cursor-top.png")
-	SliderGradient, _ = utils.LoadTexture("assets/textures/slidergradient.png")
-	CursorTrail, _ = utils.LoadTexture("assets/textures/cursortrail.png")
-	PressKey, _ = utils.LoadTextureToAtlas(Atlas,"assets/textures/presskey.png")
+	Circle, _ = loadTextureToAtlas(Atlas, "hitcircle.png")
+	Spinner, _ = loadTextureToAtlas(Atlas, "spinner.png")
+	ApproachCircle, _ = loadTextureToAtlas(Atlas, "approachcircle.png")
+	CircleFull, _ = loadTextureToAtlas(Atlas, "hitcircle-full.png")
+	CircleOverlay, _ = loadTextureToAtlas(Atlas, "hitcircleoverlay.png")
+	SliderReverse, _ = loadTextureToAtlas(Atlas, "reversearrow.png")
+	SliderTick, _ = loadTextureToAtlas(Atlas, "sliderscorepoint.png")
+	SliderBall, _ = loadTextureToAtlas(Atlas, "sliderball.png")
+	CursorTex, _ = loadTextureToAtlas(Atlas, "cursor.png")
+	CursorTop, _ = loadTextureToAtlas(Atlas, "cursor-top.png")
+	SliderGradient, _ = loadTexture("slidergradient.png")
+	CursorTrail, _ = loadTexture("cursortrail.png")
+	PressKey, _ = loadTextureToAtlas(Atlas,"presskey.png")
 
-	Hit300, _ = utils.LoadTextureToAtlas(Atlas,"assets/textures/hit-300.png")
-	Hit100, _ = utils.LoadTextureToAtlas(Atlas,"assets/textures/hit-100.png")
-	Hit50, _ = utils.LoadTextureToAtlas(Atlas,"assets/textures/hit-50.png")
-	Hit0, _ = utils.LoadTextureToAtlas(Atlas,"assets/textures/hit-0.png")
+	Hit300, _ = loadTextureToAtlas(Atlas,"hit-300.png")
+	Hit100, _ = loadTextureToAtlas(Atlas,"hit-100.png")
+	Hit50, _ = loadTextureToAtlas(Atlas,"hit-50.png")
+	Hit0, _ = loadTextureToAtlas(Atlas,"hit-0.png")
 
-	RankXH, _ = utils.LoadTextureToAtlas(Atlas,"assets/textures/ranking-xh.png")
-	RankSH, _ = utils.LoadTextureToAtlas(Atlas,"assets/textures/ranking-sh.png")
-	RankX, _ = utils.LoadTextureToAtlas(Atlas,"assets/textures/ranking-x.png")
-	RankS, _ = utils.LoadTextureToAtlas(Atlas,"assets/textures/ranking-s.png")
-	RankA, _ = utils.LoadTextureToAtlas(Atlas,"assets/textures/ranking-a.png")
-	RankB, _ = utils.LoadTextureToAtlas(Atlas,"assets/textures/ranking-b.png")
-	RankC, _ = utils.LoadTextureToAtlas(Atlas,"assets/textures/ranking-c.png")
-	RankD, _ = utils.LoadTextureToAtlas(Atlas,"assets/textures/ranking-d.png")
+	RankXH, _ = loadTextureToAtlas(Atlas,"ranking-XH-small.png")
+	RankSH, _ = loadTextureToAtlas(Atlas,"ranking-SH-small.png")
+	RankX, _ = loadTextureToAtlas(Atlas,"ranking-X-small.png")
+	RankS, _ = loadTextureToAtlas(Atlas,"ranking-S-small.png")
+	RankA, _ = loadTextureToAtlas(Atlas,"ranking-A-small.png")
+	RankB, _ = loadTextureToAtlas(Atlas,"ranking-B-small.png")
+	RankC, _ = loadTextureToAtlas(Atlas,"ranking-C-small.png")
+	RankD, _ = loadTextureToAtlas(Atlas,"ranking-D-small.png")
+}
+
+func loadTextureToAtlas(atlas *texture.TextureAtlas, picname string) (*texture.TextureRegion, error){
+	var path string
+	if settings.VSplayer.Skin.EnableSkin {
+		// 使用自定义皮肤，则检查皮肤文件夹是否存在相关贴图
+		dirExist, _ := utils.PathExists(settings.VSplayer.Skin.SkinDir)
+		if dirExist {
+			picExist, _ := utils.PathExists(settings.VSplayer.Skin.SkinDir + picname)
+			if picExist {
+				// 贴图存在，替换
+				path = settings.VSplayer.Skin.SkinDir + picname
+			}else {
+				// 不存在，使用默认
+				path = "assets/textures/" + picname
+			}
+		}else {
+			// 皮肤文件夹不存在
+			panic("皮肤文件夹不存在！")
+		}
+	}else {
+		path = "assets/textures/" + picname
+	}
+	return utils.LoadTextureToAtlas(atlas, path)
+}
+
+func loadTexture(picname string) (*texture.TextureSingle, error){
+	var path string
+	if settings.VSplayer.Skin.EnableSkin {
+		// 使用自定义皮肤，则检查皮肤文件夹是否存在相关贴图
+		dirExist, _ := utils.PathExists(settings.VSplayer.Skin.SkinDir)
+		if dirExist {
+			picExist, _ := utils.PathExists(settings.VSplayer.Skin.SkinDir + picname)
+			if picExist {
+				// 贴图存在，替换
+				path = settings.VSplayer.Skin.SkinDir + picname
+			}else {
+				// 不存在，使用默认
+				path = "assets/textures/" + picname
+			}
+		}else {
+			// 皮肤文件夹不存在
+			panic("皮肤文件夹不存在！")
+		}
+	}else {
+		path = "assets/textures/" + picname
+	}
+	return utils.LoadTexture(path)
 }
