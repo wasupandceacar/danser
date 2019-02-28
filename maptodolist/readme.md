@@ -8,13 +8,13 @@
 - [x]  [源流懐古(HW)](https://osu.ppy.sh/s/180138) 完美
 - [x]  [fdfd](https://osu.ppy.sh/s/39804) FC人数较多 
 - [x]  [彩虹小马](https://osu.ppy.sh/s/57255) 坨坨滑条折返绘制出现反向问题
-- [ ]  **[axion(扶老二)](https://osu.ppy.sh/s/115193) 较短，断连显示频繁**
+- [x]  [axion(扶老二)](https://osu.ppy.sh/s/115193) 较短，断连显示频繁
 - [ ]  [摩天楼](https://osu.ppy.sh/s/100348)
 - [ ]  [女武神(arles)](https://osu.ppy.sh/s/378400) 集体断尾
 - [ ]  [happy song](https://osu.ppy.sh/s/744593) 断的比较后
-- [ ]  **[飞升(Kroytz)](https://osu.ppy.sh/s/368060)**
+- [x]  [飞升(Kroytz)](https://osu.ppy.sh/s/368060)
 - [ ]  [Crystalia](https://osu.ppy.sh/s/691220)
-- [ ]  **[Teo(Kroytz)](https://osu.ppy.sh/s/721804) 断尾非常集中**
+- [x]  [Teo(Kroytz)](https://osu.ppy.sh/s/721804) 断尾非常集中
 - [ ]  **[孤高](https://osu.ppy.sh/s/28705)**
 - [ ]  [Hoshi o Kakeru Adventure](https://osu.ppy.sh/s/677573) 知名度太低
 - [ ]  [冻僵](https://osu.ppy.sh/s/158023) HT FC 太多
@@ -37,6 +37,9 @@
 - [ ]  **[多巴胺](https://osu.ppy.sh/s/210316)**
 - [ ]  [雪司机(Snow Drive)](https://osu.ppy.sh/s/291154)
 - [ ]  [TRY UNITE](https://osu.ppy.sh/s/319815)
+- [ ]  [RAISE MY SWORD](https://osu.ppy.sh/s/889855)
+- [ ]  [Gensou Roman Kikou](https://osu.ppy.sh/s/736862)
+- [ ]  [ROR(Monstrata)](https://osu.ppy.sh/s/399372)
 
 ## 有人FC HR 图 ##
 - [ ]  [Ange du Blanc Pur](https://osu.ppy.sh/s/564165)
