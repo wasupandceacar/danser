@@ -40,6 +40,8 @@
 - [ ]  [RAISE MY SWORD](https://osu.ppy.sh/s/889855)
 - [ ]  [Gensou Roman Kikou](https://osu.ppy.sh/s/736862)
 - [ ]  [ROR(Monstrata)](https://osu.ppy.sh/s/399372)
+- [ ]  [Kitsune no Yomeiri](https://osu.ppy.sh/s/352624)
+- [ ]  [Hankyou no Barrier Seed](https://osu.ppy.sh/s/423833)
 
 ## 有人FC HR 图 ##
 - [ ]  [Ange du Blanc Pur](https://osu.ppy.sh/s/564165)
@@ -70,4 +72,6 @@
 - [ ]  [解构星](https://osu.ppy.sh/s/292083)
 - [ ]  [雪司机(Lemur)](https://osu.ppy.sh/s/379783) 曲奇曾经FC
 - [ ]  [Smiling](https://osu.ppy.sh/s/450363)
-- [ ]  [Katayoku no tori](https://osu.ppy.sh/s/478303) 
+- [ ]  [Katayoku no tori](https://osu.ppy.sh/s/478303)
+- [ ]  [Toaru Shoukoku no Ohimesama](https://osu.ppy.sh/s/370605)
+- [ ]  [God and the Illusory Garden](https://osu.ppy.sh/s/375956)  
