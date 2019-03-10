@@ -37,11 +37,20 @@
 - [ ]  **[多巴胺](https://osu.ppy.sh/s/210316)**
 - [ ]  [雪司机(Snow Drive)](https://osu.ppy.sh/s/291154)
 - [ ]  [TRY UNITE](https://osu.ppy.sh/s/319815)
-- [ ]  [RAISE MY SWORD](https://osu.ppy.sh/s/889855)
+- [ ]  **[RAISE MY SWORD](https://osu.ppy.sh/s/889855)**
 - [ ]  [Gensou Roman Kikou](https://osu.ppy.sh/s/736862)
 - [ ]  [ROR(Monstrata)](https://osu.ppy.sh/s/399372)
-- [ ]  [Kitsune no Yomeiri](https://osu.ppy.sh/s/352624)
+- [ ]  **[狐嫁](https://osu.ppy.sh/s/352624)**
 - [ ]  [Hankyou no Barrier Seed](https://osu.ppy.sh/s/423833)
+- [ ]  [Routing](https://osu.ppy.sh/s/403282)
+- [ ]  [Rebellio](https://osu.ppy.sh/s/744636)
+- [ ]  [My Sweet Maiden](https://osu.ppy.sh/s/702111)
+- [ ]  [Angreifer](https://osu.ppy.sh/s/868543)
+- [ ]  [Milk Crown on Sonnetica(Milan)](https://osu.ppy.sh/s/550414)
+- [ ]  [AiAe(Loved)](https://osu.ppy.sh/s/268783)
+- [ ]  [阴蜂(阳蜂难度)](https://osu.ppy.sh/s/120515) 
+- [ ]  [Milk Crown on Sonnetica(Loved,101%难度)](https://osu.ppy.sh/s/327557) 
+- [ ]  [玻璃花(Loved)](https://osu.ppy.sh/s/394834) 
 
 ## 有人FC HR 图 ##
 - [ ]  [Ange du Blanc Pur](https://osu.ppy.sh/s/564165)
@@ -75,3 +84,10 @@
 - [ ]  [Katayoku no tori](https://osu.ppy.sh/s/478303)
 - [ ]  [Toaru Shoukoku no Ohimesama](https://osu.ppy.sh/s/370605)
 - [ ]  [God and the Illusory Garden](https://osu.ppy.sh/s/375956)  
+- [ ]  [王冠](https://osu.ppy.sh/s/558694) 
+- [ ]  [小小恋歌](https://osu.ppy.sh/s/609189)   
+- [ ]  [lazy](https://osu.ppy.sh/s/6593)   
+- [ ]  [V0(Enon)](https://osu.ppy.sh/s/402837) 
+- [ ]  [doki-doki(Loved)](https://osu.ppy.sh/s/638414) 
+- [ ]  [阴蜂(阴蜂难度)](https://osu.ppy.sh/s/120515) 
+- [ ]  [Milk Crown on Sonnetica(Loved,9*难度)](https://osu.ppy.sh/s/327557) 
