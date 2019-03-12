@@ -58,7 +58,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 		OD300 = beatmap.AdjustOD(OD_300_BASE - ( newOD * OD_300_MULT ) + OD_PRECISION_FIX)
 		OD100 = beatmap.AdjustOD(OD_100_BASE - ( newOD * OD_100_MULT ) + OD_PRECISION_FIX)
 		OD50 = beatmap.AdjustOD(OD_50_BASE - ( newOD * OD_50_MULT ) + OD_PRECISION_FIX)
-		ODMiss = beatmap.AdjustOD(OD_MISS_BASE - ( newOD * OD_MISS_MULT ) + OD_PRECISION_FIX)
+		ODMiss = beatmap.AdjustOD(OD_MISS_BASE + OD_PRECISION_FIX)
 		convert_CS = float2unit(32 * (1 - 0.7 * (math.Min(CS_HR_HENSE * b.CircleSize, CS_MAX) - 5) / 5))
 		makeReplayHR(r)
 	}
@@ -69,7 +69,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 		OD300 = beatmap.AdjustOD(OD_300_BASE - ( newOD * OD_300_MULT ) + OD_PRECISION_FIX)
 		OD100 = beatmap.AdjustOD(OD_100_BASE - ( newOD * OD_100_MULT ) + OD_PRECISION_FIX)
 		OD50 = beatmap.AdjustOD(OD_50_BASE - ( newOD * OD_50_MULT ) + OD_PRECISION_FIX)
-		ODMiss = beatmap.AdjustOD(OD_MISS_BASE - ( newOD * OD_MISS_MULT ) + OD_PRECISION_FIX)
+		ODMiss = beatmap.AdjustOD(OD_MISS_BASE + OD_PRECISION_FIX)
 		convert_CS = float2unit(32 * (1 - 0.7 * (math.Min(b.CircleSize * CS_EZ_HENSE, 10) - 5) / 5))
 	}
 

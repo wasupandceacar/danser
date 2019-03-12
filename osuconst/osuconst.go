@@ -29,12 +29,11 @@ const MOD_PF = 16384
 const OD_300_BASE = 79
 const OD_100_BASE = 139
 const OD_50_BASE = 199
-const OD_MISS_BASE = 229
+const OD_MISS_BASE = 399
 
 const OD_300_MULT = 6
 const OD_100_MULT = 8
 const OD_50_MULT = 10
-const OD_MISS_MULT = 11
 
 const OD_PRECISION_FIX = 0.5
 

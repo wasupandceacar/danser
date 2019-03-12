@@ -45,7 +45,7 @@ func calculateStackLeniency(b *BeatMap) {
 	b.OD300 = AdjustOD(OD_300_BASE - ( b.OD * OD_300_MULT ) + OD_PRECISION_FIX)
 	b.OD100 = AdjustOD(OD_100_BASE - ( b.OD * OD_100_MULT ) + OD_PRECISION_FIX)
 	b.OD50 = AdjustOD(OD_50_BASE - ( b.OD * OD_50_MULT ) + OD_PRECISION_FIX)
-	b.ODMiss = AdjustOD(OD_MISS_BASE - ( b.OD * OD_MISS_MULT ) + OD_PRECISION_FIX)
+	b.ODMiss = AdjustOD(OD_MISS_BASE + OD_PRECISION_FIX)
 	hitObjects := b.HitObjects
 
 	if !settings.Objects.StackEnabled {
@@ -186,7 +186,7 @@ func calculateStackLeniencywithMods(b *BeatMap, isHR bool, isEZ bool) {
 	b.OD300 = AdjustOD(OD_300_BASE - ( b.OD * OD_300_MULT ) + OD_PRECISION_FIX)
 	b.OD100 = AdjustOD(OD_100_BASE - ( b.OD * OD_100_MULT ) + OD_PRECISION_FIX)
 	b.OD50 = AdjustOD(OD_50_BASE - ( b.OD * OD_50_MULT ) + OD_PRECISION_FIX)
-	b.ODMiss = AdjustOD(OD_MISS_BASE - ( b.OD * OD_MISS_MULT ) + OD_PRECISION_FIX)
+	b.ODMiss = AdjustOD(OD_MISS_BASE + OD_PRECISION_FIX)
 	hitObjects := b.HitObjects
 
 	if !settings.Objects.StackEnabled {
