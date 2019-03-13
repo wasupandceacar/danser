@@ -37,8 +37,6 @@ func initDefaults() {
 		},
 		&playerfieldUI{
 			200,
-			1000,
-			240,
 			30,
 			25,
 			13,

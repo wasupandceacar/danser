@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 50,
+			"Players": 0,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "23"
 		},
@@ -28,15 +28,13 @@
 		},
 		"PlayerFieldUI": {
 			"HitFadeTime": 200,
-			"SpinnerMinusTime": 1500,
-			"SpinnerMult": 380,
 			"ReverseFadeTime": 30,
 			"CursorColorNum": 25,
 			"CursorColorSkipNum": 13
 		},
 		"MapInfo": {
-			"Title": "AXION",
-			"Difficulty": "AXION_REBORN"
+			"Title": "Lovely Girls Anthem -EuroBeatRemix-",
+			"Difficulty": "Normal"
 		},
 		"Mods": {
 			"EnableDT": false,

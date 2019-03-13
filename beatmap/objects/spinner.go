@@ -2,8 +2,8 @@ package objects
 
 import (
 	"danser/bmath"
+	. "danser/osuconst"
 	"danser/render"
-	"danser/settings"
 	"github.com/go-gl/mathgl/mgl32"
 	"strconv"
 )
@@ -12,6 +12,7 @@ type Spinner struct {
 	objData *basicData
 	pos     bmath.Vector2d
 	Timings *Timings
+	renderStartTime int64
 }
 
 func NewSpinner(data []string) *Spinner {
@@ -19,7 +20,8 @@ func NewSpinner(data []string) *Spinner {
 	spinner.objData = commonParse(data)
 	endtime, _ := strconv.ParseInt(data[5], 10, 64)
 	spinner.objData.EndTime = int64(endtime)
-	spinner.pos = bmath.Vector2d{256,192}
+	spinner.pos = bmath.Vector2d{PLAYFIELD_WIDTH / 2,PLAYFIELD_HEIGHT / 2}
+	spinner.renderStartTime = -12345
 	return spinner
 }
 
@@ -40,13 +42,15 @@ func (self *Spinner) Update(time int64) bool {
 }
 
 func (self *Spinner) Draw(time int64, preempt float64, color mgl32.Vec4, batch *render.SpriteBatch) bool {
-	alpha := 1.0
-	//提前显示转盘
-	truestarttime := self.objData.StartTime - settings.VSplayer.PlayerFieldUI.SpinnerMinusTime
+	if self.renderStartTime == -12345 {
+		self.renderStartTime = time
+	}
 
-	if time < truestarttime {
+	alpha := 1.0
+
+	if time < self.renderStartTime - int64(preempt) {
 		return false
-	} else if time < truestarttime + int64(preempt){
+	} else if time < self.renderStartTime {
 		alpha = float64(color[3]) / preempt
 	}else {
 		alpha = float64(color[3])
@@ -70,16 +74,19 @@ func (self *Spinner) SetDifficulty(preempt, fadeIn float64) {
 }
 
 func (self *Spinner) DrawApproach(time int64, preempt float64, color mgl32.Vec4, batch *render.SpriteBatch) {
+	// 记录第一次渲染转盘的时间，第一次渲染时，转盘正好撑满整个屏幕，随后逐渐变小
+	if self.renderStartTime == -12345 {
+		self.renderStartTime = time
+	}
+
 	alpha := 1.0
-	//提前显示转盘
-	truestarttime := self.objData.StartTime - settings.VSplayer.PlayerFieldUI.SpinnerMinusTime
 	// 计算AR
-	fake_preempt := float64(self.objData.EndTime - truestarttime) / settings.VSplayer.PlayerFieldUI.SpinnerMult
+	fake_preempt := float64(self.objData.EndTime - self.renderStartTime) / 242
 	arr := float64(self.objData.EndTime - time) / fake_preempt
 
-	if time < truestarttime {
+	if time < self.renderStartTime - int64(preempt){
 		alpha = 0
-	} else if time < truestarttime + int64(preempt){
+	} else if time < self.renderStartTime{
 		alpha = float64(color[3]) / preempt
 	}else {
 		alpha = float64(color[3])

@@ -40,8 +40,6 @@ type recordinfoUI struct {
 
 type playerfieldUI struct {
 	HitFadeTime			int64
-	SpinnerMinusTime	int64
-	SpinnerMult			float64
 	ReverseFadeTime		int64
 	CursorColorNum		int
 	CursorColorSkipNum	int
