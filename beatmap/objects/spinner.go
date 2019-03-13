@@ -5,6 +5,7 @@ import (
 	. "danser/osuconst"
 	"danser/render"
 	"github.com/go-gl/mathgl/mgl32"
+	"math"
 	"strconv"
 )
 
@@ -81,8 +82,11 @@ func (self *Spinner) DrawApproach(time int64, preempt float64, color mgl32.Vec4,
 
 	alpha := 1.0
 	// 计算AR
-	fake_preempt := float64(self.objData.EndTime - self.renderStartTime) / 242
+	fake_preempt := 2 * float64(self.objData.EndTime - self.renderStartTime) / PLAYFIELD_HEIGHT
 	arr := float64(self.objData.EndTime - time) / fake_preempt
+
+	// 计算角度，设定Spinner为300rpm的转圈
+	angle := float64(time - self.renderStartTime) * math.Pi / 100
 
 	if time < self.renderStartTime - int64(preempt){
 		alpha = 0
@@ -96,6 +100,8 @@ func (self *Spinner) DrawApproach(time int64, preempt float64, color mgl32.Vec4,
 
 	if time <= self.objData.EndTime {
 		batch.SetColor(float64(color[0]), float64(color[1]), float64(color[2]), alpha)
-		batch.DrawUnitS(*render.ApproachCircle, bmath.Vector2d{arr, arr})
+		batch.DrawUnitS(*render.SpinnerApproachCircle, bmath.Vector2d{arr, arr})
+		// 绘制Spinner转圈
+		batch.DrawUnitSR(*render.SpinnerCircle, bmath.Vector2d{140, 140}, angle)
 	}
 }
