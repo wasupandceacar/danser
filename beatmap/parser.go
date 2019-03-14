@@ -103,8 +103,8 @@ func parseEvents(line []string, beatMap *BeatMap) {
 	}
 }
 
-func parseHitObjects(line []string, beatMap *BeatMap) {
-	obj := objects.GetObject(line)
+func parseHitObjects(line []string, beatMap *BeatMap, number int64) int64 {
+	obj, newnumber := objects.GetObject(line, number)
 
 	if obj != nil {
 		if o, ok := obj.(*objects.Slider); ok {
@@ -118,6 +118,7 @@ func parseHitObjects(line []string, beatMap *BeatMap) {
 		}
 		beatMap.HitObjects = append(beatMap.HitObjects, obj)
 	}
+	return newnumber
 }
 
 func tokenize(line, delimiter string) []string {
@@ -220,6 +221,8 @@ func ParseObjects(beatMap *BeatMap) {
 	scanner := bufio.NewScanner(file)
 
 	var currentSection string
+	// object的编号
+	var objectNumber int64
 	for scanner.Scan() {
 		line := scanner.Text()
 
@@ -232,7 +235,7 @@ func ParseObjects(beatMap *BeatMap) {
 		switch currentSection {
 		case "HitObjects":
 			if arr := tokenize(line, ","); arr != nil {
-				parseHitObjects(arr, beatMap)
+				objectNumber = parseHitObjects(arr, beatMap, objectNumber)
 			}
 			break
 		}
@@ -266,6 +269,8 @@ func ParseObjectsbyPath(beatMap *BeatMap, filename string, isHR bool, isEZ bool)
 	scanner := bufio.NewScanner(file)
 
 	var currentSection string
+	// object的编号
+	var objectNumber int64
 	for scanner.Scan() {
 		line := scanner.Text()
 
@@ -278,7 +283,7 @@ func ParseObjectsbyPath(beatMap *BeatMap, filename string, isHR bool, isEZ bool)
 		switch currentSection {
 		case "HitObjects":
 			if arr := tokenize(line, ","); arr != nil {
-				parseHitObjects(arr, beatMap)
+				objectNumber = parseHitObjects(arr, beatMap, objectNumber)
 			}
 			break
 		}

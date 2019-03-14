@@ -73,7 +73,7 @@ type Slider struct {
 	TailJudgeOffset int64
 }
 
-func NewSlider(data []string) *Slider {
+func NewSlider(data []string, number int64) *Slider {
 	slider := &Slider{clicked: false}
 	slider.objData = commonParse(data)
 	slider.pixelLength, _ = strconv.ParseFloat(data[7], 64)
@@ -129,6 +129,8 @@ func NewSlider(data []string) *Slider {
 	slider.lastTick = -1
 
 	slider.curveEndPos = points[len(points) - 1]
+
+	slider.objData.Number = number
 
 	return slider
 }

@@ -16,7 +16,7 @@ type Circle struct {
 	Timings *Timings
 }
 
-func NewCircle(data []string) *Circle {
+func NewCircle(data []string, number int64) *Circle {
 	circle := &Circle{}
 	circle.objData = commonParse(data)
 	f, _ := strconv.ParseInt(data[4], 10, 64)
@@ -24,6 +24,7 @@ func NewCircle(data []string) *Circle {
 	circle.objData.EndTime = circle.objData.StartTime
 	circle.objData.EndPos = circle.objData.StartPos
 	circle.objData.parseExtras(data, 5)
+	circle.objData.Number = number
 	return circle
 }
 

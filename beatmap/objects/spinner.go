@@ -16,13 +16,14 @@ type Spinner struct {
 	renderStartTime int64
 }
 
-func NewSpinner(data []string) *Spinner {
+func NewSpinner(data []string, number int64) *Spinner {
 	spinner := &Spinner{}
 	spinner.objData = commonParse(data)
 	endtime, _ := strconv.ParseInt(data[5], 10, 64)
 	spinner.objData.EndTime = int64(endtime)
 	spinner.pos = bmath.Vector2d{PLAYFIELD_WIDTH / 2,PLAYFIELD_HEIGHT / 2}
 	spinner.renderStartTime = -12345
+	spinner.objData.Number = number
 	return spinner
 }
 
