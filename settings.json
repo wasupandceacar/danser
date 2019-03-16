@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 0,
+			"Players": 50,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "23"
 		},
@@ -34,8 +34,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Lovely Girls Anthem -EuroBeatRemix-",
-			"Difficulty": "Normal"
+			"Title": "Kitsune no Yomeiri",
+			"Difficulty": "Crazy"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -58,12 +58,12 @@
 			"ReplayDebug": false
 		},
 		"ErrorFix": {
-			"EnableErrorFix": false,
+			"EnableErrorFix": true,
 			"ErrorFixFile": "error.err"
 		},
 		"Skin": {
-			"EnableSkin": false,
-			"SkinDir": "skin\\karthy1\\"
+			"EnableSkin": true,
+			"SkinDir": "skin\\flyingtuna1\\"
 		}
 	},
 	"Graphics": {

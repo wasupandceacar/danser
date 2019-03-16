@@ -60,7 +60,7 @@ func (self *Spinner) Draw(time int64, preempt float64, color mgl32.Vec4, batch *
 	batch.SetTranslation(self.objData.StartPos)
 
 	batch.SetColor(1, 1, 1, alpha)
-	batch.DrawUnitS(*render.Spinner, bmath.Vector2d{10, 10})
+	batch.DrawUnitS(*render.SpinnerBottom, bmath.Vector2d{float64(render.SpinnerBottom.Width) / 4, float64(render.SpinnerBottom.Height) / 4})
 
 	batch.SetSubScale(1, 1)
 
