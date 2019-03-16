@@ -43,6 +43,7 @@ type playerfieldUI struct {
 	ReverseFadeTime		int64
 	CursorColorNum		int
 	CursorColorSkipNum	int
+	ShowHitCircleNumber	bool
 }
 
 type mapinfo struct {

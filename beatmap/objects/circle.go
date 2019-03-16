@@ -3,9 +3,9 @@ package objects
 import (
 	"danser/audio"
 	"danser/bmath"
+	. "danser/osuconst"
 	"danser/render"
 	"danser/settings"
-	. "danser/osuconst"
 	"github.com/go-gl/mathgl/mgl32"
 	"strconv"
 )
@@ -18,13 +18,12 @@ type Circle struct {
 
 func NewCircle(data []string, number int64) *Circle {
 	circle := &Circle{}
-	circle.objData = commonParse(data)
+	circle.objData = commonParse(data, number)
 	f, _ := strconv.ParseInt(data[4], 10, 64)
 	circle.sample = int(f)
 	circle.objData.EndTime = circle.objData.StartTime
 	circle.objData.EndPos = circle.objData.StartPos
 	circle.objData.parseExtras(data, 5)
-	circle.objData.Number = number
 	return circle
 }
 
@@ -73,7 +72,6 @@ func (self *Circle) GetPosition() bmath.Vector2d {
 }
 
 func (self *Circle) Draw(time int64, preempt float64, color mgl32.Vec4, batch *render.SpriteBatch) bool {
-
 	alpha := 1.0
 
 	if settings.VSplayer.Mods.EnableHD {
@@ -112,6 +110,37 @@ func (self *Circle) Draw(time int64, preempt float64, color mgl32.Vec4, batch *r
 		batch.DrawUnit(*render.CircleFull)
 	} else {
 		batch.DrawUnit(*render.Circle)
+	}
+
+	if settings.VSplayer.PlayerFieldUI.ShowHitCircleNumber {
+		// 绘制圈内数字
+		widthratio := float64(render.Circle0.Width) / float64(render.Circle.Width)
+		heightratio := float64(render.Circle0.Height) / float64(render.Circle.Height)
+		batch.SetNumberScale(widthratio, heightratio)
+		batch.SetColor(1, 1, 1, alpha)
+
+		if self.objData.Number < 10 {
+			// 编号一位数
+			DrawHitCircleNumber(self.objData.Number, self.objData.StartPos, batch)
+		} else {
+			// 只考虑编号两位数的情况
+
+			// 计算十位数和个位数
+			tenDigit := self.objData.Number / 10
+			unitDigit := self.objData.Number % 10
+
+			// 计算十位数和个位数的位置
+			screenratio := PLAYFIELD_HEIGHT / 600
+			baseX := self.objData.StartPos.X
+			baseY := self.objData.StartPos.Y
+			tenDigitWidth := int64(GetHitCircleNumberWidth(tenDigit))
+			unitDigitWidth := int64(GetHitCircleNumberWidth(unitDigit))
+			tenBaseX := baseX + float64(render.HitCircleOverlap-tenDigitWidth)/2*screenratio
+			unitBaseX := baseX - float64(render.HitCircleOverlap-unitDigitWidth)/2*screenratio
+
+			DrawHitCircleNumber(tenDigit, bmath.Vector2d{tenBaseX, baseY}, batch)
+			DrawHitCircleNumber(unitDigit, bmath.Vector2d{unitBaseX, baseY}, batch)
+		}
 	}
 
 	if settings.DIVIDES < settings.Objects.MandalaTexturesTrigger {

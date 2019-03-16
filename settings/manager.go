@@ -40,6 +40,7 @@ func initDefaults() {
 			30,
 			25,
 			13,
+			false,
 		},
 		&mapinfo{
 			"title",

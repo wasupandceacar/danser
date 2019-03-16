@@ -138,6 +138,7 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 	// 非replay debug
 	if !settings.VSplayer.ReplayandCache.ReplayDebug {
 		render.LoadTextures()
+		render.LoadSkinConfiguration()
 		render.SetupSlider()
 		player.batch = render.NewSpriteBatch()
 		player.sliderRenderer = render.NewSliderRenderer()

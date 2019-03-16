@@ -75,7 +75,7 @@ type Slider struct {
 
 func NewSlider(data []string, number int64) *Slider {
 	slider := &Slider{clicked: false}
-	slider.objData = commonParse(data)
+	slider.objData = commonParse(data, number)
 	slider.pixelLength, _ = strconv.ParseFloat(data[7], 64)
 	slider.repeat, _ = strconv.ParseInt(data[6], 10, 64)
 
@@ -129,8 +129,6 @@ func NewSlider(data []string, number int64) *Slider {
 	slider.lastTick = -1
 
 	slider.curveEndPos = points[len(points) - 1]
-
-	slider.objData.Number = number
 
 	return slider
 }
@@ -571,6 +569,38 @@ func (self *Slider) Draw(time int64, preempt float64, color mgl32.Vec4, batch *r
 			batch.SetTranslation(self.objData.StartPos)
 
 			batch.DrawUnit(*render.Circle)
+
+			if settings.VSplayer.PlayerFieldUI.ShowHitCircleNumber {
+				// 绘制圈内数字
+				widthratio := float64(render.Circle0.Width) / float64(render.Circle.Width)
+				heightratio := float64(render.Circle0.Height) / float64(render.Circle.Height)
+				batch.SetNumberScale(widthratio, heightratio)
+				batch.SetColor(1, 1, 1, alpha)
+
+				if self.objData.Number < 10 {
+					// 编号一位数
+					DrawHitCircleNumber(self.objData.Number, self.objData.StartPos, batch)
+				} else {
+					// 只考虑编号两位数的情况
+
+					// 计算十位数和个位数
+					tenDigit := self.objData.Number / 10
+					unitDigit := self.objData.Number % 10
+
+					// 计算十位数和个位数的位置
+					screenratio := PLAYFIELD_HEIGHT / 600
+					baseX := self.objData.StartPos.X
+					baseY := self.objData.StartPos.Y
+					tenDigitWidth := int64(GetHitCircleNumberWidth(tenDigit))
+					unitDigitWidth := int64(GetHitCircleNumberWidth(unitDigit))
+					tenBaseX := baseX + float64(render.HitCircleOverlap-tenDigitWidth)/2*screenratio
+					unitBaseX := baseX - float64(render.HitCircleOverlap-unitDigitWidth)/2*screenratio
+
+					DrawHitCircleNumber(tenDigit, bmath.Vector2d{tenBaseX, baseY}, batch)
+					DrawHitCircleNumber(unitDigit, bmath.Vector2d{unitBaseX, baseY}, batch)
+				}
+			}
+
 			batch.SetColor(1, 1, 1, alpha)
 			batch.DrawUnit(*render.CircleOverlay)
 
@@ -602,6 +632,7 @@ func (self *Slider) Draw(time int64, preempt float64, color mgl32.Vec4, batch *r
 				batch.SetSubScale(1+(1.0-alphaF)*0.5, 1+(1.0-alphaF)*0.5)
 				batch.SetColor(float64(color[0]), float64(color[1]), float64(color[2]), alphaF)
 				batch.DrawUnit(*render.Circle)
+
 				batch.SetColor(1, 1, 1, alphaF)
 				batch.DrawUnit(*render.CircleOverlay)
 			}

@@ -2,12 +2,12 @@ package objects
 
 import (
 	om "danser/bmath"
+	. "danser/osuconst"
+	"danser/render"
 	"danser/settings"
+	"github.com/go-gl/mathgl/mgl32"
 	"strconv"
 	"strings"
-	"github.com/go-gl/mathgl/mgl32"
-	"danser/render"
-	. "danser/osuconst"
 )
 
 type BaseObject interface {
@@ -36,14 +36,14 @@ type basicData struct {
 	customVolume float64
 }
 
-func commonParse(data []string) *basicData {
+func commonParse(data []string, number int64) *basicData {
 	x, _ := strconv.ParseFloat(data[0], 64)
 	y, _ := strconv.ParseFloat(data[1], 64)
 	if settings.VSplayer.Mods.EnableHR {
 		y = PLAYFIELD_HEIGHT - y
 	}
 	time, _ := strconv.ParseInt(data[2], 10, 64)
-	return &basicData{StartPos: om.NewVec2d(x, y), StartTime: time, Number: -1}
+	return &basicData{StartPos: om.NewVec2d(x, y), StartTime: time, Number: number}
 }
 
 func (bData *basicData) parseExtras(data []string, extraIndex int) {

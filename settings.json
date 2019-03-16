@@ -30,7 +30,8 @@
 			"HitFadeTime": 200,
 			"ReverseFadeTime": 30,
 			"CursorColorNum": 25,
-			"CursorColorSkipNum": 13
+			"CursorColorSkipNum": 13,
+			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
 			"Title": "Lovely Girls Anthem -EuroBeatRemix-",
@@ -61,8 +62,8 @@
 			"ErrorFixFile": "error.err"
 		},
 		"Skin": {
-			"EnableSkin": true,
-			"SkinDir": "skin\\cookiezi3\\"
+			"EnableSkin": false,
+			"SkinDir": "skin\\karthy1\\"
 		}
 	},
 	"Graphics": {
