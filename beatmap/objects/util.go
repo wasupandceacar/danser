@@ -87,23 +87,23 @@ func GetHitCircleNumberWidth(number int64) int32{
 	case 0:
 		return render.Circle0.Width
 	case 1:
-		return render.Circle0.Width
+		return render.Circle1.Width
 	case 2:
-		return render.Circle0.Width
+		return render.Circle2.Width
 	case 3:
-		return render.Circle0.Width
+		return render.Circle3.Width
 	case 4:
-		return render.Circle0.Width
+		return render.Circle4.Width
 	case 5:
-		return render.Circle0.Width
+		return render.Circle5.Width
 	case 6:
-		return render.Circle0.Width
+		return render.Circle6.Width
 	case 7:
-		return render.Circle0.Width
+		return render.Circle7.Width
 	case 8:
-		return render.Circle0.Width
+		return render.Circle8.Width
 	case 9:
-		return render.Circle0.Width
+		return render.Circle9.Width
 	}
 	return 0
 }
