@@ -99,9 +99,10 @@ func (self *Spinner) DrawApproach(time int64, preempt float64, color mgl32.Vec4,
 	batch.SetTranslation(self.objData.StartPos)
 
 	if time <= self.objData.EndTime {
-		batch.SetColor(float64(color[0]), float64(color[1]), float64(color[2]), alpha)
+		batch.SetColor(1, 1, 1, alpha)
 		batch.DrawUnitS(*render.SpinnerApproachCircle, bmath.Vector2d{arr, arr})
 		// 绘制Spinner转圈
-		batch.DrawUnitSR(*render.SpinnerCircle, bmath.Vector2d{140, 140}, angle)
+		batch.DrawUnitSR(*render.SpinnerCircle, bmath.Vector2d{float64(render.SpinnerCircle.Width) / 4.75, float64(render.SpinnerCircle.Height) / 4.75}, angle)
+		batch.DrawUnitSR(*render.SpinnerMiddle, bmath.Vector2d{float64(render.SpinnerMiddle.Width) / 2, float64(render.SpinnerMiddle.Height) / 2}, angle)
 	}
 }
