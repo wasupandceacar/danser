@@ -32,7 +32,7 @@
 - [ ]  [Packet Hero](https://osu.ppy.sh/s/404910) 集体断尾
 - [ ]  [Light it up](https://osu.ppy.sh/s/650738) 知名度太低
 - [ ]  [Owata \(^o^)/](https://osu.ppy.sh/s/399096) 知名度太低
-- [ ]  **[量子海](https://osu.ppy.sh/s/372850)**
+- [x]  [量子海](https://osu.ppy.sh/s/372850)
 - [ ]  [量子海(Crystal)](https://osu.ppy.sh/s/405167)
 - [ ]  **[多巴胺](https://osu.ppy.sh/s/210316)**
 - [ ]  [雪司机(Snow Drive)](https://osu.ppy.sh/s/291154)
@@ -40,17 +40,18 @@
 - [ ]  **[RAISE MY SWORD](https://osu.ppy.sh/s/889855)**
 - [ ]  [Gensou Roman Kikou](https://osu.ppy.sh/s/736862)
 - [ ]  [ROR(Monstrata)](https://osu.ppy.sh/s/399372)
-- [ ]  **[狐嫁](https://osu.ppy.sh/s/352624)**
+- [x]  [狐嫁](https://osu.ppy.sh/s/352624)
 - [ ]  [Hankyou no Barrier Seed](https://osu.ppy.sh/s/423833)
 - [ ]  [Routing](https://osu.ppy.sh/s/403282)
 - [ ]  [Rebellio](https://osu.ppy.sh/s/744636)
 - [ ]  [My Sweet Maiden](https://osu.ppy.sh/s/702111)
 - [ ]  [Angreifer](https://osu.ppy.sh/s/868543)
 - [ ]  [Milk Crown on Sonnetica(Milan)](https://osu.ppy.sh/s/550414)
-- [ ]  [AiAe(Loved)](https://osu.ppy.sh/s/268783)
+- [x]  [AiAe(Loved)](https://osu.ppy.sh/s/268783)
 - [ ]  [阴蜂(阳蜂难度)](https://osu.ppy.sh/s/120515) 
 - [ ]  [Milk Crown on Sonnetica(Loved,101%难度)](https://osu.ppy.sh/s/327557) 
 - [ ]  [玻璃花(Loved)](https://osu.ppy.sh/s/394834) 
+- [ ]  [Louder than steel](https://osu.ppy.sh/s/864869) 
 
 ## 有人FC HR 图 ##
 - [ ]  [Ange du Blanc Pur](https://osu.ppy.sh/s/564165)
