@@ -71,6 +71,7 @@
 - [ ]  [Akatsuki Zukuyo](https://osu.ppy.sh/s/351280)
 - [ ]  [樱之诗](https://osu.ppy.sh/s/738656)
 - [ ]  [剑舞](https://osu.ppy.sh/s/745312) pp图
+- [ ]  [In A Night When Her Sorrow Resounds Around](https://osu.ppy.sh/s/901755)
 
 ## 无人FC None 图 ##
 - [ ]  [老黄泉](https://osu.ppy.sh/s/461744)
