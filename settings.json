@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 0,
+			"Players": 1,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "23"
 		},

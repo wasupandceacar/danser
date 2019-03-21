@@ -15,4 +15,5 @@ type TotalResult struct {
 	Acc		float64
 	Rank    score.Rank
 	PP 		oppai.PPv2
+	UR		float64
 }

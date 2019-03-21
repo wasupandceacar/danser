@@ -85,6 +85,9 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 	maxcombo := 0
 	nowcombo := 0
 
+	// 击打误差数组
+	hiterrors := []int64{}
+
 	// 依次处理HitObject
 	keyindex := 3
 	time := r[1].Time + r[2].Time
@@ -115,7 +118,10 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 				isfind, nearestindex, lasttime := findNearestKey(keyindex, time, r, o.GetBasicData().StartTime, o.GetBasicData().StartPos, ODMiss, OD50, convert_CS, true, ticktime)
 				if isfind {
 					// 如果找到，判断hit结果，设置下一个index+1
-					keyhitresult := judgeHitResult(nearestindex, lasttime, r, o.GetBasicData().StartTime, ODMiss, OD300, OD100, OD50)
+					keyhitresult, hiterror := judgeHitResult(nearestindex, lasttime, r, o.GetBasicData().StartTime, ODMiss, OD300, OD100, OD50)
+					if keyhitresult != HitMiss {
+						hiterrors = append(hiterrors, hiterror)
+					}
 					switch keyhitresult {
 					case Hit300:
 						//log.Println("Slider head", o.GetBasicData().StartPos, o.GetBasicData().StartTime, "300")
@@ -239,7 +245,11 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 				isfind, nearestindex, lasttime := findNearestKey(keyindex, time, r, o.GetBasicData().StartTime, o.GetBasicData().StartPos, ODMiss, OD50, convert_CS, false, 0)
 				if isfind {
 					// 如果找到，判断hit结果，设置下一个index+1
-					keyhitresult = judgeHitResult(nearestindex, lasttime, r, o.GetBasicData().StartTime, ODMiss, OD300, OD100, OD50)
+					var hiterror int64
+					keyhitresult, hiterror = judgeHitResult(nearestindex, lasttime, r, o.GetBasicData().StartTime, ODMiss, OD300, OD100, OD50)
+					if keyhitresult != HitMiss {
+						hiterrors = append(hiterrors, hiterror)
+					}
 					switch keyhitresult {
 					case Hit300:
 						//log.Println("Circle count as 300")
@@ -310,12 +320,14 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 										mods,
 										score.CalculateAccuracy(totalhits),
 										score.CalculateRank(totalhits, mods),
-										oppai.PPv2{}}
+										oppai.PPv2{},
+										calculateUnstableRate(hiterrors)}
 		//tmptotalresult.PP = calculatePP(mapname, tmptotalresult)
 		tmptotalresult.PP = calculatePPbyNum(mapname, tmptotalresult, k+1)
 		totalresult = append(totalresult, tmptotalresult)
 		//log.Println("Now Max Combo:", maxcombo)
 		//log.Println("Acc:", score.CalculateAccuracy(totalhits))
+		//log.Println("Unstable Rate:", calculateUnstableRate(hiterrors))
 	}
 
 	log.Println("Count 300:", count300)
@@ -477,19 +489,19 @@ func isHitOver(realhittime int64, requirehittime int64, ODMiss float64) bool {
 }
 
 // 判断hit结果
-func judgeHitResult(index int, lasttime int64, r []*rplpa.ReplayData, requirehittime int64, ODMiss float64, OD300 float64, OD100 float64, OD50 float64) HitResult{
+func judgeHitResult(index int, lasttime int64, r []*rplpa.ReplayData, requirehittime int64, ODMiss float64, OD300 float64, OD100 float64, OD50 float64) (HitResult, int64){
 	realhittime := r[index].Time + lasttime
 	//log.Println("Judge Hit", realhittime, requirehittime, OD300, OD100, OD50, ODMiss)
 	if isHit300(realhittime, requirehittime, OD300) {
-		return Hit300
+		return Hit300, realhittime - requirehittime
 	}else if isHit100(realhittime, requirehittime, OD100) {
-		return Hit100
+		return Hit100, realhittime - requirehittime
 	}else if isHit50(realhittime, requirehittime, OD50) {
-		return Hit50
+		return Hit50, realhittime - requirehittime
 	}else if isHitMiss(realhittime, requirehittime, ODMiss) {
-		return HitMiss
+		return HitMiss, realhittime - requirehittime
 	}else {
-		return HitMiss
+		return HitMiss, realhittime - requirehittime
 	}
 }
 
@@ -634,6 +646,7 @@ func shouldfixError(objectindex int, errors []Error) *Error {
 	return nil
 }
 
+// 修正误差
 func fixError(error Error, result []ObjectResult, count300 int, count100 int, count50 int, countMiss int, maxcombo int, nowcombo int, totalhits []int64) (reresult []ObjectResult, recount300 int, recount100 int, recount50 int, recountMiss int, remaxcombo int, renowcombo int, retotalhits []int64){
 	lastresult := result[len(result)-1]
 	recount300 = count300
@@ -700,6 +713,22 @@ func fixError(error Error, result []ObjectResult, count300 int, count100 int, co
 	return reresult, recount300, recount100, recount50, recountMiss, remaxcombo, renowcombo, retotalhits
 }
 
+// 保留小数点后两位数字
 func float2unit(num float64) float64 {
 	return math.Ceil(num*100) / 100
+}
+
+// 计算不稳定率
+func calculateUnstableRate(array []int64) (unstablerate float64) {
+	var sum int64
+	for _, a := range array {
+		sum += a
+	}
+	avg := float64(sum) / float64(len(array))
+	for _, a := range array {
+		unstablerate += math.Pow(float64(a) - avg, 2)
+	}
+	unstablerate /= float64(len(array))
+	unstablerate = 10 * math.Sqrt(unstablerate)
+	return unstablerate
 }
