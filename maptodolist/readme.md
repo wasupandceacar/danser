@@ -52,6 +52,9 @@
 - [ ]  [Milk Crown on Sonnetica(Loved,101%难度)](https://osu.ppy.sh/s/327557) 
 - [ ]  [玻璃花(Loved)](https://osu.ppy.sh/s/394834) 
 - [ ]  [Louder than steel](https://osu.ppy.sh/s/864869) 
+- [ ]  [Kegare Naki Bara Juuji](https://osu.ppy.sh/s/448818)
+- [ ]  [Kegare Naki Yume](https://osu.ppy.sh/s/386619) 967pp
+- [ ]  [Candle Master](https://osu.ppy.sh/s/357632)
 
 ## 有人FC HR 图 ##
 - [ ]  [Ange du Blanc Pur](https://osu.ppy.sh/s/564165)
