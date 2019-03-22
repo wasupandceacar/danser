@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 1,
+			"Players": 2,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "23"
 		},
@@ -16,7 +16,8 @@
 			"ShowMouse1": true,
 			"ShowMouse2": false,
 			"ShowRealTimePP": true,
-			"RealTimePPGap": 800
+			"RealTimePPGap": 800,
+			"ShowRealTimeUR": true
 		},
 		"RecordInfoUI": {
 			"Recorder": "wasupandceacar",
@@ -54,7 +55,7 @@
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
-			"ReadResultCache": true,
+			"ReadResultCache": false,
 			"ReplayDebug": false
 		},
 		"ErrorFix": {

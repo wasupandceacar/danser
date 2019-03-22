@@ -103,6 +103,7 @@ type Player struct {
 	accbaseX		float64
 	rankbaseX		float64
 	ppbaseX			float64
+	urbaseX			float64
 	playerbaseX		float64
 	keybaseY		float64
 	fontbaseY		float64
@@ -431,8 +432,14 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 	}else{
 		player.accbaseX = player.key2baseX + 2 * settings.VSplayer.PlayerInfoUI.BaseSize
 	}
-	player.rankbaseX = player.accbaseX + 8.375 * settings.VSplayer.PlayerInfoUI.BaseSize
-	player.ppbaseX = player.rankbaseX + 1.625 * settings.VSplayer.PlayerInfoUI.BaseSize
+	if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+		player.rankbaseX = player.accbaseX + 2.625 * settings.VSplayer.PlayerInfoUI.BaseSize
+		player.ppbaseX = player.accbaseX + 8.375 * settings.VSplayer.PlayerInfoUI.BaseSize
+		player.urbaseX = player.ppbaseX
+	}else {
+		player.rankbaseX = player.accbaseX + 8.375 * settings.VSplayer.PlayerInfoUI.BaseSize
+		player.ppbaseX = player.rankbaseX + 1.625 * settings.VSplayer.PlayerInfoUI.BaseSize
+	}
 	player.playerbaseX = player.ppbaseX + 8.75 * settings.VSplayer.PlayerInfoUI.BaseSize
 	player.keybaseY = settings.VSplayer.PlayerInfoUI.BaseY
 	player.fontbaseY = settings.VSplayer.PlayerInfoUI.BaseY - 0.75 * settings.VSplayer.PlayerInfoUI.BaseSize
@@ -878,59 +885,59 @@ func (pl *Player) Draw(delta float64) {
 	pl.batch.Begin()
 	pl.batch.SetCamera(pl.scamera.GetProjectionView())
 	for k := 0; k < pl.players; k++ {
+		linecount := k
+		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+			linecount *= 2
+		}
 		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
 		namecolor := colors1[colornum]
 		if settings.VSplayer.BreakandQuit.EnableBreakandQuit && (!pl.controller[k].GetIsShow()) {
 			namecolor[3] = float32(math.Max(0.0, float64(namecolor[3]) - (pl.progressMsF - pl.controller[k].GetDishowTime()) / settings.VSplayer.BreakandQuit.PlayerFadeTime))
 		}
 		playerkey := pl.controller[k].GetPresskey()
+		// 通用渲染项
+		keyY := pl.keybaseY - pl.lineoffset * float64(linecount)
+		// 如果显示UR，排成两行，按键下移半行
+		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+			keyY -= pl.lineoffset / 2
+		}
+		// 通用大小
+		pl.batch.SetScale(pl.keysize, pl.keysize)
+		// Key1
+		pl.batch.SetTranslation(bmath.NewVec2d(pl.key1baseX, keyY))
 		if playerkey.Key1 {
-			pl.batch.SetTranslation(bmath.NewVec2d(pl.key1baseX, pl.keybaseY - pl.lineoffset * float64(k)))
-			pl.batch.SetScale(pl.keysize, pl.keysize)
 			pl.batch.SetColor(float64(namecolor[0]), float64(namecolor[1]), float64(namecolor[2]), float64(namecolor[3]))
-			pl.batch.DrawUnit(*render.PressKey)
 		} else {
-			pl.batch.SetTranslation(bmath.NewVec2d(pl.key1baseX, pl.keybaseY - pl.lineoffset * float64(k)))
-			pl.batch.SetScale(pl.keysize, pl.keysize)
 			pl.batch.SetColor(1, 1, 1, 0)
-			pl.batch.DrawUnit(*render.PressKey)
 		}
+		pl.batch.DrawUnit(*render.PressKey)
+		// Key2
+		pl.batch.SetTranslation(bmath.NewVec2d(pl.key2baseX, keyY))
 		if playerkey.Key2 {
-			pl.batch.SetTranslation(bmath.NewVec2d(pl.key2baseX, pl.keybaseY - pl.lineoffset * float64(k)))
-			pl.batch.SetScale(pl.keysize, pl.keysize)
 			pl.batch.SetColor(float64(namecolor[0]), float64(namecolor[1]), float64(namecolor[2]), float64(namecolor[3]))
-			pl.batch.DrawUnit(*render.PressKey)
 		} else {
-			pl.batch.SetTranslation(bmath.NewVec2d(pl.key2baseX, pl.keybaseY - pl.lineoffset * float64(k)))
-			pl.batch.SetScale(pl.keysize, pl.keysize)
 			pl.batch.SetColor(1, 1, 1, 0)
+		}
+		pl.batch.DrawUnit(*render.PressKey)
+		// Mouse1
+		if settings.VSplayer.PlayerInfoUI.ShowMouse1 {
+			pl.batch.SetTranslation(bmath.NewVec2d(pl.key3baseX, keyY))
+			if playerkey.LeftClick && !playerkey.Key1 {
+				pl.batch.SetColor(float64(namecolor[0]), float64(namecolor[1]), float64(namecolor[2]), float64(namecolor[3]))
+			} else {
+				pl.batch.SetColor(1, 1, 1, 0)
+			}
 			pl.batch.DrawUnit(*render.PressKey)
 		}
-		if settings.VSplayer.PlayerInfoUI.ShowMouse1 {
-			if playerkey.LeftClick && !playerkey.Key1 {
-				pl.batch.SetTranslation(bmath.NewVec2d(pl.key3baseX, pl.keybaseY-pl.lineoffset*float64(k)))
-				pl.batch.SetScale(pl.keysize, pl.keysize)
-				pl.batch.SetColor(float64(namecolor[0]), float64(namecolor[1]), float64(namecolor[2]), float64(namecolor[3]))
-				pl.batch.DrawUnit(*render.PressKey)
-			} else {
-				pl.batch.SetTranslation(bmath.NewVec2d(pl.key3baseX, pl.keybaseY-pl.lineoffset*float64(k)))
-				pl.batch.SetScale(pl.keysize, pl.keysize)
-				pl.batch.SetColor(1, 1, 1, 0)
-				pl.batch.DrawUnit(*render.PressKey)
-			}
-		}
+		// Mouse2
 		if settings.VSplayer.PlayerInfoUI.ShowMouse2 {
+			pl.batch.SetTranslation(bmath.NewVec2d(pl.key4baseX, keyY))
 			if playerkey.RightClick && !playerkey.Key2 {
-				pl.batch.SetTranslation(bmath.NewVec2d(pl.key4baseX, pl.keybaseY-pl.lineoffset*float64(k)))
-				pl.batch.SetScale(pl.keysize, pl.keysize)
 				pl.batch.SetColor(float64(namecolor[0]), float64(namecolor[1]), float64(namecolor[2]), float64(namecolor[3]))
-				pl.batch.DrawUnit(*render.PressKey)
 			} else {
-				pl.batch.SetTranslation(bmath.NewVec2d(pl.key4baseX, pl.keybaseY-pl.lineoffset*float64(k)))
-				pl.batch.SetScale(pl.keysize, pl.keysize)
 				pl.batch.SetColor(1, 1, 1, 0)
-				pl.batch.DrawUnit(*render.PressKey)
 			}
+			pl.batch.DrawUnit(*render.PressKey)
 		}
 	}
 	pl.batch.End()
@@ -949,6 +956,10 @@ func (pl *Player) Draw(delta float64) {
 	pl.batch.Begin()
 	pl.batch.SetCamera(pl.scamera.GetProjectionView())
 	for k := 0; k < pl.players; k++ {
+		linecount := k
+		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+			linecount *= 2
+		}
 		pl.batch.SetAdditive(true)
 		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
 		namecolor := colors1[colornum]
@@ -957,7 +968,12 @@ func (pl *Player) Draw(delta float64) {
 		}
 		// 渲染player名
 		pl.batch.SetColor(float64(namecolor[0]), float64(namecolor[1]), float64(namecolor[2]), float64(namecolor[3]))
-		lastPos[k] = pl.font.DrawAndGetLastPosition(pl.batch, pl.playerbaseX, pl.fontbaseY - pl.lineoffset * float64(k), pl.fontsize, pl.controller[k].GetPlayname())
+		fontY := pl.fontbaseY - pl.lineoffset * float64(linecount)
+		// 下移半行
+		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+			fontY -= pl.lineoffset / 2
+		}
+		lastPos[k] = pl.font.DrawAndGetLastPosition(pl.batch, pl.playerbaseX, fontY, pl.fontsize, pl.controller[k].GetPlayname())
 		// 渲染mod
 		mods := "+"
 		if (pl.controller[k].GetMods()&MOD_NF > 0){
@@ -996,7 +1012,7 @@ func (pl *Player) Draw(delta float64) {
 		}
 		if mods != "+" {
 			pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
-			lastPos[k] = pl.font.DrawAndGetLastPosition(pl.batch, lastPos[k]+pl.modoffset, pl.fontbaseY-pl.lineoffset*float64(k), pl.fontsize, mods)
+			lastPos[k] = pl.font.DrawAndGetLastPosition(pl.batch, lastPos[k] + pl.modoffset, fontY, pl.fontsize, mods)
 		}
 	}
 	pl.batch.End()
@@ -1012,6 +1028,10 @@ func (pl *Player) Draw(delta float64) {
 	pl.batch.Begin()
 	pl.batch.SetCamera(pl.scamera.GetProjectionView())
 	for k := 0; k < pl.players; k++ {
+		linecount := k
+		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+			linecount *= 2
+		}
 		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
 		namecolor := colors1[colornum]
 		// 如果设置不显示，开始降低透明度
@@ -1088,7 +1108,7 @@ func (pl *Player) Draw(delta float64) {
 						pl.controller[k].SetDishowPos(pl.controller[k].GetHitResult()[0].JudgePos, pl.SameRate)
 					}
 				}
-				pl.batch.SetTranslation(bmath.NewVec2d(lastPos[k] + pl.hitoffset, pl.hitbaseY - pl.lineoffset * float64(k)))
+				pl.batch.SetTranslation(bmath.NewVec2d(lastPos[k] + pl.hitoffset, pl.hitbaseY - pl.lineoffset * float64(linecount)))
 				pl.batch.SetScale(2.75 * settings.VSplayer.PlayerInfoUI.BaseSize, settings.VSplayer.PlayerInfoUI.BaseSize)
 				pl.batch.DrawUnit(judge)
 				// 渲染时间结束，弹出
@@ -1134,15 +1154,20 @@ func (pl *Player) Draw(delta float64) {
 		}
 		// 渲染acc
 		pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
-		pl.font.Draw(pl.batch, pl.accbaseX, pl.fontbaseY - pl.lineoffset * float64(k), pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetAcc()) + "%")
+		pl.font.Draw(pl.batch, pl.accbaseX, pl.fontbaseY - pl.lineoffset * float64(linecount), pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetAcc()) + "%")
 		// 渲染rank
-		pl.batch.SetTranslation(bmath.NewVec2d(pl.rankbaseX, pl.rankbaseY - pl.lineoffset * float64(k)))
+		rankY := pl.rankbaseY - pl.lineoffset * float64(linecount)
+		// 下移一行
+		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+			rankY -= pl.lineoffset
+		}
+		pl.batch.SetTranslation(bmath.NewVec2d(pl.rankbaseX, rankY))
 		pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
 		pl.batch.SetScale(settings.VSplayer.PlayerInfoUI.BaseSize, settings.VSplayer.PlayerInfoUI.BaseSize)
 		pl.batch.DrawUnitC(pl.controller[k].GetRank())
 		// 渲染pp
 		pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
-		pl.font.Draw(pl.batch, pl.ppbaseX, pl.fontbaseY - pl.lineoffset * float64(k), pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetPP()) + " pp")
+		pl.font.Draw(pl.batch, pl.ppbaseX, pl.fontbaseY - pl.lineoffset * float64(linecount), pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetPP()) + " pp")
 	}
 	pl.batch.End()
 

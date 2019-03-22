@@ -27,6 +27,7 @@ type playerinfoUI struct {
 	ShowMouse2		bool
 	ShowRealTimePP	bool
 	RealTimePPGap	float64
+	ShowRealTimeUR	bool
 }
 
 type recordinfoUI struct {

@@ -337,6 +337,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 	log.Println("Max Combo:", maxcombo)
 	log.Println("Acc:", totalresult[len(totalresult)-1].Acc)
 	log.Println("PP:", totalresult[len(totalresult)-1].PP.Total)
+	log.Println("UR:", totalresult[len(totalresult)-1].UR)
 
 	return result, totalresult, mods
 }
