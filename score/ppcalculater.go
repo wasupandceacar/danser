@@ -13,13 +13,13 @@ func LoadMapbyNum(filename string, objnum int) *oppai.Map {
 	return oppai.ParsebyNum(f, objnum)
 }
 
-// 计算每帧实时pp
-func CalculateRealtimePP(firstpp float64, secondpp float64, firsttime int64, secondtime int64, nowtime float64) (realpp float64) {
-	deltapp := secondpp - firstpp
+// 计算每帧实时数值（PP、UR）
+func CalculateRealtimeValue(firstvalue float64, secondvalue float64, firsttime int64, secondtime int64, nowtime float64) (realvalue float64) {
+	deltavalue := secondvalue - firstvalue
 	deltatime := math.Min(float64(secondtime - firsttime), settings.VSplayer.PlayerInfoUI.RealTimePPGap)
-	realpp = firstpp + deltapp * math.Max(math.Min(math.Min(nowtime - float64(firsttime + settings.VSplayer.PlayerFieldUI.HitFadeTime), settings.VSplayer.PlayerInfoUI.RealTimePPGap) / deltatime, 1), 0)
-	if math.IsNaN(realpp) {
-		realpp = 0.0
+	realvalue = firstvalue + deltavalue * math.Max(math.Min(math.Min(nowtime - float64(firsttime + settings.VSplayer.PlayerFieldUI.HitFadeTime), settings.VSplayer.PlayerInfoUI.RealTimePPGap) / deltatime, 1), 0)
+	if math.IsNaN(realvalue) {
+		realvalue = 0.0
 	}
-	return realpp
+	return realvalue
 }

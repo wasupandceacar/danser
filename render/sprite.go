@@ -105,7 +105,7 @@ func (batch *SpriteBatch) DrawUnit(texture texture.TextureRegion) {
 }
 
 func (batch *SpriteBatch) DrawUnitN(texture texture.TextureRegion, position bmath.Vector2d) {
-	newScale := batch.scale.Mult(batch.numberscale)
+	newScale := batch.scale.Mult(batch.numberscale).Mult(batch.subscale)
 
 	vec00 := bmath.NewVec2d(-1, -1).Mult(newScale).Rotate(batch.rotation).Add(position)
 	vec10 := bmath.NewVec2d(1, -1).Mult(newScale).Rotate(batch.rotation).Add(position)

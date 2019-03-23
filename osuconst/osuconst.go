@@ -7,9 +7,10 @@ const PLAYFIELD_HEIGHT  = 384.0
 // tick point 判定大小倍数
 const TICK_JUDGE_SCALE = 2.4
 
-// 初始acc、pp
+// 初始acc、pp、ur
 const DEFAULT_ACC = 100.0
 const DEFAULT_PP = 0.0
+const DEFAULT_UR = 0.0
 
 // MOD参数
 const MOD_NF = 1

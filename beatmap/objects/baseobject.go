@@ -18,8 +18,8 @@ type BaseObject interface {
 }
 
 type Renderable interface {
-	Draw(time int64, preempt float64, color mgl32.Vec4, batch *render.SpriteBatch) bool
-	DrawApproach(time int64, preempt float64, color mgl32.Vec4, batch *render.SpriteBatch)
+	Draw(time int64, preempt float64, fadeIn float64, color mgl32.Vec4, batch *render.SpriteBatch) bool
+	DrawApproach(time int64, preempt float64, fadeIn float64, color mgl32.Vec4, batch *render.SpriteBatch)
 }
 
 type basicData struct {

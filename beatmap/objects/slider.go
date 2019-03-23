@@ -412,7 +412,7 @@ func (self *Slider) InitCurve(renderer *render.SliderRenderer) {
 	}
 }
 
-func (self *Slider) DrawBody(time int64, preempt float64, color mgl32.Vec4, color1 mgl32.Vec4, renderer *render.SliderRenderer) {
+func (self *Slider) DrawBody(time int64, preempt float64, fadeIn float64, color mgl32.Vec4, color1 mgl32.Vec4, renderer *render.SliderRenderer) {
 	in := 0
 	out := len(self.discreteCurve)
 
@@ -445,24 +445,25 @@ func (self *Slider) DrawBody(time int64, preempt float64, color mgl32.Vec4, colo
 	}
 
 	colorAlpha := 1.0
+	fadeInStart := float64(self.objData.StartTime) - preempt
+	fadeInEnd := math.Min(float64(self.objData.StartTime), fadeInStart + fadeIn)
 
 	if settings.VSplayer.Mods.EnableHD {
-		fadein := preempt * FADE_IN_DURATION_MULTIPLIER
-		fadeoutstarttime := float64(self.objData.StartTime) - preempt + fadein
-		longfadeduration := float64(self.objData.EndTime) - fadeoutstarttime
-		if time < self.objData.StartTime-int64(fadein)/2 {
-			colorAlpha = float64(time-(self.objData.StartTime-int64(fadein))) / (fadein / 2)
-		} else if time >= self.objData.EndTime {
-			colorAlpha = 1.0 - float64(time-self.objData.EndTime)/(fadein/4)
-		} else {
-			colorAlpha = float64(color[3]) * float64(self.objData.EndTime-time) / longfadeduration
+		hiddenSliderBodyFadeOutStart := fadeInEnd
+		hiddenSliderBodyFadeOutEnd := float64(self.objData.EndTime)
+		if float64(time) < hiddenSliderBodyFadeOutStart && float64(time) >= fadeInStart{
+			colorAlpha = Clamp(1.0 - (fadeInEnd-float64(time))/fadeIn, 0.0, 1.0)
+		}else if float64(time) >= hiddenSliderBodyFadeOutStart {
+			colorAlpha = Clamp((hiddenSliderBodyFadeOutEnd - float64(time))/(hiddenSliderBodyFadeOutEnd - hiddenSliderBodyFadeOutStart), 0.0, 1.0)
+		}else {
+			colorAlpha = float64(color[3])
 		}
 	}else {
-		if time < self.objData.StartTime-int64(preempt)/2 {
-			colorAlpha = float64(time-(self.objData.StartTime-int64(preempt))) / (preempt / 2)
-		} else if time >= self.objData.EndTime {
-			colorAlpha = 1.0 - float64(time-self.objData.EndTime)/(preempt/4)
-		} else {
+		if time < self.objData.StartTime && float64(time) >= fadeInStart{
+			colorAlpha = Clamp(1.0-(fadeInEnd-float64(time))/fadeIn, 0.0, 1.0)
+		}else if time >= self.objData.EndTime {
+			colorAlpha = Clamp(1.0 - float64(time-self.objData.EndTime)/(preempt/4), 0.0, 1.0)
+		}else {
 			colorAlpha = float64(color[3])
 		}
 	}
@@ -477,38 +478,69 @@ func (self *Slider) DrawBody(time int64, preempt float64, color mgl32.Vec4, colo
 	}
 }
 
-func (self *Slider) Draw(time int64, preempt float64, color mgl32.Vec4, batch *render.SpriteBatch) bool {
+func (self *Slider) Draw(time int64, preempt float64, fadeIn float64, color mgl32.Vec4, batch *render.SpriteBatch) bool {
+	// 除note、sliderball的物件
 	alpha := 1.0
-	alphaF := 1.0
-	alphaT := 1.0
+	// note
+	alphaC := 1.0
+	// sliderball
+	alphaB := 1.0
 
+	fadeInStart := float64(self.objData.StartTime) - preempt
+	fadeInEnd := math.Min(float64(self.objData.StartTime), fadeInStart + fadeIn)
+
+	// 除note、sliderball的物件
 	if settings.VSplayer.Mods.EnableHD {
-		fadein := preempt * FADE_IN_DURATION_MULTIPLIER
-		fadeoutstarttime := float64(self.objData.StartTime) - preempt + fadein
-		longfadeduration := float64(self.objData.EndTime) - fadeoutstarttime
-		if time < self.objData.StartTime-int64(fadein) {
-			alpha = (float64(time)- fadeoutstarttime) / fadein
-			alphaT = alpha
-		} else if time >= self.objData.EndTime {
-			alpha = 0.0
-			alphaF = 0.0
-			alphaT = alpha
-		} else {
-			alpha = float64(color[3]) * float64(self.objData.EndTime-time) / longfadeduration
-			alphaT = float64(color[3])
-			alphaF = 1.0 - float64(time-self.objData.StartTime)/(fadein/2)
+		hiddenSliderBodyFadeOutStart := fadeInEnd
+		hiddenSliderBodyFadeOutEnd := float64(self.objData.EndTime)
+		if float64(time) < hiddenSliderBodyFadeOutStart && float64(time) >= fadeInStart{
+			alpha = Clamp(1.0 - (fadeInEnd-float64(time))/fadeIn, 0.0, 1.0)
+		}else if float64(time) >= hiddenSliderBodyFadeOutStart {
+			alpha = Clamp((hiddenSliderBodyFadeOutEnd - float64(time))/(hiddenSliderBodyFadeOutEnd - hiddenSliderBodyFadeOutStart), 0.0, 1.0)
+		}else {
+			alpha = float64(color[3])
 		}
 	}else {
-		if time < self.objData.StartTime-int64(preempt) {
-			alpha = float64(time-(self.objData.StartTime-int64(preempt))) / preempt
-		} else if time >= self.objData.EndTime {
-			alpha = 1.0 - float64(time-self.objData.EndTime)/(preempt/4)
-			alphaF = 1.0 - float64(time-self.objData.StartTime)/(preempt/2)
-		} else {
+		if time < self.objData.StartTime && float64(time) >= fadeInStart{
+			alpha = Clamp(1.0 - (fadeInEnd-float64(time))/fadeIn, 0.0, 1.0)
+		}else if time >= self.objData.EndTime {
+			alpha = Clamp(1.0 - float64(time-self.objData.EndTime)/(preempt/4), 0.0, 1.0)
+		}else {
 			alpha = float64(color[3])
-			alphaF = 1.0 - float64(time-self.objData.StartTime)/(preempt/2)
 		}
-		alphaT = alpha
+	}
+
+	// note
+	if settings.VSplayer.Mods.EnableHD {
+		hiddenFadeInStart := float64(self.objData.StartTime) - preempt
+		hiddenFadeInEnd := hiddenFadeInStart + preempt * FADE_IN_DURATION_MULTIPLIER
+
+		hiddenFadeOutStart := hiddenFadeInEnd
+		hiddenFadeOutEnd := hiddenFadeOutStart + preempt * FADE_IN_DURATION_MULTIPLIER
+		if float64(time) < hiddenFadeInEnd && float64(time) >= hiddenFadeInStart {
+			alphaC = Clamp(1.0 - (hiddenFadeInEnd - float64(time)) / (hiddenFadeInEnd - hiddenFadeInStart), 0.0, 1.0)
+		} else if float64(time) >= hiddenFadeOutStart {
+			alphaC = Clamp((hiddenFadeOutEnd - float64(time)) / (hiddenFadeOutEnd - hiddenFadeOutStart), 0.0, 1.0)
+		} else {
+			alphaC = float64(color[3])
+		}
+	}else {
+		if time < self.objData.StartTime && float64(time) >= fadeInStart {
+			alphaC = Clamp(1.0 - (fadeInEnd - float64(time))/ fadeIn, 0.0, 1.0)
+		}else if time >= self.objData.StartTime {
+			alphaC = Clamp(1.0 - float64(time - self.objData.StartTime)/(preempt/2), 0.0, 1.0)
+		}else {
+			alphaC = float64(color[3])
+		}
+	}
+
+	// sliderball
+	if time >= self.objData.EndTime {
+		alphaB = 0.0
+	}else if time >= self.objData.StartTime {
+		alphaB = 1.0
+	}else {
+		alphaB = float64(color[3])
 	}
 
 	if settings.DIVIDES >= settings.Objects.MandalaTexturesTrigger {
@@ -519,6 +551,7 @@ func (self *Slider) Draw(time int64, preempt float64, color mgl32.Vec4, batch *r
 
 	if settings.DIVIDES < settings.Objects.MandalaTexturesTrigger {
 
+		// 折返
 		for i := 0; i < 2; i++ {
 			for k, p := range self.reversePoints[i] {
 				if p.fade.GetValue() >= 0 {
@@ -560,22 +593,22 @@ func (self *Slider) Draw(time int64, preempt float64, color mgl32.Vec4, batch *r
 			}
 		}
 
+		// note
 		batch.SetTranslation(self.objData.StartPos)
 		batch.SetSubScale(1, 1)
 		batch.SetRotation(0)
-		batch.SetColor(float64(color[0]), float64(color[1]), float64(color[2]), alpha)
+		batch.SetColor(float64(color[0]), float64(color[1]), float64(color[2]), alphaC)
 
 		if time < self.objData.StartTime {
 			batch.SetTranslation(self.objData.StartPos)
-
 			batch.DrawUnit(*render.Circle)
 
+			// 绘制圈内数字
 			if settings.VSplayer.PlayerFieldUI.ShowHitCircleNumber {
-				// 绘制圈内数字
 				widthratio := float64(render.Circle0.Width) / float64(render.Circle.Width)
 				heightratio := float64(render.Circle0.Height) / float64(render.Circle.Height)
 				batch.SetNumberScale(widthratio, heightratio)
-				batch.SetColor(1, 1, 1, alpha)
+				batch.SetColor(1, 1, 1, alphaC)
 
 				if self.objData.Number < 10 {
 					// 编号一位数
@@ -601,10 +634,11 @@ func (self *Slider) Draw(time int64, preempt float64, color mgl32.Vec4, batch *r
 				}
 			}
 
-			batch.SetColor(1, 1, 1, alpha)
+			batch.SetColor(1, 1, 1, alphaC)
 			batch.DrawUnit(*render.CircleOverlay)
 
 		} else {
+			// follow points
 			if settings.Objects.DrawFollowPoints && time < self.objData.EndTime {
 				shifted := utils.GetColorShifted(color, settings.Objects.FollowPointColorOffset)
 
@@ -627,17 +661,49 @@ func (self *Slider) Draw(time int64, preempt float64, color mgl32.Vec4, batch *r
 				}
 			}
 
-			if time >= self.objData.StartTime && alphaF > 0.0 {
+			// note
+			if time >= self.objData.StartTime && alphaC > 0.0 {
 				batch.SetTranslation(self.objData.StartPos)
-				batch.SetSubScale(1+(1.0-alphaF)*0.5, 1+(1.0-alphaF)*0.5)
-				batch.SetColor(float64(color[0]), float64(color[1]), float64(color[2]), alphaF)
+				batch.SetSubScale(1+(1.0-alphaC)*0.5, 1+(1.0-alphaC)*0.5)
+				batch.SetColor(float64(color[0]), float64(color[1]), float64(color[2]), alphaC)
 				batch.DrawUnit(*render.Circle)
 
-				batch.SetColor(1, 1, 1, alphaF)
+				// 绘制圈内数字
+				if settings.VSplayer.PlayerFieldUI.ShowHitCircleNumber {
+					widthratio := float64(render.Circle0.Width) / float64(render.Circle.Width)
+					heightratio := float64(render.Circle0.Height) / float64(render.Circle.Height)
+					batch.SetNumberScale(widthratio, heightratio)
+					batch.SetColor(1, 1, 1, alphaC)
+
+					if self.objData.Number < 10 {
+						// 编号一位数
+						DrawHitCircleNumber(self.objData.Number, self.objData.StartPos, batch)
+					} else {
+						// 只考虑编号两位数的情况
+
+						// 计算十位数和个位数
+						tenDigit := self.objData.Number / 10
+						unitDigit := self.objData.Number % 10
+
+						// 计算十位数和个位数的位置
+						screenratio := PLAYFIELD_HEIGHT / 600
+						baseX := self.objData.StartPos.X
+						baseY := self.objData.StartPos.Y
+						tenDigitWidth := int64(GetHitCircleNumberWidth(tenDigit))
+						unitDigitWidth := int64(GetHitCircleNumberWidth(unitDigit))
+						tenBaseX := baseX + float64(render.HitCircleOverlap-tenDigitWidth)/2*screenratio
+						unitBaseX := baseX - float64(render.HitCircleOverlap-unitDigitWidth)/2*screenratio
+
+						DrawHitCircleNumber(tenDigit, bmath.Vector2d{tenBaseX, baseY}, batch)
+						DrawHitCircleNumber(unitDigit, bmath.Vector2d{unitBaseX, baseY}, batch)
+					}
+				}
+
+				batch.SetColor(1, 1, 1, alphaC)
 				batch.DrawUnit(*render.CircleOverlay)
 			}
 
-			batch.SetColor(float64(color[0]), float64(color[1]), float64(color[2]), alphaT)
+			batch.SetColor(float64(color[0]), float64(color[1]), float64(color[2]), alphaB)
 			batch.SetSubScale(1.0, 1.0)
 			batch.SetTranslation(self.Pos)
 			batch.DrawUnit(*render.SliderBall)
@@ -668,16 +734,18 @@ func (self *Slider) Draw(time int64, preempt float64, color mgl32.Vec4, batch *r
 	return false
 }
 
-func (self *Slider) DrawApproach(time int64, preempt float64, color mgl32.Vec4, batch *render.SpriteBatch) {
-
+func (self *Slider) DrawApproach(time int64, preempt float64, fadeIn float64, color mgl32.Vec4, batch *render.SpriteBatch) {
 	alpha := 1.0
 	arr := float64(self.objData.StartTime-time) / preempt
 
-	if time < self.objData.StartTime-int64(preempt)/2 {
-		alpha = float64(time-(self.objData.StartTime-int64(preempt))) / (preempt / 2)
-	} else if time >= self.objData.StartTime {
-		alpha = 1.0 - float64(time-self.objData.StartTime)/(preempt/2)
-	} else {
+	approachCircleFadeInStart := float64(self.objData.StartTime) - preempt
+	approachCircleFadeInEnd := math.Min(float64(self.objData.StartTime), approachCircleFadeInStart + 2 * fadeIn)
+
+	if time < self.objData.StartTime && float64(time) >= approachCircleFadeInStart{
+		alpha = Clamp(1.0-(approachCircleFadeInEnd-float64(time))/fadeIn, 0.0, 1.0)
+	}else if time >= self.objData.StartTime{
+		alpha = Clamp(1.0 - float64(time-self.objData.StartTime)/(preempt/2), 0.0, 1.0)
+	}else {
 		alpha = float64(color[3])
 	}
 

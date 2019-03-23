@@ -42,12 +42,15 @@ func (self *Spinner) Update(time int64) bool {
 	return true
 }
 
-func (self *Spinner) Draw(time int64, preempt float64, color mgl32.Vec4, batch *render.SpriteBatch) bool {
+func (self *Spinner) Draw(time int64, preempt float64, fadeIn float64, color mgl32.Vec4, batch *render.SpriteBatch) bool {
 	if self.renderStartTime == -12345 {
 		self.renderStartTime = time
 	}
 
 	alpha := 1.0
+
+	// 计算角度，设定Spinner为300rpm的转圈
+	angle := float64(time - self.renderStartTime) * math.Pi / 100
 
 	if time < self.renderStartTime - int64(preempt) {
 		return false
@@ -60,7 +63,7 @@ func (self *Spinner) Draw(time int64, preempt float64, color mgl32.Vec4, batch *
 	batch.SetTranslation(self.objData.StartPos)
 
 	batch.SetColor(1, 1, 1, alpha)
-	batch.DrawUnitS(*render.SpinnerBottom, bmath.Vector2d{float64(render.SpinnerBottom.Width) / 4, float64(render.SpinnerBottom.Height) / 4})
+	batch.DrawUnitSR(*render.SpinnerBottom, bmath.Vector2d{float64(render.SpinnerBottom.Width) / 4, float64(render.SpinnerBottom.Height) / 4}, angle)
 
 	batch.SetSubScale(1, 1)
 
@@ -74,7 +77,7 @@ func (self *Spinner) SetDifficulty(preempt, fadeIn float64) {
 
 }
 
-func (self *Spinner) DrawApproach(time int64, preempt float64, color mgl32.Vec4, batch *render.SpriteBatch) {
+func (self *Spinner) DrawApproach(time int64, preempt float64, fadeIn float64, color mgl32.Vec4, batch *render.SpriteBatch) {
 	// 记录第一次渲染转盘的时间，第一次渲染时，转盘正好撑满整个屏幕，随后逐渐变小
 	if self.renderStartTime == -12345 {
 		self.renderStartTime = time

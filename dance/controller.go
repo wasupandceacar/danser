@@ -48,6 +48,9 @@ type Controller interface {
 	SetPP(result float64)
 	GetPP() float64
 
+	SetUR(result float64)
+	GetUR() float64
+
 	SetRank(result texture.TextureRegion)
 	GetRank() texture.TextureRegion
 
@@ -164,6 +167,7 @@ type ReplayController struct {
 	dishowtime	float64
 	dishowpos	bmath.Vector2d
 	pp			float64
+	ur			float64
 }
 
 func NewReplayController() Controller {
@@ -276,6 +280,14 @@ func (controller *ReplayController) SetPP(result float64) {
 
 func (controller *ReplayController) GetPP() float64{
 	return controller.pp
+}
+
+func (controller *ReplayController) SetUR(result float64) {
+	controller.ur = result
+}
+
+func (controller *ReplayController) GetUR() float64{
+	return controller.ur
 }
 
 func (controller *ReplayController) SetRank(result texture.TextureRegion) {

@@ -13,7 +13,7 @@
 			"BaseSize": 6,
 			"BaseX": 14,
 			"BaseY": 696,
-			"ShowMouse1": true,
+			"ShowMouse1": false,
 			"ShowMouse2": false,
 			"ShowRealTimePP": true,
 			"RealTimePPGap": 800,
@@ -35,15 +35,15 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Lovely Girls Anthem -EuroBeatRemix-",
-			"Difficulty": "Normal"
+			"Title": "Remote Control",
+			"Difficulty": "Max Control!"
 		},
 		"Mods": {
-			"EnableDT": false,
+			"EnableDT": true,
 			"EnableHT": false,
 			"EnableEZ": false,
 			"EnableHR": false,
-			"EnableHD": false
+			"EnableHD": true
 		},
 		"BreakandQuit": {
 			"EnableBreakandQuit": true,
@@ -55,15 +55,15 @@
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
-			"ReadResultCache": false,
+			"ReadResultCache": true,
 			"ReplayDebug": false
 		},
 		"ErrorFix": {
-			"EnableErrorFix": true,
+			"EnableErrorFix": false,
 			"ErrorFixFile": "error.err"
 		},
 		"Skin": {
-			"EnableSkin": true,
+			"EnableSkin": false,
 			"SkinDir": "skin\\emilia1\\"
 		}
 	},

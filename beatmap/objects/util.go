@@ -108,6 +108,17 @@ func GetHitCircleNumberWidth(number int64) int32{
 	return 0
 }
 
+// 限制范围
+func Clamp(value float64, min float64, max float64) float64 {
+	if value < min {
+		return min
+	}else if value > max {
+		return max
+	}else {
+		return value
+	}
+}
+
 const (
 	CIRCLE int64 = 1
 	SLIDER int64 = 2

@@ -129,6 +129,11 @@ type Player struct {
 	lastb4PP		[]float64
 	lastPP			[]float64
 	lastPPTime		[]int64
+
+	// 实时ur显示参数数组
+	lastb4UR		[]float64
+	lastUR			[]float64
+	lastURTime		[]int64
 }
 
 //endregion
@@ -277,6 +282,9 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 				player.controller[k].SetRank(*render.RankX)
 			}
 			player.controller[k].SetPP(DEFAULT_PP)
+			if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+				player.controller[k].SetUR(DEFAULT_UR)
+			}
 			// 设置初始显示
 			player.controller[k].SetIsShow(true)
 			player.controller[k].SetHitResult(result)
@@ -311,6 +319,9 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 					player.controller[k].SetRank(*render.RankX)
 				}
 				player.controller[k].SetPP(DEFAULT_PP)
+				if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+					player.controller[k].SetUR(DEFAULT_UR)
+				}
 				// 设置初始显示
 				player.controller[k].SetIsShow(true)
 				player.controller[k].SetHitResult(result)
@@ -334,7 +345,7 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 		os.Exit(0)
 	}
 
-	// 初始化实时pp参数数组
+	// 初始化实时pp、ur参数数组
 	if settings.VSplayer.PlayerInfoUI.ShowRealTimePP {
 		for k := 0; k < player.players; k++ {
 			player.lastb4PP = make([]float64, player.players)
@@ -343,6 +354,17 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 			player.lastb4PP[k] = player.controller[k].GetTotalResult()[0].PP.Total
 			player.lastPP[k] = player.controller[k].GetTotalResult()[0].PP.Total
 			player.lastPPTime[k] = player.controller[k].GetHitResult()[0].JudgeTime
+		}
+	}
+
+	if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+		for k := 0; k < player.players; k++ {
+			player.lastb4UR = make([]float64, player.players)
+			player.lastUR = make([]float64, player.players)
+			player.lastURTime = make([]int64, player.players)
+			player.lastb4UR[k] = player.controller[k].GetTotalResult()[0].UR
+			player.lastUR[k] = player.controller[k].GetTotalResult()[0].UR
+			player.lastURTime[k] = player.controller[k].GetHitResult()[0].JudgeTime
 		}
 	}
 
@@ -440,7 +462,7 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 		player.rankbaseX = player.accbaseX + 8.375 * settings.VSplayer.PlayerInfoUI.BaseSize
 		player.ppbaseX = player.rankbaseX + 1.625 * settings.VSplayer.PlayerInfoUI.BaseSize
 	}
-	player.playerbaseX = player.ppbaseX + 8.75 * settings.VSplayer.PlayerInfoUI.BaseSize
+	player.playerbaseX = player.ppbaseX + 9 * settings.VSplayer.PlayerInfoUI.BaseSize
 	player.keybaseY = settings.VSplayer.PlayerInfoUI.BaseY
 	player.fontbaseY = settings.VSplayer.PlayerInfoUI.BaseY - 0.75 * settings.VSplayer.PlayerInfoUI.BaseSize
 	player.rankbaseY = settings.VSplayer.PlayerInfoUI.BaseY - 0.25 * settings.VSplayer.PlayerInfoUI.BaseSize
@@ -1051,23 +1073,40 @@ func (pl *Player) Draw(delta float64) {
 		if !settings.VSplayer.PlayerInfoUI.ShowRealTimePP{
 			pl.controller[k].SetPP(pl.controller[k].GetTotalResult()[0].PP.Total)
 		}else {
-			// 显示每帧实时变化
+			// 显示每帧实时pp变化
 			if len(pl.controller[k].GetHitResult()) > 0 {
-				pl.controller[k].SetPP(score.CalculateRealtimePP(
+				pl.controller[k].SetPP(score.CalculateRealtimeValue(
 					pl.lastb4PP[k],
 					pl.lastPP[k],
 					pl.lastPPTime[k],
 					pl.controller[k].GetHitResult()[0].JudgeTime,
 					pl.progressMsF))
 			}else {
-				pl.controller[k].SetPP(score.CalculateRealtimePP(
+				pl.controller[k].SetPP(score.CalculateRealtimeValue(
 					pl.lastb4PP[k],
 					pl.lastPP[k],
 					pl.lastPPTime[k],
 					pl.lastPPTime[k] + int64(settings.VSplayer.PlayerInfoUI.RealTimePPGap),
 					pl.progressMsF))
 			}
-
+		}
+		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR{
+			// 显示每帧实时ur变化
+			if len(pl.controller[k].GetHitResult()) > 0 {
+				pl.controller[k].SetUR(score.CalculateRealtimeValue(
+					pl.lastb4UR[k],
+					pl.lastUR[k],
+					pl.lastURTime[k],
+					pl.controller[k].GetHitResult()[0].JudgeTime,
+					pl.progressMsF))
+			}else {
+				pl.controller[k].SetUR(score.CalculateRealtimeValue(
+					pl.lastb4UR[k],
+					pl.lastUR[k],
+					pl.lastURTime[k],
+					pl.lastURTime[k] + int64(settings.VSplayer.PlayerInfoUI.RealTimePPGap),
+					pl.progressMsF))
+			}
 		}
 		// 如果现在时间大于第一个result的时间，渲染这个result，并在渲染一定时间后弹出
 		if len(pl.controller[k].GetHitResult()) != 0 {
@@ -1146,6 +1185,11 @@ func (pl *Player) Draw(delta float64) {
 						pl.lastPP[k] = pl.controller[k].GetTotalResult()[0].PP.Total
 						pl.lastPPTime[k] = pl.controller[k].GetHitResult()[0].JudgeTime
 					}
+					if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+						pl.lastb4UR[k] = pl.lastUR[k]
+						pl.lastUR[k] = pl.controller[k].GetTotalResult()[0].UR
+						pl.lastURTime[k] = pl.controller[k].GetHitResult()[0].JudgeTime
+					}
 					// 弹出
 					pl.controller[k].SetHitResult(pl.controller[k].GetHitResult()[1:])
 					pl.controller[k].SetTotalResult(pl.controller[k].GetTotalResult()[1:])
@@ -1168,6 +1212,11 @@ func (pl *Player) Draw(delta float64) {
 		// 渲染pp
 		pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
 		pl.font.Draw(pl.batch, pl.ppbaseX, pl.fontbaseY - pl.lineoffset * float64(linecount), pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetPP()) + " pp")
+		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+			// 渲染ur
+			pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
+			pl.font.Draw(pl.batch, pl.urbaseX, pl.fontbaseY - pl.lineoffset * float64(linecount + 1), pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetUR()) + " ur")
+		}
 	}
 	pl.batch.End()
 
@@ -1219,7 +1268,7 @@ func (pl *Player) Draw(delta float64) {
 					if s, ok := pl.processed[i].(*objects.Slider); ok {
 						pl.sliderRenderer.SetScale(scale1)
 
-						s.DrawBody(pl.progressMs, pl.bMap.ARms, colors1[pl.objectcolorIndex], colors1[pl.objectcolorIndex], pl.sliderRenderer)
+						s.DrawBody(pl.progressMs, pl.bMap.ARms, pl.bMap.FadeIn, colors1[pl.objectcolorIndex], colors1[pl.objectcolorIndex], pl.sliderRenderer)
 					}
 				}
 			}
@@ -1254,11 +1303,11 @@ func (pl *Player) Draw(delta float64) {
 							pl.batch.Flush()
 							pl.sliderRenderer.Begin()
 							pl.sliderRenderer.SetScale(scale1)
-							s.DrawBody(pl.progressMs, pl.bMap.ARms, colors1[pl.objectcolorIndex], colors1[pl.objectcolorIndex], pl.sliderRenderer)
+							s.DrawBody(pl.progressMs, pl.bMap.ARms, pl.bMap.FadeIn, colors1[pl.objectcolorIndex], colors1[pl.objectcolorIndex], pl.sliderRenderer)
 							pl.sliderRenderer.EndAndRender()
 						}
 					}
-					res := pl.processed[i].Draw(pl.progressMs, pl.bMap.ARms, colors1[pl.objectcolorIndex], pl.batch)
+					res := pl.processed[i].Draw(pl.progressMs, pl.bMap.ARms, pl.bMap.FadeIn, colors1[pl.objectcolorIndex], pl.batch)
 					if res {
 						pl.processed = append(pl.processed[:i], pl.processed[(i + 1):]...)
 						i++
@@ -1275,7 +1324,7 @@ func (pl *Player) Draw(delta float64) {
 				pl.batch.SetCamera(cameras[j])
 
 				for i := len(pl.processed) - 1; i >= 0 && len(pl.processed) > 0; i-- {
-					pl.processed[i].DrawApproach(pl.progressMs, pl.bMap.ARms, colors1[pl.objectcolorIndex], pl.batch)
+					pl.processed[i].DrawApproach(pl.progressMs, pl.bMap.ARms, pl.bMap.FadeIn, colors1[pl.objectcolorIndex], pl.batch)
 				}
 			}
 		}
