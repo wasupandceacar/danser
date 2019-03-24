@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 2,
+			"Players": 0,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "23"
 		},
@@ -35,15 +35,15 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Remote Control",
-			"Difficulty": "Max Control!"
+			"Title": "Lovely Girls Anthem -EuroBeatRemix-",
+			"Difficulty": "Normal"
 		},
 		"Mods": {
-			"EnableDT": true,
+			"EnableDT": false,
 			"EnableHT": false,
 			"EnableEZ": false,
 			"EnableHR": false,
-			"EnableHD": true
+			"EnableHD": false
 		},
 		"BreakandQuit": {
 			"EnableBreakandQuit": true,
@@ -63,8 +63,8 @@
 			"ErrorFixFile": "error.err"
 		},
 		"Skin": {
-			"EnableSkin": false,
-			"SkinDir": "skin\\emilia1\\"
+			"EnableSkin": true,
+			"SkinDir": "skin\\flyingtuna1\\"
 		}
 	},
 	"Graphics": {

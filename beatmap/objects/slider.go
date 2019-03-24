@@ -332,31 +332,25 @@ func (self *Slider) GetCurve() []m2.Vector2d {
 }
 
 func (self *Slider) Update(time int64) bool {
-	if time < self.endTime() {
+	if time < self.objData.EndTime {
 		times := int64(math.Min(float64(time-self.objData.StartTime)/self.partLen+1, float64(self.repeat)))
-		ttime := float64(time) - float64(self.objData.StartTime) - float64(times-1)*self.partLen
-
 		if self.lastT != times {
-			//self.playSample(self.sampleSets[times-1], self.additionSets[times-1], self.samples[times-1])
+			// 折返音效
+			self.playSample(self.sampleSets[times-1], self.additionSets[times-1], self.samples[times-1])
 			self.lastT = times
 		}
-
 		for i, p := range self.TickPoints {
 			if p.Time < time && self.lastTick < i {
+				// ticks音效
 				audio.PlaySliderTick(self.Timings.Current.SampleSet, self.Timings.Current.SampleIndex, self.Timings.Current.SampleVolume)
 				self.lastTick = i
 			}
 		}
 
-		var pos m2.Vector2d
-		if (times % 2) == 1 {
-			pos = self.multiCurve.PointAt(ttime / self.partLen)
-		} else {
-			pos = self.multiCurve.PointAt(1.0 - ttime/self.partLen)
-		}
-		self.Pos = pos.Add(self.objData.StackOffset)
+		self.Pos = self.GetPointAt(time)
 
 		if !self.clicked {
+			// 滑条头音效
 			self.playSample(self.sampleSets[0], self.additionSets[0], self.samples[0])
 			self.clicked = true
 		}
@@ -364,15 +358,9 @@ func (self *Slider) Update(time int64) bool {
 		return false
 	}
 
-	var pos m2.Vector2d
-	if (self.repeat % 2) == 1 {
-		pos = self.multiCurve.PointAt(1.0)
-	} else {
-		pos = self.multiCurve.PointAt(0.0)
-	}
-	self.Pos = pos.Add(self.objData.StackOffset)
+	self.Pos = self.GetPointAt(self.objData.EndTime)
 
-	//self.playSample(self.sampleSets[self.repeat], self.additionSets[self.repeat], self.samples[self.repeat])
+	self.playSample(self.sampleSets[self.repeat], self.additionSets[self.repeat], self.samples[self.repeat])
 	self.End = true
 	self.clicked = false
 
