@@ -92,7 +92,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 	keyindex := 3
 	time := r[1].Time + r[2].Time
 	for k := 0; k < len(b.HitObjects); k++ {
-	//for k := 0; k < 504; k++ {
+	//for k := 0; k < 676; k++ {
 		//log.Println("Object", k+1)
 		obj :=  b.HitObjects[k]
 		if obj != nil {
@@ -283,7 +283,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 					time -= r[keyindex].Time
 				}else {
 					// 如果没找到，输出miss，设置下一个index
-					log.Println("Circle count as Miss", "Object", k+1)
+					log.Println("Circle count as Late Miss", "Object", k+1)
 					countMiss += 1
 					nowcombo = 0
 					totalhits = append(totalhits, 0)
@@ -338,6 +338,28 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 	log.Println("Acc:", totalresult[len(totalresult)-1].Acc)
 	log.Println("PP:", totalresult[len(totalresult)-1].PP.Total)
 	log.Println("UR:", totalresult[len(totalresult)-1].UR)
+
+	// 分析情况和replay记录情况对比检查
+	allright := true
+	// 检查各个判定个数
+	if !checkHits(count300, count100, count50, countMiss, pr.Count300, pr.Count100, pr.Count50, pr.CountMiss) {
+		allright = false
+		log.Println("判定存在误差！")
+		log.Println("300 true:", count300, "replay:", pr.Count300, "error:", count300 - int(pr.Count300))
+		log.Println("100 true:", count100, "replay:", pr.Count100, "error:", count100 - int(pr.Count100))
+		log.Println("50 true:", count50, "replay:", pr.Count50, "error:", count50 - int(pr.Count50))
+		log.Println("Miss true:", countMiss, "replay:", pr.CountMiss, "error:", countMiss - int(pr.CountMiss))
+	}
+	// 检查最大连击数
+	if maxcombo != int(pr.MaxCombo) {
+		allright = false
+		log.Println("最大连击数存在误差！")
+		log.Println("Max combo true:", maxcombo, "replay:", pr.MaxCombo, "error:", maxcombo - int(pr.MaxCombo))
+	}
+	// 总体情况
+	if allright {
+		log.Println("检查结果完全一致！")
+	}
 
 	return result, totalresult, mods
 }
@@ -406,7 +428,7 @@ func findNearestKey(start int, starttime int64, r []*rplpa.ReplayData, requirehi
 	time := starttime
 	for {
 		hit := r[index]
-		//log.Println("Find move", hit.Time + time, requirehittime, isInCircle(hit, requirepos, CS), isPressed(hit), bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos), ODMiss, OD50, CS + 0.05)
+		//log.Println("Find move", hit.Time + time, requirehittime, isInCircle(hit, requirepos, CS), isPressed(hit), bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos), ODMiss, OD50, CS + 0.01)
 		//if hit.Time + time > 8300 {
 		//	os.Exit(2)
 		//}
@@ -481,7 +503,7 @@ func isPressed(hit *rplpa.ReplayData) bool {
 func isInCircle(hit *rplpa.ReplayData, requirepos bmath.Vector2d, CS float64) bool {
 	realpos := bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY))
 	// 加入少量误差
-	return bmath.Vector2d.Dst(realpos, requirepos) <= CS
+	return bmath.Vector2d.Dst(realpos, requirepos) <= CS + 0.01
 }
 
 // 是否超过object的最后时间点
@@ -732,4 +754,9 @@ func calculateUnstableRate(array []int64) (unstablerate float64) {
 	unstablerate /= float64(len(array))
 	unstablerate = 10 * math.Sqrt(unstablerate)
 	return unstablerate
+}
+
+// 检查判定个数
+func checkHits(true300 int, true100 int, true50 int, trueMiss int, replay300 uint16, replay100 uint16, replay50 uint16, replayMiss uint16) bool {
+	return (true300 == int(replay300)) && (true100 == int(replay100)) && (true50 == int(replay50)) && (trueMiss == int(replayMiss))
 }
