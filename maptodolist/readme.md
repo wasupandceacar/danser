@@ -55,6 +55,8 @@
 - [ ]  [Kegare Naki Bara Juuji](https://osu.ppy.sh/s/448818)
 - [ ]  [Kegare Naki Yume](https://osu.ppy.sh/s/386619) 967pp
 - [ ]  [Candle Master](https://osu.ppy.sh/s/357632)
+- [ ]  [Glorious Crown](https://osu.ppy.sh/s/558694) 只有EZFC
+- [ ]  [地狱乐](https://osu.ppy.sh/s/437683)
 
 ## 有人FC HR 图 ##
 - [ ]  [Ange du Blanc Pur](https://osu.ppy.sh/s/564165)
