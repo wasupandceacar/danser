@@ -164,7 +164,6 @@ func (self Slider) GetPointAt(time int64) m2.Vector2d {
 	} else {
 		pos = self.multiCurve.PointAt(1.0 - ttime/self.partLen)
 	}
-
 	return pos.Add(self.objData.StackOffset)
 }
 
@@ -316,7 +315,8 @@ func (self *Slider) calculateTailJudgePoint() {
 	}
 	// 计算实际判定点
 	time := self.objData.EndTime - self.TailJudgeOffset
-	self.TailJudgePoint = self.GetPointAtTail(time)
+	// ？？？
+	self.TailJudgePoint = self.GetPointAt(time)
 }
 
 func (self *Slider) GetCurve() []m2.Vector2d {
