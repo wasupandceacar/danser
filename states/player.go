@@ -262,6 +262,14 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 	}
 	// 解析每个replay的判定
 	t := time.Now()
+
+	// 如果debug replay，记录整体的replay结果
+	// 正确和错误的replay个数
+	right := 0
+	wrong := 0
+	// 错误的replay编号
+	wrongIndex := []int{}
+
 	if settings.VSplayer.ReplayandCache.ReadResultCache && !settings.VSplayer.ReplayandCache.ReplayDebug{
 		log.Println("本次选择读取缓存replay结果")
 		for k := 0; k < player.players; k++ {
@@ -309,7 +317,7 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 			}
 			t1 := time.Now()
 			log.Println("解析第", rnum, "个replay")
-			result, totalresult, mods := hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, replays[k], hitjudge.FilterError(rnum, errs))
+			result, totalresult, mods, allright := hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, replays[k], hitjudge.FilterError(rnum, errs))
 			if !settings.VSplayer.ReplayandCache.ReplayDebug {
 				// 初始化acc、rank和pp
 				player.controller[k].SetAcc(DEFAULT_ACC)
@@ -326,6 +334,14 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 				player.controller[k].SetIsShow(true)
 				player.controller[k].SetHitResult(result)
 				player.controller[k].SetTotalResult(totalresult)
+			}else {
+				// 记录出错情况
+				if allright {
+					right += 1
+				}else {
+					wrong += 1
+					wrongIndex = append(wrongIndex, rnum)
+				}
 			}
 			// 保存结果缓存
 			if settings.VSplayer.ReplayandCache.SaveResultCache && !settings.VSplayer.ReplayandCache.ReplayDebug{
@@ -341,6 +357,11 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 	//player.controller[3].GetHitResult()[4].IsBreak = true
 
 	if settings.VSplayer.ReplayandCache.ReplayDebug {
+		// 总体replay分析情况
+		log.Println("正确结果：", right, " 个")
+		log.Println("错误结果：", wrong, " 个")
+		log.Println("错误编号：", wrongIndex)
+		// 直接退出，不进行下面的渲染任务
 		log.Println("Debug Replay 结束，直接退出")
 		os.Exit(0)
 	}
