@@ -109,3 +109,7 @@ func (self *Spinner) DrawApproach(time int64, preempt float64, fadeIn float64, c
 		batch.DrawUnitSR(*render.SpinnerMiddle, bmath.Vector2d{float64(render.SpinnerMiddle.Width) / 2, float64(render.SpinnerMiddle.Height) / 2}, angle)
 	}
 }
+
+func (self *Spinner) GetObjectNumber() int64 {
+	return self.objData.ObjectNumber
+}

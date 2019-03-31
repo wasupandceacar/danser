@@ -1078,7 +1078,7 @@ func checkSliderBallBeforeHit(index int, lasttime int64, r []*rplpa.ReplayData, 
 	realhittime := r[index].Time + lasttime
 	// 根据滑条开始时间确定开始查找的replay片段
 	// 滑条开始时间
-	sliderstarttime := slider.GetSliderStartTime()
+	sliderstarttime := slider.GetBasicData().StartTime
 	i := 3
 	time := r[1].Time + r[2].Time
 	CSscale := scale

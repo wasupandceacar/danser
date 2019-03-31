@@ -20,6 +20,7 @@ type BaseObject interface {
 type Renderable interface {
 	Draw(time int64, preempt float64, fadeIn float64, color mgl32.Vec4, batch *render.SpriteBatch) bool
 	DrawApproach(time int64, preempt float64, fadeIn float64, color mgl32.Vec4, batch *render.SpriteBatch)
+	GetObjectNumber() int64
 }
 
 type basicData struct {
@@ -27,7 +28,10 @@ type basicData struct {
 	StartTime, EndTime int64
 	StackOffset        om.Vector2d
 	StackIndex         int64
+	// 一个combo内的object序号
 	Number             int64
+	// 总的obejct序号
+	ObjectNumber	   int64
 	SliderPoint        bool
 
 	sampleSet    int

@@ -1337,7 +1337,7 @@ func (pl *Player) Draw(delta float64) {
 			}
 		}
 
-		if settings.DIVIDES < settings.Objects.MandalaTexturesTrigger && settings.Objects.DrawApproachCircles && !settings.VSplayer.Mods.EnableHD {
+		if settings.DIVIDES < settings.Objects.MandalaTexturesTrigger && settings.Objects.DrawApproachCircles {
 			pl.batch.Flush()
 
 			for j := 0; j < settings.DIVIDES; j++ {
@@ -1345,7 +1345,14 @@ func (pl *Player) Draw(delta float64) {
 				pl.batch.SetCamera(cameras[j])
 
 				for i := len(pl.processed) - 1; i >= 0 && len(pl.processed) > 0; i-- {
-					pl.processed[i].DrawApproach(pl.progressMs, pl.bMap.ARms, pl.bMap.FadeIn, colors1[pl.objectcolorIndex], pl.batch)
+					if settings.VSplayer.Mods.EnableHD {
+						// HD，除了第一个的缩圈全部不渲染
+						if pl.processed[i].GetObjectNumber() == 0 {
+							pl.processed[i].DrawApproach(pl.progressMs, pl.bMap.ARms, pl.bMap.FadeIn, colors1[pl.objectcolorIndex], pl.batch)
+						}
+					} else {
+						pl.processed[i].DrawApproach(pl.progressMs, pl.bMap.ARms, pl.bMap.FadeIn, colors1[pl.objectcolorIndex], pl.batch)
+					}
 				}
 			}
 		}

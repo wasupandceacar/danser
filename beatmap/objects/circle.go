@@ -190,3 +190,7 @@ func (self *Circle) DrawApproach(time int64, preempt float64, fadeIn float64, co
 
 	batch.SetSubScale(1, 1)
 }
+
+func (self *Circle) GetObjectNumber() int64 {
+	return self.objData.ObjectNumber
+}

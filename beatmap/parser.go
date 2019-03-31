@@ -243,18 +243,18 @@ func ParseObjects(beatMap *BeatMap) {
 
 	sort.Slice(beatMap.HitObjects, func(i, j int) bool { return beatMap.HitObjects[i].GetBasicData().StartTime < beatMap.HitObjects[j].GetBasicData().StartTime })
 
-	// 取消直接计数的算法
-	//num := 0
-	//
-	//for _, o := range beatMap.HitObjects {
-	//	_, ok := o.(*objects.Pause)
-	//
-	//	if !ok {
-	//		o.GetBasicData().Number = int64(num)
-	//		num++
-	//	}
-	//
-	//}
+	// 计算总的序号
+	num := 0
+
+	for _, o := range beatMap.HitObjects {
+		_, ok := o.(*objects.Pause)
+
+		if !ok {
+			o.GetBasicData().ObjectNumber = int64(num)
+			num++
+		}
+
+	}
 
 	calculateStackLeniency(beatMap)
 }

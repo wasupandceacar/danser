@@ -748,6 +748,6 @@ func (self *Slider) DrawApproach(time int64, preempt float64, fadeIn float64, co
 	batch.SetSubScale(1, 1)
 }
 
-func (self *Slider) GetSliderStartTime() int64 {
-	return self.objData.StartTime
+func (self *Slider) GetObjectNumber() int64 {
+	return self.objData.ObjectNumber
 }

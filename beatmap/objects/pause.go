@@ -36,3 +36,7 @@ func (self *Pause) Update(time int64) bool {
 func (self *Pause) GetPosition() bmath.Vector2d {
 	return self.objData.StartPos
 }
+
+func (self *Pause) GetObjectNumber() int64 {
+	return -1
+}

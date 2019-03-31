@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 18,
+			"Players": 1,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "6"
 		},
@@ -30,7 +30,7 @@
 		"PlayerFieldUI": {
 			"HitFadeTime": 200,
 			"ReverseFadeTime": 30,
-			"CursorColorNum": 25,
+			"CursorColorNum": 14,
 			"CursorColorSkipNum": 13,
 			"ShowHitCircleNumber": true
 		},
@@ -39,14 +39,14 @@
 			"Difficulty": "Max Control!"
 		},
 		"Mods": {
-			"EnableDT": false,
+			"EnableDT": true,
 			"EnableHT": false,
 			"EnableEZ": false,
 			"EnableHR": false,
-			"EnableHD": false
+			"EnableHD": true
 		},
 		"BreakandQuit": {
-			"EnableBreakandQuit": true,
+			"EnableBreakandQuit": false,
 			"PlayerFadeTime": 1500,
 			"SameTimeOffset": 22,
 			"MissMult": 1.15
@@ -55,7 +55,7 @@
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
-			"ReadResultCache": false,
+			"ReadResultCache": true,
 			"ReplayDebug": false
 		},
 		"ErrorFix": {
@@ -63,7 +63,7 @@
 			"ErrorFixFile": "error.err"
 		},
 		"Skin": {
-			"EnableSkin": true,
+			"EnableSkin": false,
 			"SkinDir": "skin\\flyingtuna1\\"
 		}
 	},
