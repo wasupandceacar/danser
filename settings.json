@@ -7,7 +7,7 @@
 		"PlayerInfo": {
 			"Players": 18,
 			"SpecifiedPlayers": false,
-			"SpecifiedLine": "15"
+			"SpecifiedLine": "6"
 		},
 		"PlayerInfoUI": {
 			"BaseSize": 6,
@@ -55,8 +55,8 @@
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
-			"ReadResultCache": true,
-			"ReplayDebug": true
+			"ReadResultCache": false,
+			"ReplayDebug": false
 		},
 		"ErrorFix": {
 			"EnableErrorFix": false,
