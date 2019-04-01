@@ -60,8 +60,13 @@ type Controller interface {
 	SetDishowTime(time float64)
 	GetDishowTime() float64
 
-	SetDishowPos(pos bmath.Vector2d, num int)
+	SetDishowPos(pos bmath.Vector2d, rate int)
 	GetDishowPos() bmath.Vector2d
+
+	AddMissInfo(misstime float64, missjudgetime int64, misspos bmath.Vector2d, rate int)
+	GetMissInfo() []missInfo
+
+	IsInMiss(time int64) bool
 }
 
 var Mover = movers.NewAngleOffsetMover
@@ -166,8 +171,15 @@ type ReplayController struct {
 	isShow		bool
 	dishowtime	float64
 	dishowpos	bmath.Vector2d
+	missinfo	[]missInfo
 	pp			float64
 	ur			float64
+}
+
+type missInfo struct {
+	MissTime	float64
+	MissJudgeTime	int64
+	MissPos		bmath.Vector2d
 }
 
 func NewReplayController() Controller {
@@ -316,10 +328,30 @@ func (controller *ReplayController) GetDishowTime() float64{
 
 func (controller *ReplayController) SetDishowPos(pos bmath.Vector2d, rate int) {
 	// 向下一个偏移
-	offsetY := settings.VSplayer.BreakandQuit.SameTimeOffset * float64(rate)
+	offsetY := settings.VSplayer.Knockout.SameTimeOffset * float64(rate)
 	controller.dishowpos = bmath.Vector2d{pos.X, PLAYFIELD_HEIGHT - pos.Y - offsetY}
 }
 
 func (controller *ReplayController) GetDishowPos() bmath.Vector2d{
 	return controller.dishowpos
+}
+
+func (controller *ReplayController) AddMissInfo(misstime float64, missjudgetime int64, misspos bmath.Vector2d, rate int) {
+	// 向下一个偏移
+	offsetY := settings.VSplayer.Knockout.SameTimeOffset * float64(rate)
+	controller.missinfo = append(controller.missinfo, missInfo{misstime, missjudgetime, bmath.Vector2d{misspos.X, PLAYFIELD_HEIGHT - misspos.Y - offsetY}})
+}
+
+func (controller *ReplayController) GetMissInfo() []missInfo {
+	return controller.missinfo
+}
+
+// 检查是否已经录入
+func (controller *ReplayController) IsInMiss(time int64) bool {
+	for _, missinfo := range controller.missinfo {
+		if time == missinfo.MissJudgeTime {
+			return false
+		}
+	}
+	return true
 }

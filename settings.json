@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 1,
+			"Players": 18,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "6"
 		},
@@ -45,8 +45,9 @@
 			"EnableHR": false,
 			"EnableHD": true
 		},
-		"BreakandQuit": {
-			"EnableBreakandQuit": false,
+		"Knockout": {
+			"EnableKnockout": false,
+			"ShowTrueMiss": true,
 			"PlayerFadeTime": 1500,
 			"SameTimeOffset": 22,
 			"MissMult": 1.15

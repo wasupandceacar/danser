@@ -54,8 +54,9 @@ func initDefaults() {
 			false,
 			false,
 		},
-		&breakandquit{
+		&knockout{
 			true,
+			false,
 			2000,
 			36,
 			1.5,

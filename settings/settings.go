@@ -60,11 +60,12 @@ type mods struct {
 	EnableHD		bool
 }
 
-type breakandquit struct {
-	EnableBreakandQuit 	bool
-	PlayerFadeTime		float64
-	SameTimeOffset		float64
-	MissMult			float64
+type knockout struct {
+	EnableKnockout bool
+	ShowTrueMiss   bool
+	PlayerFadeTime float64
+	SameTimeOffset float64
+	MissMult       float64
 }
 
 type replayandcache struct {
@@ -86,16 +87,16 @@ type skin struct {
 }
 
 type vsplayer struct {
-	PlayerInfo		*playerinfo
-	PlayerInfoUI	*playerinfoUI
-	RecordInfoUI	*recordinfoUI
-	PlayerFieldUI	*playerfieldUI
-	MapInfo			*mapinfo
-	Mods			*mods
-	BreakandQuit	*breakandquit
-	ReplayandCache	*replayandcache
-	ErrorFix		*errorfix
-	Skin			*skin
+	PlayerInfo     *playerinfo
+	PlayerInfoUI   *playerinfoUI
+	RecordInfoUI   *recordinfoUI
+	PlayerFieldUI  *playerfieldUI
+	MapInfo        *mapinfo
+	Mods           *mods
+	Knockout       *knockout
+	ReplayandCache *replayandcache
+	ErrorFix       *errorfix
+	Skin           *skin
 }
 
 //endregion
