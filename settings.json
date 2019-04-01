@@ -17,7 +17,10 @@
 			"ShowMouse2": false,
 			"ShowRealTimePP": true,
 			"RealTimePPGap": 800,
-			"ShowRealTimeUR": true
+			"ShowRealTimeUR": true,
+			"ShowPPAndURRank": true,
+			"Rank1Highlight": true,
+			"HighlightMult": 1.3
 		},
 		"RecordInfoUI": {
 			"Recorder": "wasupandceacar",
@@ -29,7 +32,6 @@
 		},
 		"PlayerFieldUI": {
 			"HitFadeTime": 200,
-			"ReverseFadeTime": 30,
 			"CursorColorNum": 14,
 			"CursorColorSkipNum": 13,
 			"ShowHitCircleNumber": true

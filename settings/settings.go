@@ -28,6 +28,9 @@ type playerinfoUI struct {
 	ShowRealTimePP	bool
 	RealTimePPGap	float64
 	ShowRealTimeUR	bool
+	ShowPPAndURRank	bool
+	Rank1Highlight	bool
+	HighlightMult	float64
 }
 
 type recordinfoUI struct {
@@ -41,7 +44,6 @@ type recordinfoUI struct {
 
 type playerfieldUI struct {
 	HitFadeTime			int64
-	ReverseFadeTime		int64
 	CursorColorNum		int
 	CursorColorSkipNum	int
 	ShowHitCircleNumber	bool

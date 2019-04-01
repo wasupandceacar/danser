@@ -9,6 +9,7 @@ import (
 	"image/draw"
 	"log"
 	"danser/render/texture"
+	"sort"
 )
 
 func LoadImage(path string) (*image.NRGBA, error) {
@@ -98,3 +99,53 @@ func PathExists(path string) (bool, error) {
 	}
 	return false, err
 }
+
+// 对数组排序，获得其序号（正序）
+func SortRankLowToHigh(array []float64) (rank []int) {
+	var sortarray []float64
+	sortarray = make([]float64, len(array))
+	copy(sortarray, array)
+	sort.Float64s(sortarray)
+	rank = make([]int, len(array))
+	for i, ar := range array {
+		rank[i] = firstindexof(sortarray, ar) + 1
+	}
+	return rank
+}
+
+// 对数组排序，获得其序号（反序）
+func SortRankHighToLow(array []float64) (rank []int) {
+	var sortarray []float64
+	sortarray = make([]float64, len(array))
+	copy(sortarray, array)
+	sort.Float64s(sortarray)
+	rank = make([]int, len(array))
+	for i, ar := range array {
+		rank[i] = len(array) - lastindexof(sortarray, ar)
+	}
+	return rank
+}
+
+// 查找第一个指定元素返回的下标
+func firstindexof(array []float64, ar float64) int {
+	error := 0.1
+	for i, a := range array {
+		if (ar >= a - error) && (ar <= a + error) {
+			return i
+		}
+	}
+	return -1
+}
+
+// 查找最后一个指定元素返回的下标
+func lastindexof(array []float64, ar float64) int {
+	error := 0.1
+	for i := len(array)-1; i >= 0; i-- {
+		a := array[i]
+		if (ar >= a - error) && (ar <= a + error) {
+			return i
+		}
+	}
+	return -1
+}
+

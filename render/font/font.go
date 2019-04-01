@@ -38,7 +38,7 @@ type Font struct {
 	initialSize float64
 }
 
-func LoadFont(reader io.Reader) *Font {
+func LoadFont(reader io.Reader, loc uint) *Font {
 	data, err := ioutil.ReadAll(reader)
 
 	if err != nil {
@@ -59,7 +59,7 @@ func LoadFont(reader io.Reader) *Font {
 
 	font.atlas = texture.NewTextureAtlas(4096, 4)
 
-	font.atlas.Bind(20)
+	font.atlas.Bind(loc)
 
 	fc := truetype.NewFace(ttf, &truetype.Options{Size: font.initialSize, DPI: 72, Hinting: font2.HintingFull})
 	font.face = fc

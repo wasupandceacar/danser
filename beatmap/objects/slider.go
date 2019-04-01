@@ -576,7 +576,7 @@ func (self *Slider) Draw(time int64, preempt float64, fadeIn float64, color mgl3
 					}else {
 						mult = 0.0
 					}
-					batch.SetColor(float64(color[0]), float64(color[1]), float64(color[2]), alpha * mult)
+					batch.SetColor(1, 1, 1, alphaB * mult)
 					batch.DrawUnit(*render.SliderReverse)
 				}
 			}

@@ -85,6 +85,9 @@ func (self *Spinner) Draw(time int64, preempt float64, fadeIn float64, color mgl
 	batch.SetTranslation(self.objData.StartPos)
 
 	batch.SetColor(1, 1, 1, alpha)
+	// 绘制Spinner转圈
+	batch.DrawUnitSR(*render.SpinnerCircle, bmath.Vector2d{float64(render.SpinnerCircle.Width) / 4.75, float64(render.SpinnerCircle.Height) / 4.75}, angle)
+	batch.DrawUnitSR(*render.SpinnerMiddle, bmath.Vector2d{float64(render.SpinnerMiddle.Width) / 2, float64(render.SpinnerMiddle.Height) / 2}, angle)
 	batch.DrawUnitSR(*render.SpinnerBottom, bmath.Vector2d{float64(render.SpinnerBottom.Width) / 4, float64(render.SpinnerBottom.Height) / 4}, angle)
 
 	batch.SetSubScale(1, 1)
@@ -110,9 +113,6 @@ func (self *Spinner) DrawApproach(time int64, preempt float64, fadeIn float64, c
 	fake_preempt := 2 * float64(self.objData.EndTime - self.renderStartTime) / PLAYFIELD_HEIGHT
 	arr := float64(self.objData.EndTime - time) / fake_preempt
 
-	// 计算角度，设定Spinner为300rpm的转圈
-	angle := float64(time - self.renderStartTime) * math.Pi / 100
-
 	if time < self.renderStartTime - int64(preempt){
 		alpha = 0
 	} else if time < self.renderStartTime{
@@ -126,9 +126,6 @@ func (self *Spinner) DrawApproach(time int64, preempt float64, fadeIn float64, c
 	if time <= self.objData.EndTime {
 		batch.SetColor(1, 1, 1, alpha)
 		batch.DrawUnitS(*render.SpinnerApproachCircle, bmath.Vector2d{arr, arr})
-		// 绘制Spinner转圈
-		batch.DrawUnitSR(*render.SpinnerCircle, bmath.Vector2d{float64(render.SpinnerCircle.Width) / 4.75, float64(render.SpinnerCircle.Height) / 4.75}, angle)
-		batch.DrawUnitSR(*render.SpinnerMiddle, bmath.Vector2d{float64(render.SpinnerMiddle.Width) / 2, float64(render.SpinnerMiddle.Height) / 2}, angle)
 	}
 }
 

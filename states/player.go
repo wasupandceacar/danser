@@ -38,6 +38,8 @@ var defaultpos = bmath.Vector2d{-1, -1}
 
 type Player struct {
 	font           *font.Font
+	// 加粗字体
+	highlightfont  *font.Font
 	bMap           *beatmap.BeatMap
 	queue2         []objects.BaseObject
 	processed      []objects.Renderable
@@ -88,9 +90,11 @@ type Player struct {
 
 	// 偏移位置参数
 	fontsize		float64
+	highlightfontsize	float64
 	missfontsize	float64
 	misssize		float64
 	keysize 		float64
+	gapsize			float64
 	modoffset		float64
 	missoffsetX		float64
 	missoffsetY		float64
@@ -102,11 +106,12 @@ type Player struct {
 	key4baseX		float64
 	accbaseX		float64
 	rankbaseX		float64
-	ppbaseX			float64
-	urbaseX			float64
+	ppurbaseX		float64
+	ppurrankbaseX	float64
 	playerbaseX		float64
 	keybaseY		float64
 	fontbaseY		float64
+	highlightfontbaseY	float64
 	rankbaseY		float64
 	hitbaseY		float64
 
@@ -151,6 +156,7 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 		player.batch = render.NewSpriteBatch()
 		player.sliderRenderer = render.NewSliderRenderer()
 		player.font = font.GetFont("Roboto Bold")
+		player.highlightfont = font.GetFont("Roboto Black")
 
 		player.bMap = beatMap
 
@@ -468,9 +474,15 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 	//region 计算大小偏移位置常量、色彩常量
 
 	player.fontsize = 1.75 * settings.VSplayer.PlayerInfoUI.BaseSize
+	if settings.VSplayer.PlayerInfoUI.Rank1Highlight {
+		player.highlightfontsize =  settings.VSplayer.PlayerInfoUI.HighlightMult * player.fontsize
+	}
 	player.missfontsize = settings.VSplayer.Knockout.MissMult * player.fontsize
 	player.misssize = 1.5 * settings.VSplayer.Knockout.MissMult * settings.VSplayer.PlayerInfoUI.BaseSize
 	player.keysize = 1.25 * settings.VSplayer.PlayerInfoUI.BaseSize
+	if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+		player.gapsize = 0.6 * settings.VSplayer.PlayerInfoUI.BaseSize
+	}
 	player.modoffset =  settings.VSplayer.PlayerInfoUI.BaseSize
 	player.missoffsetX =  2 * settings.VSplayer.Knockout.MissMult * settings.VSplayer.PlayerInfoUI.BaseSize
 	player.missoffsetY =  0.6 * settings.VSplayer.Knockout.MissMult * settings.VSplayer.PlayerInfoUI.BaseSize
@@ -483,25 +495,32 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 	if settings.VSplayer.PlayerInfoUI.ShowMouse1 {
 		if settings.VSplayer.PlayerInfoUI.ShowMouse2 {
 			player.accbaseX = player.key4baseX + 2 * settings.VSplayer.PlayerInfoUI.BaseSize
-		}else{
+		}else {
 			player.accbaseX = player.key3baseX + 2 * settings.VSplayer.PlayerInfoUI.BaseSize
 		}
-	}else{
+	}else {
 		player.accbaseX = player.key2baseX + 2 * settings.VSplayer.PlayerInfoUI.BaseSize
 	}
 	if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 		player.rankbaseX = player.accbaseX + 2.625 * settings.VSplayer.PlayerInfoUI.BaseSize
-		player.ppbaseX = player.accbaseX + 8.375 * settings.VSplayer.PlayerInfoUI.BaseSize
-		player.urbaseX = player.ppbaseX
+		player.ppurbaseX = player.accbaseX + 8.375 * settings.VSplayer.PlayerInfoUI.BaseSize
 	}else {
 		player.rankbaseX = player.accbaseX + 8.375 * settings.VSplayer.PlayerInfoUI.BaseSize
-		player.ppbaseX = player.rankbaseX + 1.625 * settings.VSplayer.PlayerInfoUI.BaseSize
+		player.ppurbaseX = player.rankbaseX + 1.625 * settings.VSplayer.PlayerInfoUI.BaseSize
 	}
-	player.playerbaseX = player.ppbaseX + 9 * settings.VSplayer.PlayerInfoUI.BaseSize
+	if settings.VSplayer.PlayerInfoUI.ShowPPAndURRank {
+		player.ppurrankbaseX = player.ppurbaseX + 9.125 * settings.VSplayer.PlayerInfoUI.BaseSize
+		player.playerbaseX = player.ppurrankbaseX + 4.5 * settings.VSplayer.PlayerInfoUI.BaseSize
+	}else {
+		player.playerbaseX = player.ppurbaseX + 9 * settings.VSplayer.PlayerInfoUI.BaseSize
+	}
 	player.keybaseY = settings.VSplayer.PlayerInfoUI.BaseY
 	player.fontbaseY = settings.VSplayer.PlayerInfoUI.BaseY - 0.75 * settings.VSplayer.PlayerInfoUI.BaseSize
+	if settings.VSplayer.PlayerInfoUI.Rank1Highlight {
+		player.highlightfontbaseY = player.fontbaseY - (settings.VSplayer.PlayerInfoUI.HighlightMult - 1) * player.fontsize / 2
+	}
 	player.rankbaseY = settings.VSplayer.PlayerInfoUI.BaseY - 0.25 * settings.VSplayer.PlayerInfoUI.BaseSize
-	player.hitbaseY = settings.VSplayer.PlayerInfoUI.BaseY - 0.25 * settings.VSplayer.PlayerInfoUI.BaseSize
+	player.hitbaseY = settings.VSplayer.PlayerInfoUI.BaseY - 0.1 * settings.VSplayer.PlayerInfoUI.BaseSize
 
 	player.recordbaseX = settings.VSplayer.RecordInfoUI.RecordBaseX
 	player.recordbaseY = settings.VSplayer.RecordInfoUI.RecordBaseY
@@ -948,6 +967,10 @@ func (pl *Player) Draw(delta float64) {
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			linecount *= 2
 		}
+		gapY := 0.0
+		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+			gapY = pl.gapsize * float64(k)
+		}
 		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
 		namecolor := colors1[colornum]
 		if settings.VSplayer.Knockout.EnableKnockout && (!pl.controller[k].GetIsShow()) {
@@ -955,7 +978,7 @@ func (pl *Player) Draw(delta float64) {
 		}
 		playerkey := pl.controller[k].GetPresskey()
 		// 通用渲染项
-		keyY := pl.keybaseY - pl.lineoffset * float64(linecount)
+		keyY := pl.keybaseY - pl.lineoffset * float64(linecount) - gapY
 		// 如果显示UR，排成两行，按键下移半行
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			keyY -= pl.lineoffset / 2
@@ -1008,9 +1031,6 @@ func (pl *Player) Draw(delta float64) {
 	// 文字的公用X轴
 	var lastPos []float64
 	lastPos = make([]float64, pl.players)
-	for k := 0; k < pl.players; k++ {
-		lastPos[k] = 0.0
-	}
 	// 渲染player名
 	pl.batch.Begin()
 	pl.batch.SetCamera(pl.scamera.GetProjectionView())
@@ -1018,6 +1038,10 @@ func (pl *Player) Draw(delta float64) {
 		linecount := k
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			linecount *= 2
+		}
+		gapY := 0.0
+		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+			gapY = pl.gapsize * float64(k)
 		}
 		pl.batch.SetAdditive(true)
 		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
@@ -1032,7 +1056,7 @@ func (pl *Player) Draw(delta float64) {
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			fontY -= pl.lineoffset / 2
 		}
-		lastPos[k] = pl.font.DrawAndGetLastPosition(pl.batch, pl.playerbaseX, fontY, pl.fontsize, pl.controller[k].GetPlayname())
+		lastPos[k] = pl.font.DrawAndGetLastPosition(pl.batch, pl.playerbaseX, fontY - gapY, pl.fontsize, pl.controller[k].GetPlayname())
 		// 渲染mod
 		mods := "+"
 		if (pl.controller[k].GetMods()&MOD_NF > 0){
@@ -1071,14 +1095,14 @@ func (pl *Player) Draw(delta float64) {
 		}
 		if mods != "+" {
 			pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
-			lastPos[k] = pl.font.DrawAndGetLastPosition(pl.batch, lastPos[k] + pl.modoffset, fontY, pl.fontsize, mods)
+			lastPos[k] = pl.font.DrawAndGetLastPosition(pl.batch, lastPos[k] + pl.modoffset, fontY - gapY, pl.fontsize, mods)
 		}
 	}
 	pl.batch.End()
 
 	//endregion
 
-	//region 渲染300、100、50、miss、acc、rank、pp
+	//region 渲染300、100、50、miss、acc、rank、pp、ur
 
 	// 断连文字的公用X轴
 	var lastmissPos []float64
@@ -1101,6 +1125,10 @@ func (pl *Player) Draw(delta float64) {
 		linecount := k
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			linecount *= 2
+		}
+		gapY := 0.0
+		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+			gapY = pl.gapsize * float64(k)
 		}
 		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
 		namecolor := colors1[colornum]
@@ -1234,7 +1262,12 @@ func (pl *Player) Draw(delta float64) {
 						pl.controller[k].AddMissInfo(pl.progressMsF, pl.controller[k].GetHitResult()[0].JudgeTime, pl.controller[k].GetHitResult()[0].JudgePos, pl.SameMissRate)
 					}
 				}
-				pl.batch.SetTranslation(bmath.NewVec2d(lastPos[k] + pl.hitoffset, pl.hitbaseY - pl.lineoffset * float64(linecount)))
+				judgeY := pl.hitbaseY - pl.lineoffset * float64(linecount)
+				// 下移半行
+				if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+					judgeY -= pl.lineoffset / 2
+				}
+				pl.batch.SetTranslation(bmath.NewVec2d(lastPos[k] + pl.hitoffset, judgeY - gapY))
 				pl.batch.SetScale(2.75 * settings.VSplayer.PlayerInfoUI.BaseSize, settings.VSplayer.PlayerInfoUI.BaseSize)
 				pl.batch.DrawUnit(judge)
 				// 渲染时间结束，弹出
@@ -1285,27 +1318,85 @@ func (pl *Player) Draw(delta float64) {
 		}
 		// 渲染acc
 		pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
-		pl.font.Draw(pl.batch, pl.accbaseX, pl.fontbaseY - pl.lineoffset * float64(linecount), pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetAcc()) + "%")
+		pl.font.Draw(pl.batch, pl.accbaseX, pl.fontbaseY - pl.lineoffset * float64(linecount) - gapY, pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetAcc()) + "%")
 		// 渲染rank
 		rankY := pl.rankbaseY - pl.lineoffset * float64(linecount)
 		// 下移一行
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			rankY -= pl.lineoffset
 		}
-		pl.batch.SetTranslation(bmath.NewVec2d(pl.rankbaseX, rankY))
+		pl.batch.SetTranslation(bmath.NewVec2d(pl.rankbaseX, rankY - gapY))
 		pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
 		pl.batch.SetScale(settings.VSplayer.PlayerInfoUI.BaseSize, settings.VSplayer.PlayerInfoUI.BaseSize)
 		pl.batch.DrawUnitC(pl.controller[k].GetRank())
 		// 渲染pp
 		pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
-		pl.font.Draw(pl.batch, pl.ppbaseX, pl.fontbaseY - pl.lineoffset * float64(linecount), pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetPP()) + " pp")
+		pl.font.Draw(pl.batch, pl.ppurbaseX, pl.fontbaseY - pl.lineoffset * float64(linecount) - gapY, pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetPP()) + " pp")
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			// 渲染ur
 			pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
-			pl.font.Draw(pl.batch, pl.urbaseX, pl.fontbaseY - pl.lineoffset * float64(linecount + 1), pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetUR()) + " ur")
+			pl.font.Draw(pl.batch, pl.ppurbaseX, pl.fontbaseY - pl.lineoffset * float64(linecount + 1) - gapY, pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetUR()) + " ur")
 		}
 	}
 	pl.batch.End()
+
+	//endregion
+
+	//region 渲染pp、ur的排名
+
+	//在pp和ur全部更新一遍后再渲染
+
+	//计算排名
+	if settings.VSplayer.PlayerInfoUI.ShowPPAndURRank {
+		var pps []float64
+		var urs []float64
+		var pprank []int
+		var urrank []int
+		pps = make([]float64, pl.players)
+		for k := 0; k < pl.players; k++ {
+			pps[k] = pl.controller[k].GetPP()
+		}
+		pprank = utils.SortRankHighToLow(pps)
+		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+			urs = make([]float64, pl.players)
+			for k := 0; k < pl.players; k++ {
+				urs[k] = pl.controller[k].GetUR()
+			}
+			urrank = utils.SortRankLowToHigh(urs)
+		}
+		pl.batch.Begin()
+		pl.batch.SetCamera(pl.scamera.GetProjectionView())
+		for k := 0; k < pl.players; k++ {
+			linecount := k
+			if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+				linecount *= 2
+			}
+			gapY := 0.0
+			if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+				gapY = pl.gapsize * float64(k)
+			}
+			colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
+			namecolor := colors1[colornum]
+			// 渲染pp排名
+			pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
+			if settings.VSplayer.PlayerInfoUI.Rank1Highlight && (pprank[k] == 1) {
+				pl.highlightfont.Draw(pl.batch, pl.ppurrankbaseX, pl.highlightfontbaseY-pl.lineoffset*float64(linecount) - gapY, pl.highlightfontsize, "#"+strconv.Itoa(pprank[k]))
+			}else {
+				pl.font.Draw(pl.batch, pl.ppurrankbaseX, pl.fontbaseY - pl.lineoffset * float64(linecount) - gapY, pl.fontsize, "#" + strconv.Itoa(pprank[k]))
+			}
+			if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+				// 渲染ur排名
+				pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
+				if settings.VSplayer.PlayerInfoUI.Rank1Highlight && (urrank[k] == 1) {
+					pl.highlightfont.Draw(pl.batch, pl.ppurrankbaseX, pl.highlightfontbaseY-pl.lineoffset*float64(linecount+1) - gapY, pl.highlightfontsize, "#"+strconv.Itoa(urrank[k]))
+				}else {
+					pl.font.Draw(pl.batch, pl.ppurrankbaseX, pl.fontbaseY-pl.lineoffset*float64(linecount+1) - gapY, pl.fontsize, "#"+strconv.Itoa(urrank[k]))
+				}
+			}
+		}
+		pl.batch.End()
+	}
+
 
 	//endregion
 
@@ -1411,12 +1502,8 @@ func (pl *Player) Draw(delta float64) {
 				pl.batch.SetCamera(cameras[j])
 
 				for i := len(pl.processed) - 1; i >= 0 && len(pl.processed) > 0; i-- {
-					if settings.VSplayer.Mods.EnableHD {
+					if !settings.VSplayer.Mods.EnableHD || (pl.processed[i].GetObjectNumber() == 0) {
 						// HD，除了第一个的缩圈全部不渲染
-						if pl.processed[i].GetObjectNumber() == 0 {
-							pl.processed[i].DrawApproach(pl.progressMs, pl.bMap.ARms, pl.bMap.FadeIn, colors1[pl.objectcolorIndex], pl.batch)
-						}
-					} else {
 						pl.processed[i].DrawApproach(pl.progressMs, pl.bMap.ARms, pl.bMap.FadeIn, colors1[pl.objectcolorIndex], pl.batch)
 					}
 				}

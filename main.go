@@ -169,10 +169,13 @@ func run() {
 			batch.SetCamera(camera.GetProjectionView())
 
 			file, _ := os.Open("assets/fonts/Roboto-Bold.ttf")
-			font := font.LoadFont(file)
+			dfont := font.LoadFont(file, 21)
 			file.Close()
+			file2, _ := os.Open("assets/fonts/Roboto-Black.ttf")
+			font.LoadFont(file2, 20)
+			file2.Close()
 
-			font.Draw(batch, 0, 10, 32, "Loading...")
+			dfont.Draw(batch, 0, 10, 32, "Loading...")
 
 			batch.End()
 			win.SwapBuffers()
@@ -260,18 +263,4 @@ func run() {
 func main() {
 	mainthread.CallQueueCap = 100000
 	mainthread.Run(run)
-
-	//f, err := os.Open("2.osu")
-	//if err != nil {
-	//	panic(err)
-	//}
-	//bm := oppai.Parse(f)
-	//oppai.PPInfo(bm, &oppai.Parameters{
-	//	Combo:  903,
-	//	Mods:   8,
-	//	N300:   625,
-	//	N100:   2,
-	//	N50:    0,
-	//	Misses: 0,
-	//})
 }

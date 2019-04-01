@@ -27,6 +27,9 @@ func initDefaults() {
 			true,
 			1000,
 			false,
+			false,
+			false,
+			1.3,
 		},
 		&recordinfoUI{
 			"who are you",
@@ -38,7 +41,6 @@ func initDefaults() {
 		},
 		&playerfieldUI{
 			200,
-			30,
 			25,
 			13,
 			false,
