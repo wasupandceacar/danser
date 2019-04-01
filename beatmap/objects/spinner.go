@@ -1,6 +1,7 @@
 package objects
 
 import (
+	"danser/audio"
 	"danser/bmath"
 	. "danser/osuconst"
 	"danser/render"
@@ -13,6 +14,7 @@ type Spinner struct {
 	objData *basicData
 	pos     bmath.Vector2d
 	Timings *Timings
+	sample  int
 	renderStartTime int64
 }
 
@@ -22,6 +24,10 @@ func NewSpinner(data []string, number int64) *Spinner {
 	endtime, _ := strconv.ParseInt(data[5], 10, 64)
 	spinner.objData.EndTime = int64(endtime)
 	spinner.pos = bmath.Vector2d{PLAYFIELD_WIDTH / 2,PLAYFIELD_HEIGHT / 2}
+
+	sample, _ := strconv.ParseInt(data[4], 10, 64)
+	spinner.sample = int(sample)
+
 	spinner.renderStartTime = -12345
 	return spinner
 }
@@ -39,6 +45,22 @@ func (self *Spinner) GetPosition() bmath.Vector2d {
 }
 
 func (self *Spinner) Update(time int64) bool {
+	if time < self.objData.EndTime {
+		return false
+	}
+
+	index := self.objData.customIndex
+
+	if index == 0 {
+		index = self.Timings.Current.SampleIndex
+	}
+
+	if self.objData.sampleSet == 0 {
+		audio.PlaySample(self.Timings.Current.SampleSet, self.objData.additionSet, self.sample, index, self.Timings.Current.SampleVolume)
+	} else {
+		audio.PlaySample(self.objData.sampleSet, self.objData.additionSet, self.sample, index, self.Timings.Current.SampleVolume)
+	}
+
 	return true
 }
 

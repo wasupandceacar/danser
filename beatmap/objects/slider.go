@@ -360,6 +360,7 @@ func (self *Slider) Update(time int64) bool {
 
 	self.Pos = self.GetPointAt(self.objData.EndTime)
 
+	// 滑条尾音效
 	self.playSample(self.sampleSets[self.repeat], self.additionSets[self.repeat], self.samples[self.repeat])
 	self.End = true
 	self.clicked = false
