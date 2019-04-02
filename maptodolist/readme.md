@@ -71,7 +71,7 @@
 ## 有人FC DT 图 ##
 - [ ]  [未来图](https://osu.ppy.sh/s/306591)
 - [ ]  [best friends](https://osu.ppy.sh/s/249939)
-- [ ]  [遥控器](https://osu.ppy.sh/s/351630)
+- [x]  [遥控器](https://osu.ppy.sh/s/351630)
 - [ ]  [necro fatansia](https://osu.ppy.sh/s/516494)
 - [ ]  [Akatsuki Zukuyo](https://osu.ppy.sh/s/351280)
 - [ ]  [樱之诗](https://osu.ppy.sh/s/738656)
