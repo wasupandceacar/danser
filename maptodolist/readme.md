@@ -53,14 +53,14 @@
 - [ ]  [玻璃花(Loved)](https://osu.ppy.sh/s/394834) 
 - [ ]  [Louder than steel](https://osu.ppy.sh/s/864869) 
 - [ ]  [Kegare Naki Bara Juuji](https://osu.ppy.sh/s/448818)
-- [ ]  [Kegare Naki Yume](https://osu.ppy.sh/s/386619) 967pp
+- [ ]  **[Kegare Naki Yume](https://osu.ppy.sh/s/386619)** 967pp
 - [ ]  [Candle Master](https://osu.ppy.sh/s/357632)
 - [ ]  [Glorious Crown](https://osu.ppy.sh/s/558694) 只有EZFC
-- [ ]  [地狱乐](https://osu.ppy.sh/s/437683)
+- [ ]  **[地狱乐](https://osu.ppy.sh/s/437683)**
 
 ## 有人FC HR 图 ##
 - [ ]  [Ange du Blanc Pur](https://osu.ppy.sh/s/564165)
-- [ ]  [蓝极光](https://osu.ppy.sh/s/292301)
+- [ ]  **[蓝极光](https://osu.ppy.sh/s/292301)**
 - [ ]  [highscore](https://osu.ppy.sh/s/332532)
 - [ ]  [新黄泉](https://osu.ppy.sh/s/575330)
 - [ ]  [Sidetracked Day](https://osu.ppy.sh/s/728276) pp图
@@ -91,7 +91,7 @@
 - [ ]  [Katayoku no tori](https://osu.ppy.sh/s/478303)
 - [ ]  [Toaru Shoukoku no Ohimesama](https://osu.ppy.sh/s/370605)
 - [ ]  [God and the Illusory Garden](https://osu.ppy.sh/s/375956)  
-- [ ]  [王冠](https://osu.ppy.sh/s/558694) 
+- [ ]  **[王冠](https://osu.ppy.sh/s/558694) **
 - [ ]  [小小恋歌](https://osu.ppy.sh/s/609189)   
 - [ ]  [lazy](https://osu.ppy.sh/s/6593)   
 - [ ]  [V0(Enon)](https://osu.ppy.sh/s/402837) 
