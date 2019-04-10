@@ -91,7 +91,7 @@
 - [ ]  [Katayoku no tori](https://osu.ppy.sh/s/478303)
 - [ ]  [Toaru Shoukoku no Ohimesama](https://osu.ppy.sh/s/370605)
 - [ ]  [God and the Illusory Garden](https://osu.ppy.sh/s/375956)  
-- [ ]  **[王冠](https://osu.ppy.sh/s/558694) **
+- [ ]  **[王冠](https://osu.ppy.sh/s/558694)**
 - [ ]  [小小恋歌](https://osu.ppy.sh/s/609189)   
 - [ ]  [lazy](https://osu.ppy.sh/s/6593)   
 - [ ]  [V0(Enon)](https://osu.ppy.sh/s/402837) 
