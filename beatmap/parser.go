@@ -121,6 +121,24 @@ func parseHitObjects(line []string, beatMap *BeatMap, number int64) int64 {
 	return newnumber
 }
 
+func parseHitObjectsbyPath(line []string, beatMap *BeatMap, number int64, isHR bool) int64 {
+	obj, newnumber := objects.GetObjectbyPath(line, number, isHR)
+
+	if obj != nil {
+		if o, ok := obj.(*objects.Slider); ok {
+			o.SetTiming(beatMap.Timings)
+		}
+		if o, ok := obj.(*objects.Circle); ok {
+			o.SetTiming(beatMap.Timings)
+		}
+		if o, ok := obj.(*objects.Spinner); ok {
+			o.SetTiming(beatMap.Timings)
+		}
+		beatMap.HitObjects = append(beatMap.HitObjects, obj)
+	}
+	return newnumber
+}
+
 func tokenize(line, delimiter string) []string {
 	if strings.HasPrefix(line, "//") || !strings.Contains(line, delimiter) {
 		return nil
@@ -284,7 +302,7 @@ func ParseObjectsbyPath(beatMap *BeatMap, filename string, isHR bool, isEZ bool)
 		switch currentSection {
 		case "HitObjects":
 			if arr := tokenize(line, ","); arr != nil {
-				objectNumber = parseHitObjects(arr, beatMap, objectNumber)
+				objectNumber = parseHitObjectsbyPath(arr, beatMap, objectNumber, isHR)
 			}
 			break
 		}

@@ -61,7 +61,6 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 		OD50 = beatmap.AdjustOD(OD_50_BASE - ( newOD * OD_50_MULT ) + OD_PRECISION_FIX)
 		ODMiss = beatmap.AdjustOD(OD_MISS_BASE + OD_PRECISION_FIX)
 		convert_CS = float2unit(32 * (1 - 0.7 * (math.Min(CS_HR_HENSE * b.CircleSize, CS_MAX) - 5) / 5))
-		makeReplayHR(r)
 	}
 
 	// 如果replay是EZ，改变OD和CS
@@ -96,7 +95,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 	keyindex := 3
 	time := r[1].Time + r[2].Time
 	for k := 0; k < len(b.HitObjects); k++ {
-	//for k := 0; k < 688; k++ {
+	//for k := 0; k < 1; k++ {
 		//log.Println("Object", k+1)
 		obj :=  b.HitObjects[k]
 		if obj != nil {
@@ -931,13 +930,6 @@ func getTickRangeJudgePoint(time int64, hit1 *rplpa.ReplayData, hit2 *rplpa.Repl
 		MosueX: x,
 		MouseY: y,
 		KeyPressed: hit1.KeyPressed,
-	}
-}
-
-// HR上下翻转replay
-func makeReplayHR(r []*rplpa.ReplayData){
-	for k := 0; k < len(r); k++ {
-		r[k].MouseY = PLAYFIELD_HEIGHT - r[k].MouseY
 	}
 }
 

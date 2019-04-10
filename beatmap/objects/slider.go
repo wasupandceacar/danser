@@ -133,6 +133,66 @@ func NewSlider(data []string, number int64) *Slider {
 	return slider
 }
 
+func NewSliderbyPath(data []string, number int64, isHR bool) *Slider {
+	slider := &Slider{clicked: false}
+	slider.objData = commonParsebyPath(data, number, isHR)
+	slider.pixelLength, _ = strconv.ParseFloat(data[7], 64)
+	slider.repeat, _ = strconv.ParseInt(data[6], 10, 64)
+
+	list := strings.Split(data[5], "|")
+	points := []m2.Vector2d{slider.objData.StartPos}
+
+	for i := 1; i < len(list); i++ {
+		list2 := strings.Split(list[i], ":")
+		x, _ := strconv.ParseFloat(list2[0], 64)
+		y, _ := strconv.ParseFloat(list2[1], 64)
+		if isHR {
+			y = PLAYFIELD_HEIGHT - y
+		}
+		points = append(points, m2.NewVec2d(x, y))
+	}
+
+	slider.multiCurve = sliders.NewSliderAlgo(list[0], points, slider.pixelLength)
+
+	slider.typ = list[0]
+
+	slider.objData.EndTime = slider.objData.StartTime
+	slider.objData.EndPos = slider.objData.StartPos
+	slider.Pos = slider.objData.StartPos
+
+	slider.samples = make([]int, slider.repeat+1)
+	slider.sampleSets = make([]int, slider.repeat+1)
+	slider.additionSets = make([]int, slider.repeat+1)
+	slider.lastT = 1
+	if len(data) > 8 {
+		subData := strings.Split(data[8], "|")
+		for i, v := range subData {
+			f, _ := strconv.ParseInt(v, 10, 64)
+			slider.samples[i] = int(f)
+		}
+	}
+
+	if len(data) > 9 {
+		subData := strings.Split(data[9], "|")
+		for i, v := range subData {
+			extras := strings.Split(v, ":")
+			sampleSet, _ := strconv.ParseInt(extras[0], 10, 64)
+			additionSet, _ := strconv.ParseInt(extras[1], 10, 64)
+			slider.sampleSets[i] = int(sampleSet)
+			slider.additionSets[i] = int(additionSet)
+		}
+	}
+
+	slider.objData.parseExtras(data, 10)
+
+	slider.End = false
+	slider.lastTick = -1
+
+	slider.curveEndPos = points[len(points) - 1]
+
+	return slider
+}
+
 func (self Slider) GetBasicData() *basicData {
 	return self.objData
 }

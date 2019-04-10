@@ -631,8 +631,8 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 
 				// 如果真实offset大于等于读到的offset，更新
 				if true_offset >= float64(offset) {
-					// 如果是HR，上下翻转
-					if (player.controller[k].GetMods()&MOD_HR > 0){
+					// 如果是HR且图整体未开HR，上下翻转
+					if !settings.VSplayer.Mods.EnableHR && player.controller[k].GetMods()&MOD_HR > 0 {
 						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(posX), float64(PLAYFIELD_HEIGHT - posY)))
 					}else {
 						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(posX), float64(posY)))

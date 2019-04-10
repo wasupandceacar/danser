@@ -28,6 +28,17 @@ func NewCircle(data []string, number int64) *Circle {
 	return circle
 }
 
+func NewCirclebyPath(data []string, number int64, isHR bool) *Circle {
+	circle := &Circle{}
+	circle.objData = commonParsebyPath(data, number, isHR)
+	f, _ := strconv.ParseInt(data[4], 10, 64)
+	circle.sample = int(f)
+	circle.objData.EndTime = circle.objData.StartTime
+	circle.objData.EndPos = circle.objData.StartPos
+	circle.objData.parseExtras(data, 5)
+	return circle
+}
+
 func DummyCircle(pos bmath.Vector2d, time int64) *Circle {
 	return DummyCircleInherit(pos, time, false)
 }

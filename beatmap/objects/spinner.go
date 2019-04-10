@@ -71,8 +71,15 @@ func (self *Spinner) Draw(time int64, preempt float64, fadeIn float64, color mgl
 
 	alpha := 1.0
 
-	// 计算角度，设定Spinner为300rpm的转圈
-	angle := float64(time - self.renderStartTime) * math.Pi / 100
+	var angle float64
+
+	// 1秒之内rpm从0到300
+	if time - self.renderStartTime <= 1000 {
+		rpm := float64(time - self.renderStartTime)*0.3
+		angle = float64(time - self.renderStartTime) * (rpm * math.Pi / 30000)
+	}else {
+		angle = float64(time - self.renderStartTime - 1000) * math.Pi / 100
+	}
 
 	if time < self.renderStartTime - int64(preempt) {
 		return false

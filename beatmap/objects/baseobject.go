@@ -50,6 +50,16 @@ func commonParse(data []string, number int64) *basicData {
 	return &basicData{StartPos: om.NewVec2d(x, y), StartTime: time, Number: number}
 }
 
+func commonParsebyPath(data []string, number int64, isHR bool) *basicData {
+	x, _ := strconv.ParseFloat(data[0], 64)
+	y, _ := strconv.ParseFloat(data[1], 64)
+	if isHR {
+		y = PLAYFIELD_HEIGHT - y
+	}
+	time, _ := strconv.ParseInt(data[2], 10, 64)
+	return &basicData{StartPos: om.NewVec2d(x, y), StartTime: time, Number: number}
+}
+
 func (bData *basicData) parseExtras(data []string, extraIndex int) {
 	if extraIndex < len(data) {
 		extras := strings.Split(data[extraIndex], ":")

@@ -317,11 +317,7 @@ func calculateStackLeniencywithMods(b *BeatMap, isHR bool, isEZ bool) {
 	for _, v := range hitObjects {
 		if !isSpinnerBreak(v) {
 			sc := float64(v.GetBasicData().StackIndex) * scale * BASE_STACK_OFFSET
-			if isHR {
-				v.GetBasicData().StackOffset = bmath.NewVec2d(sc, -1 * sc)
-			}else {
-				v.GetBasicData().StackOffset = bmath.NewVec2d(sc, sc)
-			}
+			v.GetBasicData().StackOffset = bmath.NewVec2d(sc, sc)
 			v.GetBasicData().StartPos = v.GetBasicData().StartPos.Add(v.GetBasicData().StackOffset)
 			v.GetBasicData().EndPos = v.GetBasicData().EndPos.Add(v.GetBasicData().StackOffset)
 		}

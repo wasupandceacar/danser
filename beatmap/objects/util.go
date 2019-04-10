@@ -8,6 +8,7 @@ import (
 
 func GetObject(data []string, number int64) (BaseObject, int64) {
 	objType, _ := strconv.ParseInt(data[3], 10, 64)
+	objType = objType % 16
 	newnumber := number
 	if (objType & CIRCLE) > 0 {
 		if objType == NEWCIRCLE {
@@ -27,6 +28,46 @@ func GetObject(data []string, number int64) (BaseObject, int64) {
 			newnumber += 1
 		}
 		sl := NewSlider(data, newnumber)
+		if sl == nil {
+			return nil, newnumber
+		} else {
+			return sl, newnumber
+		}
+	} else if (objType & SPINNNER) > 0 {
+		if objType == NEWSPINNNER{
+			// 新的combo
+			newnumber = 1
+		}else {
+			// 继续combo
+			newnumber += 1
+		}
+		return NewSpinner(data, newnumber), newnumber
+	}
+	return nil, newnumber
+}
+
+func GetObjectbyPath(data []string, number int64, isHR bool) (BaseObject, int64) {
+	objType, _ := strconv.ParseInt(data[3], 10, 64)
+	objType = objType % 16
+	newnumber := number
+	if (objType & CIRCLE) > 0 {
+		if objType == NEWCIRCLE {
+			// 新的combo
+			newnumber = 1
+		}else {
+			// 继续combo
+			newnumber += 1
+		}
+		return NewCirclebyPath(data, newnumber, isHR), newnumber
+	} else if (objType & SLIDER) > 0 {
+		if objType == NEWSLIDER {
+			// 新的combo
+			newnumber = 1
+		}else {
+			// 继续combo
+			newnumber += 1
+		}
+		sl := NewSliderbyPath(data, newnumber, isHR)
 		if sl == nil {
 			return nil, newnumber
 		} else {

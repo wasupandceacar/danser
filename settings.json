@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 1,
+			"Players": 50,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "6"
 		},
@@ -13,12 +13,12 @@
 			"BaseSize": 6,
 			"BaseX": 14,
 			"BaseY": 696,
-			"ShowMouse1": false,
+			"ShowMouse1": true,
 			"ShowMouse2": false,
 			"ShowRealTimePP": true,
 			"RealTimePPGap": 800,
-			"ShowRealTimeUR": true,
-			"ShowPPAndURRank": true,
+			"ShowRealTimeUR": false,
+			"ShowPPAndURRank": false,
 			"Rank1Highlight": true,
 			"HighlightMult": 1.3
 		},
@@ -32,24 +32,24 @@
 		},
 		"PlayerFieldUI": {
 			"HitFadeTime": 200,
-			"CursorColorNum": 14,
+			"CursorColorNum": 13,
 			"CursorColorSkipNum": 13,
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Remote Control",
-			"Difficulty": "Max Control!"
+			"Title": "Kikoku Doukoku Jigokuraku",
+			"Difficulty": "Notch Hell"
 		},
 		"Mods": {
-			"EnableDT": true,
+			"EnableDT": false,
 			"EnableHT": false,
 			"EnableEZ": false,
 			"EnableHR": false,
-			"EnableHD": true
+			"EnableHD": false
 		},
 		"Knockout": {
-			"EnableKnockout": false,
-			"ShowTrueMiss": true,
+			"EnableKnockout": true,
+			"ShowTrueMiss": false,
 			"PlayerFadeTime": 1500,
 			"SameTimeOffset": 22,
 			"MissMult": 1.15
@@ -58,16 +58,16 @@
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
-			"ReadResultCache": true,
-			"ReplayDebug": false
+			"ReadResultCache": false,
+			"ReplayDebug": true
 		},
 		"ErrorFix": {
 			"EnableErrorFix": false,
 			"ErrorFixFile": "error.err"
 		},
 		"Skin": {
-			"EnableSkin": false,
-			"SkinDir": "skin\\flyingtuna1\\"
+			"EnableSkin": true,
+			"SkinDir": "skin\\idke\\"
 		}
 	},
 	"Graphics": {
