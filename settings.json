@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 50,
+			"Players": 1,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "6"
 		},
@@ -37,8 +37,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Kikoku Doukoku Jigokuraku",
-			"Difficulty": "Notch Hell"
+			"Title": "Dopamine",
+			"Difficulty": "C6H3(OH)2-CH2-CH2-NH2"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -58,8 +58,8 @@
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
-			"ReadResultCache": false,
-			"ReplayDebug": true
+			"ReadResultCache": true,
+			"ReplayDebug": false
 		},
 		"ErrorFix": {
 			"EnableErrorFix": false,

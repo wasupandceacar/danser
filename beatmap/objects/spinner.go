@@ -73,12 +73,16 @@ func (self *Spinner) Draw(time int64, preempt float64, fadeIn float64, color mgl
 
 	var angle float64
 
-	// 1秒之内rpm从0到300
-	if time - self.renderStartTime <= 1000 {
-		rpm := float64(time - self.renderStartTime)*0.3
+	// 2.5秒之内rpm从0到300
+	// 1秒之内rpm从300到0
+	if time - self.renderStartTime <= 2500 {
+		rpm := float64(time - self.renderStartTime)*0.12
 		angle = float64(time - self.renderStartTime) * (rpm * math.Pi / 30000)
+	}else if self.objData.EndTime - time <= 1000 {
+		rpm := float64(self.objData.EndTime - time)*0.3
+		angle = float64(self.objData.EndTime - self.renderStartTime - 3500) * math.Pi / 100 - float64(self.objData.EndTime - time) * (rpm * math.Pi / 30000)
 	}else {
-		angle = float64(time - self.renderStartTime - 1000) * math.Pi / 100
+		angle = float64(time - self.renderStartTime - 2500) * math.Pi / 100
 	}
 
 	if time < self.renderStartTime - int64(preempt) {

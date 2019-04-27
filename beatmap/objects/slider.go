@@ -628,13 +628,25 @@ func (self *Slider) Draw(time int64, preempt float64, fadeIn float64, color mgl3
 					if (k!=0) || (i!=1) {
 						//如果不是第一个折返点，则多显示一倍时间
 						fnum -= 1
-					}
-					if time >= self.TickReverseTrue[num].Time {
-						mult = 0.0
-					}else if time >= self.TickReverse[fnum].Time{
-						mult = 1.0
+						if time >= self.TickReverseTrue[num].Time {
+							mult = 0.0
+						}else if time >= self.TickReverse[fnum].Time{
+							mult = 1.0
+						}else {
+							mult = 0.0
+						}
 					}else {
-						mult = 0.0
+						if time >= self.TickReverseTrue[num].Time {
+							mult = 0.0
+						}else if time >= self.TickReverse[fnum].Time - int64(preempt){
+							if settings.Objects.SliderSnakeIn {
+								mult = Clamp(math.Abs(float64(time-(self.TickReverse[fnum].Time-int64(preempt)))) / (preempt / 2), 0.0, 1.0)
+							}else {
+								mult = 1.0
+							}
+						}else {
+							mult = 0.0
+						}
 					}
 					batch.SetColor(1, 1, 1, alphaB * mult)
 					batch.DrawUnit(*render.SliderReverse)
