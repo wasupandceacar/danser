@@ -37,7 +37,7 @@
 - [ ]  **[多巴胺](https://osu.ppy.sh/s/210316)**
 - [ ]  [雪司机(Snow Drive)](https://osu.ppy.sh/s/291154)
 - [ ]  [TRY UNITE](https://osu.ppy.sh/s/319815)
-- [ ]  **[RAISE MY SWORD](https://osu.ppy.sh/s/889855)**
+- [ ]  [RAISE MY SWORD](https://osu.ppy.sh/s/889855)
 - [ ]  [Gensou Roman Kikou](https://osu.ppy.sh/s/736862)
 - [ ]  [ROR(Monstrata)](https://osu.ppy.sh/s/399372)
 - [x]  [狐嫁](https://osu.ppy.sh/s/352624)
@@ -53,10 +53,11 @@
 - [ ]  [玻璃花(Loved)](https://osu.ppy.sh/s/394834) 
 - [ ]  [Louder than steel](https://osu.ppy.sh/s/864869) 
 - [ ]  [Kegare Naki Bara Juuji](https://osu.ppy.sh/s/448818)
-- [ ]  **[Kegare Naki Yume](https://osu.ppy.sh/s/386619)** 967pp
+- [x]  [Kegare Naki Yume](https://osu.ppy.sh/s/386619)*967pp
 - [ ]  [Candle Master](https://osu.ppy.sh/s/357632)
 - [ ]  [Glorious Crown](https://osu.ppy.sh/s/558694) 只有EZFC
-- [ ]  **[地狱乐](https://osu.ppy.sh/s/437683)**
+- [ ]  [地狱乐](https://osu.ppy.sh/s/437683) 判定差太多
+- [ ]  **[红皮(Cry Thunder)](https://osu.ppy.sh/s/316050)**
 
 ## 有人FC HR 图 ##
 - [ ]  [Ange du Blanc Pur](https://osu.ppy.sh/s/564165)
@@ -80,7 +81,6 @@
 
 ## 无人FC None 图 ##
 - [ ]  [老黄泉](https://osu.ppy.sh/s/461744)
-- [ ]  [红皮(Cry Thunder)](https://osu.ppy.sh/s/316050)
 - [ ]  [黑皇帝](https://osu.ppy.sh/s/396221) 掉的太多
 - [ ]  [大钱](https://osu.ppy.sh/s/293705)
 - [ ]  [Euphoria](https://osu.ppy.sh/s/890438)
