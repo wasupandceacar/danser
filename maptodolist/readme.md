@@ -68,6 +68,7 @@
 - [ ]  [Hades: The rise](https://osu.ppy.sh/s/662526) 曲奇HDHRSS
 - [ ]  [chocolate](https://osu.ppy.sh/s/452230) 
 - [ ]  [绿皮(Defenders)](https://osu.ppy.sh/s/323059) 
+- [ ]  [梦地图(Loved)](https://osu.ppy.sh/b/1226524?m=0)
 
 ## 有人FC DT 图 ##
 - [ ]  [未来图](https://osu.ppy.sh/s/306591)
