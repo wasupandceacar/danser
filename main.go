@@ -17,17 +17,23 @@ import (
 	"github.com/faiface/mainthread"
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/go-gl/glfw/v3.2/glfw"
+	"github.com/lxn/walk"
+	. "github.com/lxn/walk/declarative"
 	"github.com/wieku/glhf"
 	"image"
 	"log"
 	"math"
 	"os"
+	"fmt"
+	"strconv"
 )
 
 var player *states.Player
 var pressed = false
 var pressedM = false
 var pressedP = false
+
+var settingsVersion = flag.Int("settings", 0, "")
 
 func run() {
 	var win *glfw.Window
@@ -40,7 +46,6 @@ func run() {
 		//title := flag.String("title", "Road of Resistance", "")
 		//difficulty := flag.String("difficulty", "Crimson Rebellion", "")
 		creator := flag.String("creator", "", "")
-		settingsVersion := flag.Int("settings", 0, "")
 		cursors := flag.Int("cursors", 1, "")
 		tag := flag.Int("tag", 1, "")
 		pitch := flag.Float64("pitch", 1.0, "")
@@ -261,6 +266,631 @@ func run() {
 }
 
 func main() {
-	mainthread.CallQueueCap = 100000
-	mainthread.Run(run)
+	//mainthread.CallQueueCap = 100000
+	//mainthread.Run(run)
+	UImain()
+}
+
+func UImain() {
+	// 首先载入设置
+	settings.LoadSettings(*settingsVersion)
+
+	vsw := &VSPlayerMainWindow{}
+
+	if _, err := (MainWindow{
+		AssignTo: &vsw.MainWindow,
+		Title:    "VS-Player",
+		Size: Size{800, 400},
+		Layout:  VBox{},
+		Children: []Widget{
+			HSplitter{
+				Children: []Widget{
+					Composite{
+						Layout: VBox{MarginsZero: true},
+						Children: []Widget{
+							GroupBox{
+								Title: "玩家设置",
+								Layout: VBox{},
+								Children: []Widget{
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "玩家数：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: strconv.Itoa(settings.VSplayer.PlayerInfo.Players),
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "指定玩家：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.PlayerInfo.SpecifiedPlayers,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "指定序列：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: settings.VSplayer.PlayerInfo.SpecifiedLine,
+											},
+										},
+									},
+								},
+							},
+							GroupBox{
+								Title: "玩家信息区设置",
+								Layout: VBox{},
+								Children: []Widget{
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "基准大小：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.BaseSize),
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "基准X坐标：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.BaseX),
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "基准Y坐标：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.BaseY),
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "显示M1：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.PlayerInfoUI.ShowMouse1,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "显示M2：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.PlayerInfoUI.ShowMouse2,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "显示实时pp：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.PlayerInfoUI.ShowRealTimePP,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "实时最大变化时间：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.RealTimePPGap),
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "显示实时ur：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.PlayerInfoUI.ShowRealTimeUR,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "显示数据排名：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.PlayerInfoUI.ShowPPAndURRank,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "强调第一：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.PlayerInfoUI.Rank1Highlight,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "强调放大倍数：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.HighlightMult),
+											},
+										},
+									},
+								},
+							},
+							VSpacer{},
+						},
+					},
+					Composite{
+						Layout: VBox{MarginsZero: true},
+						Children: []Widget{
+							GroupBox{
+								Title: "录制信息设置",
+								Layout: VBox{},
+								Children: []Widget{
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "录制人：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: settings.VSplayer.RecordInfoUI.Recorder,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "录制时间：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: settings.VSplayer.RecordInfoUI.RecordTime,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "录制基准X坐标：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.VSplayer.RecordInfoUI.RecordBaseX),
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "录制基准Y坐标：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.VSplayer.RecordInfoUI.RecordBaseY),
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "录制基准大小：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.VSplayer.RecordInfoUI.RecordBaseSize),
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "录制透明度：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.VSplayer.RecordInfoUI.RecordAlpha),
+											},
+										},
+									},
+								},
+							},
+							GroupBox{
+								Title: "游玩区域设置",
+								Layout: VBox{},
+								Children: []Widget{
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "击打响应时间：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: strconv.Itoa(int(settings.VSplayer.PlayerFieldUI.HitFadeTime)),
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "光标颜色索引：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: strconv.Itoa(settings.VSplayer.PlayerFieldUI.CursorColorNum),
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "光标颜色间隔：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: strconv.Itoa(settings.VSplayer.PlayerFieldUI.CursorColorSkipNum),
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "显示圈内数字：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.PlayerFieldUI.ShowHitCircleNumber,
+											},
+										},
+									},
+								},
+							},
+							GroupBox{
+								Title: "地图设置",
+								Layout: VBox{},
+								Children: []Widget{
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "地图名：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: settings.VSplayer.MapInfo.Title,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "难度名：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: settings.VSplayer.MapInfo.Difficulty,
+											},
+										},
+									},
+								},
+							},
+							GroupBox{
+								Title: "Mod设置",
+								Layout: VBox{},
+								Children: []Widget{
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "开启DT：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.Mods.EnableDT,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "开启HT：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.Mods.EnableHT,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "开启EZ：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.Mods.EnableEZ,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "开启HR：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.Mods.EnableHR,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "开启HD：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.Mods.EnableHD,
+											},
+										},
+									},
+								},
+							},
+							VSpacer{},
+						},
+					},
+					Composite{
+						Layout: VBox{MarginsZero: true},
+						Children: []Widget{
+							GroupBox{
+								Title: "淘汰模式设置",
+								Layout: VBox{},
+								Children: []Widget{
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "开启淘汰模式：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.Knockout.EnableKnockout,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "显示真实miss：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.Knockout.ShowTrueMiss,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "玩家消失时间：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.VSplayer.Knockout.PlayerFadeTime),
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "同位偏移：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.VSplayer.Knockout.SameTimeOffset),
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "miss大小倍数：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.VSplayer.Knockout.PlayerFadeTime),
+											},
+										},
+									},
+								},
+							},
+							GroupBox{
+								Title: "replay和cache设置",
+								Layout: VBox{},
+								Children: []Widget{
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "replay目录：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: settings.VSplayer.ReplayandCache.ReplayDir,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "cache目录：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: settings.VSplayer.ReplayandCache.CacheDir,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "保存cache：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.ReplayandCache.SaveResultCache,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "读取cache：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.ReplayandCache.ReadResultCache,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "Debug：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.ReplayandCache.ReplayDebug,
+											},
+										},
+									},
+								},
+							},
+							GroupBox{
+								Title: "错误修正设置",
+								Layout: VBox{},
+								Children: []Widget{
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "开启错误修正：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.ErrorFix.EnableErrorFix,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "修正文件：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: settings.VSplayer.ErrorFix.ErrorFixFile,
+											},
+										},
+									},
+								},
+							},
+							GroupBox{
+								Title: "皮肤设置",
+								Layout: VBox{},
+								Children: []Widget{
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "自定义皮肤：",
+											},
+											CheckBox{
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.Skin.EnableSkin,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "皮肤目录：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: settings.VSplayer.Skin.SkinDir,
+											},
+										},
+									},
+								},
+							},
+							GroupBox{
+								Title: "其他原生设置",
+								Layout: VBox{},
+								Children: []Widget{
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "光标大小：",
+											},
+											LineEdit{
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.Cursor.CursorSize),
+											},
+										},
+									},
+								},
+							},
+							VSpacer{},
+						},
+					},
+				},
+			},
+			PushButton{
+				Text: "开始",
+				Alignment: AlignHCenterVFar,
+				OnClicked: func() {
+					mainthread.CallQueueCap = 100000
+					mainthread.Run(run)
+				},
+			},
+		},
+	}.Run()); err != nil {
+		log.Fatal(err)
+	}
+}
+
+type VSPlayerMainWindow struct {
+	*walk.MainWindow
 }

@@ -11,7 +11,7 @@
 - [x]  [axion(扶老二)](https://osu.ppy.sh/s/115193) 较短，断连显示频繁
 - [ ]  [摩天楼](https://osu.ppy.sh/s/100348)
 - [ ]  [女武神(arles)](https://osu.ppy.sh/s/378400) 集体断尾
-- [ ]  [happy song](https://osu.ppy.sh/s/744593) 断的比较后
+- [ ]  **[happy song](https://osu.ppy.sh/s/744593)** 断的比较后
 - [x]  [飞升(Kroytz)](https://osu.ppy.sh/s/368060)
 - [ ]  [Crystalia](https://osu.ppy.sh/s/691220)
 - [x]  [Teo(Kroytz)](https://osu.ppy.sh/s/721804) 断尾非常集中
@@ -34,7 +34,7 @@
 - [ ]  [Owata \(^o^)/](https://osu.ppy.sh/s/399096) 知名度太低
 - [x]  [量子海](https://osu.ppy.sh/s/372850)
 - [ ]  [量子海(Crystal)](https://osu.ppy.sh/s/405167)
-- [ ]  **[多巴胺](https://osu.ppy.sh/s/210316)**
+- [x]  [多巴胺](https://osu.ppy.sh/s/210316)
 - [ ]  [雪司机(Snow Drive)](https://osu.ppy.sh/s/291154)
 - [ ]  [TRY UNITE](https://osu.ppy.sh/s/319815)
 - [ ]  [RAISE MY SWORD](https://osu.ppy.sh/s/889855)
@@ -57,7 +57,7 @@
 - [ ]  [Candle Master](https://osu.ppy.sh/s/357632)
 - [ ]  [Glorious Crown](https://osu.ppy.sh/s/558694) 只有EZFC
 - [ ]  [地狱乐](https://osu.ppy.sh/s/437683) 判定差太多
-- [ ]  **[红皮(Cry Thunder)](https://osu.ppy.sh/s/316050)**
+- [x]  [红皮(Cry Thunder)](https://osu.ppy.sh/s/316050)
 
 ## 有人FC HR 图 ##
 - [ ]  [Ange du Blanc Pur](https://osu.ppy.sh/s/564165)
@@ -68,10 +68,10 @@
 - [ ]  [Hades: The rise](https://osu.ppy.sh/s/662526) 曲奇HDHRSS
 - [ ]  [chocolate](https://osu.ppy.sh/s/452230) 
 - [ ]  [绿皮(Defenders)](https://osu.ppy.sh/s/323059) 
-- [ ]  [梦地图(Loved)](https://osu.ppy.sh/b/1226524?m=0)
+- [ ]  **[梦地图(Loved)](https://osu.ppy.sh/b/1226524?m=0)**
 
 ## 有人FC DT 图 ##
-- [ ]  [未来图](https://osu.ppy.sh/s/306591)
+- [ ]  **[未来图](https://osu.ppy.sh/s/306591)**
 - [ ]  [best friends](https://osu.ppy.sh/s/249939)
 - [x]  [遥控器](https://osu.ppy.sh/s/351630)
 - [ ]  [necro fatansia](https://osu.ppy.sh/s/516494)
@@ -92,7 +92,7 @@
 - [ ]  [Katayoku no tori](https://osu.ppy.sh/s/478303)
 - [ ]  [Toaru Shoukoku no Ohimesama](https://osu.ppy.sh/s/370605)
 - [ ]  [God and the Illusory Garden](https://osu.ppy.sh/s/375956)  
-- [ ]  **[王冠](https://osu.ppy.sh/s/558694)**
+- [x]  [王冠](https://osu.ppy.sh/s/558694)
 - [ ]  [小小恋歌](https://osu.ppy.sh/s/609189)   
 - [ ]  [lazy](https://osu.ppy.sh/s/6593)   
 - [ ]  [V0(Enon)](https://osu.ppy.sh/s/402837) 
