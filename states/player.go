@@ -1555,3 +1555,8 @@ func (pl *Player) Draw(delta float64) {
 	//endregion
 
 }
+
+func (pl *Player) Stop() {
+	pl.queue2 = []objects.BaseObject{}
+	pl.musicPlayer.Stop()
+}

@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 1,
+			"Players": 3,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "6"
 		},
@@ -52,7 +52,7 @@
 			"ShowTrueMiss": false,
 			"PlayerFadeTime": 1500,
 			"SameTimeOffset": 22,
-			"MissMult": 1.15
+			"MissMult": 0.95
 		},
 		"ReplayandCache": {
 			"ReplayDir": "replays\\",
@@ -111,7 +111,7 @@
 		"EnableCustomTrailGlowOffset": true,
 		"TrailGlowOffset": -36,
 		"ScaleToCS": false,
-		"CursorSize": 8.5,
+		"CursorSize": 6.5,
 		"ScaleToTheBeat": false,
 		"ShowCursorsOnBreaks": true,
 		"BounceOnEdges": false,
