@@ -277,10 +277,12 @@ func UImain() {
 
 	vsw := &VSPlayerMainWindow{}
 
+	vsw.SetFixedSize(true)
+
 	if _, err := (MainWindow{
 		AssignTo: &vsw.MainWindow,
 		Title:    "VS-Player",
-		Size: Size{800, 400},
+		Size: Size{900, 400},
 		Layout:  VBox{},
 		Children: []Widget{
 			HSplitter{
@@ -345,7 +347,7 @@ func UImain() {
 									HSplitter{
 										Children: []Widget{
 											TextLabel{
-												Text: "基准X坐标：",
+												Text: "基准X：",
 											},
 											LineEdit{
 												Alignment: AlignHNearVNear,
@@ -356,7 +358,7 @@ func UImain() {
 									HSplitter{
 										Children: []Widget{
 											TextLabel{
-												Text: "基准Y坐标：",
+												Text: "基准Y：",
 											},
 											LineEdit{
 												Alignment: AlignHNearVNear,
@@ -400,7 +402,7 @@ func UImain() {
 									HSplitter{
 										Children: []Widget{
 											TextLabel{
-												Text: "实时最大变化时间：",
+												Text: "最大变化时间：",
 											},
 											LineEdit{
 												Alignment: AlignHNearVNear,
@@ -489,7 +491,7 @@ func UImain() {
 									HSplitter{
 										Children: []Widget{
 											TextLabel{
-												Text: "录制基准X坐标：",
+												Text: "录制基准X：",
 											},
 											LineEdit{
 												Alignment: AlignHNearVNear,
@@ -500,7 +502,7 @@ func UImain() {
 									HSplitter{
 										Children: []Widget{
 											TextLabel{
-												Text: "录制基准Y坐标：",
+												Text: "录制基准Y：",
 											},
 											LineEdit{
 												Alignment: AlignHNearVNear,
@@ -684,7 +686,7 @@ func UImain() {
 									HSplitter{
 										Children: []Widget{
 											TextLabel{
-												Text: "开启淘汰模式：",
+												Text: "淘汰模式：",
 											},
 											CheckBox{
 												Alignment: AlignHNearVNear,
@@ -706,7 +708,7 @@ func UImain() {
 									HSplitter{
 										Children: []Widget{
 											TextLabel{
-												Text: "玩家消失时间：",
+												Text: "miss消失时间：",
 											},
 											LineEdit{
 												Alignment: AlignHNearVNear,
@@ -806,7 +808,7 @@ func UImain() {
 									HSplitter{
 										Children: []Widget{
 											TextLabel{
-												Text: "开启错误修正：",
+												Text: "错误修正：",
 											},
 											CheckBox{
 												Alignment: AlignHNearVNear,
