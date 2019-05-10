@@ -86,6 +86,7 @@ type errorfix struct {
 type skin struct {
 	EnableSkin		bool
 	SkinDir			string
+	NumberOffset	int64
 }
 
 type vsplayer struct {

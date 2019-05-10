@@ -179,5 +179,6 @@ func LoadSkinConfiguration() {
 	if err != nil {
 		panic(err)
 	}
-	log.Println("圈内数字偏移：", HitCircleOverlap)
+	log.Println("圈内数字偏移：", HitCircleOverlap, "设置矫正偏移", settings.VSplayer.Skin.NumberOffset)
+	HitCircleOverlap += settings.VSplayer.Skin.NumberOffset
 }

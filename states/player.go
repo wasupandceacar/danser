@@ -141,6 +141,9 @@ type Player struct {
 	lastb4UR		[]float64
 	lastUR			[]float64
 	lastURTime		[]int64
+
+	// 退出所有协程的flag
+	exitGoFlag		bool
 }
 
 //endregion
@@ -148,6 +151,13 @@ type Player struct {
 func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 	//region 无关1
 	player := new(Player)
+
+	// 设置协程退出flag
+	player.exitGoFlag = false
+
+	// 重置时间
+	utils.ResetTime()
+
 	// 非replay debug
 	if !settings.VSplayer.ReplayandCache.ReplayDebug {
 		render.LoadTextures()
@@ -571,9 +581,11 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 		}
 
 		player.start = true
-		musicPlayer.Play()
-		musicPlayer.SetTempo(settings.SPEED)
-		musicPlayer.SetPitch(settings.PITCH)
+		if !player.exitGoFlag {
+			musicPlayer.Play()
+			musicPlayer.SetTempo(settings.SPEED)
+			musicPlayer.SetPitch(settings.PITCH)
+		}
 	}()
 
 	player.fxBatch = render.NewFxBatch()
@@ -604,6 +616,10 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 
 			var last= musicPlayer.GetPosition()
 			for {
+				if player.exitGoFlag {
+					return
+				}
+
 				if len(r.ReplayData) <= index {
 					time.Sleep(1000 * time.Second)
 				}
@@ -657,6 +673,10 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 
 	go func() {
 		for {
+			if player.exitGoFlag {
+				return
+			}
+
 			player.progressMsF = musicPlayer.GetPosition()*1000 + float64(settings.Audio.Offset)
 			player.bMap.Update(int64(player.progressMsF))
 			if player.start && len(player.bMap.Queue) > 0 {
@@ -677,6 +697,9 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 		vertices := make([]float32, (256+128)*3*3*2)
 		oldFFT := make([]float32, 256+128)
 		for {
+			if player.exitGoFlag {
+				return
+			}
 
 			musicPlayer.Update()
 			player.SclA = math.Min(1.4*settings.Beat.BeatScale, math.Max(math.Sin(musicPlayer.GetBeat()*math.Pi/2)*0.4*settings.Beat.BeatScale+1.0, 1.0))
@@ -761,7 +784,7 @@ func (pl *Player) Draw(delta float64) {
 		for i := 0; i < len(pl.queue2); i++ {
 			if p := pl.queue2[i]; p.GetBasicData().StartTime-15000 <= pl.progressMs {
 				if s, ok := p.(*objects.Slider); ok {
-					s.InitCurve(pl.sliderRenderer)
+					s.InitCurve(pl.sliderRenderer, pl.exitGoFlag)
 				}
 
 				if p := pl.queue2[i]; p.GetBasicData().StartTime-int64(pl.bMap.ARms) <= pl.progressMs {
@@ -798,6 +821,8 @@ func (pl *Player) Draw(delta float64) {
 
 	bgAlpha := pl.dimGlider.GetValue()
 	blurVal := 0.0
+
+	//log.Println("draw", pl.lastTime / 1000000.0, len(pl.queue2), bgAlpha)
 
 	cameras := pl.camera.GenRotated(settings.DIVIDES, -2*math.Pi/float64(settings.DIVIDES))
 
@@ -1557,6 +1582,8 @@ func (pl *Player) Draw(delta float64) {
 }
 
 func (pl *Player) Stop() {
+	pl.exitGoFlag = true
 	pl.queue2 = []objects.BaseObject{}
+	pl.processed = []objects.Renderable{}
 	pl.musicPlayer.Stop()
 }

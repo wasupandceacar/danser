@@ -447,7 +447,7 @@ func (self *Slider) GetPosition() m2.Vector2d {
 	return self.Pos
 }
 
-func (self *Slider) InitCurve(renderer *render.SliderRenderer) {
+func (self *Slider) InitCurve(renderer *render.SliderRenderer, flag bool) {
 	if !self.created {
 		self.created = true
 		go func() {

@@ -77,6 +77,7 @@ func initDefaults() {
 		&skin{
 			false,
 			"skin\\",
+			0,
 		},
 	}
 	Graphics = &graphics{1920, 1080, 1280, 720, true, false, 1000, 16}

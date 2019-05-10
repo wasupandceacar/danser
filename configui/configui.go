@@ -8,6 +8,7 @@ import (
 	"strconv"
 	. "github.com/lxn/walk/declarative"
 	"fmt"
+	. "danser/build"
 )
 
 func UImain() {
@@ -21,7 +22,7 @@ func UImain() {
 
 	if _, err := (MainWindow{
 		AssignTo: &vsw.MainWindow,
-		Title:    "VS-Player",
+		Title:    "osu vs player " + VERSION + " by " + OWNER,
 		Size: Size{900, 400},
 		Layout:  VBox{},
 		Children: []Widget{
@@ -637,6 +638,18 @@ func UImain() {
 												AssignTo: &vsw.skinDir,
 												Alignment: AlignHNearVNear,
 												Text: settings.VSplayer.Skin.SkinDir,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "数字间隔偏移：",
+											},
+											LineEdit{
+												AssignTo: &vsw.numberOffset,
+												Alignment: AlignHNearVNear,
+												Text: strconv.Itoa(int(settings.VSplayer.Skin.NumberOffset)),
 											},
 										},
 									},

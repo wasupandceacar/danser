@@ -33,6 +33,12 @@ double getTime() {
     return (double)(li.QuadPart-CounterStart)/PCFreq;
 }
 
+void resetTime() {
+	started = 0;
+	PCFreq = 0.0;
+	CounterStart = 0;
+}
+
 long long getNanoTime() {
 	return (long long)(getTime());
 }
@@ -49,4 +55,10 @@ func GetNanoTime() int64 {
 		return int64(C.getNanoTime())
 	}
 	return time.Now().UnixNano()
+}
+
+func ResetTime() {
+	if runtime.GOOS == "windows" {
+		C.resetTime()
+	}
 }

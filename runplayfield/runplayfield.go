@@ -252,6 +252,8 @@ func RunPlayField() {
 			if win.ShouldClose(){
 				player.Stop()
 				win.Destroy()
+				win = nil
+				os.Exit(1024)
 			}
 		})
 	}

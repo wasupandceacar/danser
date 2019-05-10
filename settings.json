@@ -67,7 +67,8 @@
 		},
 		"Skin": {
 			"EnableSkin": true,
-			"SkinDir": "skin\\idke\\"
+			"SkinDir": "skin\\idke\\",
+			"NumberOffset": 0
 		}
 	},
 	"Graphics": {

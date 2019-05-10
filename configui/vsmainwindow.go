@@ -109,6 +109,11 @@ func (vsw VSPlayerMainWindow) SaveConfig() {
 
 	settings.VSplayer.Skin.EnableSkin = vsw.enableSkin.Checked()
 	settings.VSplayer.Skin.SkinDir = vsw.skinDir.Text()
+	numberoffset, err := strconv.Atoi(vsw.numberOffset.Text())
+	if err != nil {
+		panic(err)
+	}
+	settings.VSplayer.Skin.NumberOffset = int64(numberoffset)
 
 	cursorsize, err := strconv.ParseFloat(vsw.cursorSize.Text(), 64)
 	if err != nil {
@@ -177,6 +182,7 @@ type VSPlayerMainWindow struct {
 
 	enableSkin *walk.CheckBox
 	skinDir *walk.LineEdit
+	numberOffset *walk.LineEdit
 
 	cursorSize *walk.LineEdit
 }
