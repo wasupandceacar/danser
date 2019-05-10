@@ -1,14 +1,15 @@
 package configui
 
 import (
+	. "danser/build"
 	"danser/runplayfield"
 	"danser/settings"
+	"fmt"
 	"github.com/faiface/mainthread"
+	"github.com/lxn/walk"
+	. "github.com/lxn/walk/declarative"
 	"log"
 	"strconv"
-	. "github.com/lxn/walk/declarative"
-	"fmt"
-	. "danser/build"
 )
 
 func UImain() {
@@ -17,10 +18,12 @@ func UImain() {
 
 	vsw := &VSPlayerMainWindow{}
 
+	log.Println("主窗口启动")
+
 	// 固定大小
 	vsw.SetFixedSize(true)
 
-	if _, err := (MainWindow{
+	MainWindow{
 		AssignTo: &vsw.MainWindow,
 		Title:    "osu vs player " + VERSION + " by " + OWNER,
 		Size: Size{900, 400},
@@ -695,7 +698,13 @@ func UImain() {
 				},
 			},
 		},
-	}.Run()); err != nil {
-		log.Fatal(err)
+	}.Create()
+
+	icon, err := walk.NewIconFromResourceId(3)
+	if err != nil {
+		panic(err)
 	}
+	vsw.MainWindow.SetIcon(icon)
+
+	vsw.MainWindow.Run()
 }
