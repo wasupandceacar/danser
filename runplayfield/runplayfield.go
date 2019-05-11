@@ -108,6 +108,8 @@ func RunPlayField() {
 			settings.Objects.SliderMerge = false
 		}
 
+		loadwords := []font.Word{}
+
 		if !settings.VSplayer.ReplayandCache.ReplayDebug {
 			glfw.Init()
 			glfw.WindowHint(glfw.ContextVersionMajor, 3)
@@ -159,6 +161,7 @@ func RunPlayField() {
 			camera.SetOrigin(bmath.NewVec2d(settings.Graphics.GetWidthF()/2, settings.Graphics.GetHeightF()/2))
 			camera.Update()
 			batch.SetCamera(camera.GetProjectionView())
+			batch.SetAdditive(true)
 
 			file, _ := os.Open("assets/fonts/Roboto-Bold.ttf")
 			dfont := font.LoadFont(file, 21)
@@ -167,24 +170,39 @@ func RunPlayField() {
 			font.LoadFont(file2, 20)
 			file2.Close()
 
-			dfont.Draw(batch, 0, 10, 32, "Loading...")
-
+			screenheight := settings.Graphics.GetHeight()
+			loadwords = append(loadwords, font.Word{14, float64(screenheight - 40), 24, "Font loaded..."})
+			dfont.DrawAll(batch, loadwords)
+			//dfont.Draw(batch, 14, float64(screenheight - 40), 24, "Font loaded...")
 			batch.End()
 			win.SwapBuffers()
+
+			audio.Init()
+			audio.LoadSamples()
+
+			batch.Begin()
+			loadwords = append(loadwords, font.Word{14, float64(screenheight - 80), 24, "Sound effects loaded..."})
+			dfont.DrawAll(batch, loadwords)
+			batch.End()
+			win.SwapBuffers()
+
+			beatmap.ParseObjects(beatMap)
+			beatMap.LoadCustomSamples()
+
+			batch.Begin()
+			loadwords = append(loadwords, font.Word{14, float64(screenheight - 120), 24, "Beatmap loaded and parsed..."})
+			dfont.DrawAll(batch, loadwords)
+			batch.End()
+			win.SwapBuffers()
+
 			glfw.PollEvents()
 
 			glfw.SwapInterval(0)
 			if settings.Graphics.VSync {
 				glfw.SwapInterval(1)
 			}
-
-			audio.Init()
-			audio.LoadSamples()
-
-			beatmap.ParseObjects(beatMap)
-			beatMap.LoadCustomSamples()
 		}
-		player = states.NewPlayer(beatMap)
+		player = states.NewPlayer(beatMap, win, loadwords)
 
 	})
 

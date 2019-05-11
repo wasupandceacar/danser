@@ -23,6 +23,7 @@ import (
 	"danser/utils"
 	"fmt"
 	"github.com/go-gl/gl/v3.3-core/gl"
+	"github.com/go-gl/glfw/v3.2/glfw"
 	"github.com/go-gl/mathgl/mgl32"
 	"github.com/wieku/glhf"
 	"log"
@@ -144,34 +145,69 @@ type Player struct {
 
 	// 退出所有协程的flag
 	exitGoFlag		bool
+	// 退出处理event协程
+	exitPollFlag		bool
 }
 
 //endregion
 
-func NewPlayer(beatMap *beatmap.BeatMap) *Player {
+func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word) *Player {
 	//region 无关1
 	player := new(Player)
 
-	// 设置协程退出flag
+	// 设置协程flag
 	player.exitGoFlag = false
+	player.exitPollFlag = false
+
+	go func() {
+		for !win.ShouldClose() {
+			if player.exitGoFlag || player.exitPollFlag{
+				return
+			}
+			glfw.PollEvents()
+		}
+	}()
 
 	// 重置时间
 	utils.ResetTime()
 
+	screenheight := settings.Graphics.GetHeight()
+
 	// 非replay debug
 	if !settings.VSplayer.ReplayandCache.ReplayDebug {
-		render.LoadTextures()
-		render.LoadSkinConfiguration()
-		render.SetupSlider()
 		player.batch = render.NewSpriteBatch()
-		player.sliderRenderer = render.NewSliderRenderer()
 		player.font = font.GetFont("Roboto Bold")
 		player.highlightfont = font.GetFont("Roboto Black")
+
+		player.scamera = bmath.NewCamera()
+		player.scamera.SetViewport(int(settings.Graphics.GetWidth()), int(settings.Graphics.GetHeight()), false)
+		player.scamera.SetOrigin(bmath.NewVec2d(settings.Graphics.GetWidthF()/2, settings.Graphics.GetHeightF()/2))
+		player.scamera.Update()
+		player.batch.Begin()
+		player.batch.SetColor(1, 1, 1, 1)
+		player.batch.SetCamera(player.scamera.GetProjectionView())
+
+		render.LoadTextures()
+		render.LoadSkinConfiguration()
+
+		loadwords = append(loadwords, font.Word{14, float64(screenheight - 160), 24, "Textures and skin configuration loaded..."})
+		player.font.DrawAll(player.batch, loadwords)
+		player.batch.End()
+		win.SwapBuffers()
+
+		render.SetupSlider()
+		player.sliderRenderer = render.NewSliderRenderer()
 
 		player.bMap = beatMap
 
 		player.mapFullName = fmt.Sprintf("%s - %s [%s]", beatMap.Artist, beatMap.Name, beatMap.Difficulty)
 		log.Println("Playing:", player.mapFullName)
+
+		player.batch.Begin()
+		loadwords = append(loadwords, font.Word{14, float64(screenheight - 200), 24, "Map: " + player.mapFullName})
+		player.font.DrawAll(player.batch, loadwords)
+		player.batch.End()
+		win.SwapBuffers()
 
 		player.CS = (1.0 - 0.7*(beatMap.CircleSize-5)/5) / 2 * settings.Objects.CSMult
 		render.CS = player.CS
@@ -230,11 +266,6 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 		player.camera.SetScale(bmath.NewVec2d(scl, scl))
 		player.camera.Update()
 
-		player.scamera = bmath.NewCamera()
-		player.scamera.SetViewport(int(settings.Graphics.GetWidth()), int(settings.Graphics.GetHeight()), false)
-		player.scamera.SetOrigin(bmath.NewVec2d(settings.Graphics.GetWidthF()/2, settings.Graphics.GetHeightF()/2))
-		player.scamera.Update()
-
 		render.Camera = player.camera
 
 		player.bMap.Reset()
@@ -290,6 +321,11 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 
 	if settings.VSplayer.ReplayandCache.ReadResultCache && !settings.VSplayer.ReplayandCache.ReplayDebug{
 		log.Println("本次选择读取缓存replay结果")
+		player.batch.Begin()
+		loadwords = append(loadwords, font.Word{14, float64(screenheight - 240), 24, "Read replay result cache... 0/" + strconv.Itoa(player.players)})
+		player.font.DrawAll(player.batch, loadwords)
+		player.batch.End()
+		win.SwapBuffers()
 		for k := 0; k < player.players; k++ {
 			var rnum int
 			if settings.VSplayer.PlayerInfo.SpecifiedPlayers {
@@ -316,9 +352,19 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 			player.controller[k].SetHitResult(result)
 			player.controller[k].SetTotalResult(totalresult)
 			log.Println("读取第", rnum, "个replay缓存完成，耗时", time.Now().Sub(t1), "，总耗时", time.Now().Sub(t))
+			player.batch.Begin()
+			loadwords = append(loadwords[:len(loadwords)-1], font.Word{14, float64(screenheight - 240), 24, "Read replay result cache... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(player.players)})
+			player.font.DrawAll(player.batch, loadwords)
+			player.batch.End()
+			win.SwapBuffers()
 		}
 	}else {
 		log.Println("本次选择解析replay")
+		player.batch.Begin()
+		loadwords = append(loadwords, font.Word{14, float64(screenheight - 240), 24, "Analyze replay... 0/" + strconv.Itoa(player.players)})
+		player.font.DrawAll(player.batch, loadwords)
+		player.batch.End()
+		win.SwapBuffers()
 		var errs []hitjudge.Error
 		if settings.VSplayer.ErrorFix.EnableErrorFix {
 			log.Println("本次选择进行replay解析纠错")
@@ -367,6 +413,11 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 				log.Println("已保存第", rnum, "个replay的结果缓存")
 			}
 			log.Println("解析第", rnum, "个replay完成，耗时", time.Now().Sub(t1), "，总耗时", time.Now().Sub(t))
+			player.batch.Begin()
+			loadwords = append(loadwords[:len(loadwords)-1], font.Word{14, float64(screenheight - 240), 24, "Analyze replay... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(player.players)})
+			player.font.DrawAll(player.batch, loadwords)
+			player.batch.End()
+			win.SwapBuffers()
 		}
 	}
 
@@ -428,6 +479,11 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 	copy(player.queue2, player.bMap.Queue)
 
 	log.Println("Music:", beatMap.Audio)
+	player.batch.Begin()
+	loadwords = append(loadwords, font.Word{14, float64(screenheight - 280), 24, "Music: " + beatMap.Audio})
+	player.font.DrawAll(player.batch, loadwords)
+	player.batch.End()
+	win.SwapBuffers()
 
 	player.Scl = 1
 	player.fxRotation = 0.0
@@ -739,6 +795,8 @@ func NewPlayer(beatMap *beatmap.BeatMap) *Player {
 	player.musicPlayer = musicPlayer
 
 	player.bloomEffect = effects.NewBloomEffect(int(settings.Graphics.GetWidth()), int(settings.Graphics.GetHeight()))
+
+	player.exitPollFlag = true
 
 	return player
 

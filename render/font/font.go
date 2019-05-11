@@ -1,18 +1,19 @@
 package font
 
 import (
+	"danser/bmath"
 	"danser/render"
-	"io"
-	"github.com/golang/freetype/truetype"
-	"io/ioutil"
-	"golang.org/x/image/math/fixed"
+	"danser/render/texture"
+	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/golang/freetype"
+	"github.com/golang/freetype/truetype"
 	font2 "golang.org/x/image/font"
+	"golang.org/x/image/math/fixed"
 	"image"
 	"image/draw"
+	"io"
+	"io/ioutil"
 	"log"
-	"danser/render/texture"
-	"danser/bmath"
 )
 
 var fonts map[string]*Font
@@ -188,4 +189,20 @@ func (font *Font) DrawAndGetLastPosition(renderer *render.SpriteBatch, x, y floa
 
 	}
 	return xpad
+}
+
+type Word struct {
+	X		float64
+	Y 		float64
+	Size	float64
+	Text 	string
+}
+
+func (font *Font) DrawAll (renderer *render.SpriteBatch, words []Word)  {
+	// 清除之前的文字，否则会重叠
+	gl.ClearColor(0, 0, 0, 1)
+	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+	for _, word := range words {
+		font.Draw(renderer, word.X, word.Y, word.Size, word.Text)
+	}
 }
