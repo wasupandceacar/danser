@@ -339,6 +339,10 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 			// 进行修正
 			result, count300, count100, count50, countMiss, maxcombo, nowcombo, totalhits = fixError(*err, result, count300, count100, count50, countMiss, maxcombo, nowcombo, totalhits)
 		}
+		ur := calculateUnstableRate(hiterrors)
+		if math.IsNaN(ur) {
+			ur = 0
+		}
 		tmptotalresult := TotalResult{	uint16(count300),
 										uint16(count100),
 										uint16(count50),
@@ -348,10 +352,11 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 										score.CalculateAccuracy(totalhits),
 										score.CalculateRank(totalhits, mods),
 										oppai.PPv2{},
-										calculateUnstableRate(hiterrors)}
+										ur}
 		//tmptotalresult.PP = calculatePP(mapname, tmptotalresult)
 		tmptotalresult.PP = calculatePPbyNum(mapname, tmptotalresult, k+1)
 		totalresult = append(totalresult, tmptotalresult)
+		//log.Println("result", tmptotalresult)
 		//log.Println("Now Max Combo:", maxcombo)
 		//log.Println("Acc:", score.CalculateAccuracy(totalhits))
 		//log.Println("Unstable Rate:", calculateUnstableRate(hiterrors))

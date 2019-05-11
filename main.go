@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-var IDEDEBUG = false
+var IDEDEBUG = true
 
 func main() {
 	if !IDEDEBUG {

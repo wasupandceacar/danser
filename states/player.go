@@ -160,7 +160,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	player.exitPollFlag = false
 
 	go func() {
-		for !win.ShouldClose() {
+		for win != nil && !win.ShouldClose() {
 			if player.exitGoFlag || player.exitPollFlag{
 				return
 			}
@@ -360,11 +360,13 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 		}
 	}else {
 		log.Println("本次选择解析replay")
-		player.batch.Begin()
-		loadwords = append(loadwords, font.Word{14, float64(screenheight - 240), 24, "Analyze replay... 0/" + strconv.Itoa(player.players)})
-		player.font.DrawAll(player.batch, loadwords)
-		player.batch.End()
-		win.SwapBuffers()
+		if !settings.VSplayer.ReplayandCache.ReplayDebug {
+			player.batch.Begin()
+			loadwords = append(loadwords, font.Word{14, float64(screenheight - 240), 24, "Analyze replay... 0/" + strconv.Itoa(player.players)})
+			player.font.DrawAll(player.batch, loadwords)
+			player.batch.End()
+			win.SwapBuffers()
+		}
 		var errs []hitjudge.Error
 		if settings.VSplayer.ErrorFix.EnableErrorFix {
 			log.Println("本次选择进行replay解析纠错")
@@ -413,11 +415,13 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 				log.Println("已保存第", rnum, "个replay的结果缓存")
 			}
 			log.Println("解析第", rnum, "个replay完成，耗时", time.Now().Sub(t1), "，总耗时", time.Now().Sub(t))
-			player.batch.Begin()
-			loadwords = append(loadwords[:len(loadwords)-1], font.Word{14, float64(screenheight - 240), 24, "Analyze replay... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(player.players)})
-			player.font.DrawAll(player.batch, loadwords)
-			player.batch.End()
-			win.SwapBuffers()
+			if !settings.VSplayer.ReplayandCache.ReplayDebug {
+				player.batch.Begin()
+				loadwords = append(loadwords[:len(loadwords)-1], font.Word{14, float64(screenheight - 240), 24, "Analyze replay... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(player.players)})
+				player.font.DrawAll(player.batch, loadwords)
+				player.batch.End()
+				win.SwapBuffers()
+			}
 		}
 	}
 

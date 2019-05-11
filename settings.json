@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 50,
+			"Players": 21,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "6"
 		},
@@ -17,8 +17,8 @@
 			"ShowMouse2": false,
 			"ShowRealTimePP": true,
 			"RealTimePPGap": 800,
-			"ShowRealTimeUR": false,
-			"ShowPPAndURRank": false,
+			"ShowRealTimeUR": true,
+			"ShowPPAndURRank": true,
 			"Rank1Highlight": true,
 			"HighlightMult": 1.3
 		},
@@ -37,27 +37,27 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Dopamine",
-			"Difficulty": "C6H3(OH)2-CH2-CH2-NH2"
+			"Title": "Miraizu feat.Aida Miou(CV",
+			"Difficulty": "Special"
 		},
 		"Mods": {
-			"EnableDT": false,
+			"EnableDT": true,
 			"EnableHT": false,
 			"EnableEZ": false,
 			"EnableHR": false,
-			"EnableHD": false
+			"EnableHD": true
 		},
 		"Knockout": {
-			"EnableKnockout": true,
-			"ShowTrueMiss": false,
+			"EnableKnockout": false,
+			"ShowTrueMiss": true,
 			"PlayerFadeTime": 1500,
 			"SameTimeOffset": 22,
-			"MissMult": 0.95
+			"MissMult": 1.15
 		},
 		"ReplayandCache": {
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
-			"SaveResultCache": true,
+			"SaveResultCache": false,
 			"ReadResultCache": true,
 			"ReplayDebug": false
 		},
@@ -67,7 +67,7 @@
 		},
 		"Skin": {
 			"EnableSkin": true,
-			"SkinDir": "skin\\idke\\",
+			"SkinDir": "skin\\azr8\\",
 			"NumberOffset": 0
 		}
 	},
@@ -112,7 +112,7 @@
 		"EnableCustomTrailGlowOffset": true,
 		"TrailGlowOffset": -36,
 		"ScaleToCS": false,
-		"CursorSize": 6.5,
+		"CursorSize": 7.5,
 		"ScaleToTheBeat": false,
 		"ShowCursorsOnBreaks": true,
 		"BounceOnEdges": false,
