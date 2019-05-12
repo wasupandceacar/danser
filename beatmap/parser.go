@@ -150,6 +150,21 @@ func tokenize(line, delimiter string) []string {
 	return divided
 }
 
+func tokenizeintergal(line, delimiter string) []string {
+	if strings.HasPrefix(line, "//") || !strings.Contains(line, delimiter) {
+		return nil
+	}
+	divided := strings.Split(line, delimiter)
+	for i, a := range divided {
+		divided[i] = strings.TrimSpace(a)
+	}
+	// 防止属性值整体因为含有分割符而被分割
+	if len(divided) > 2 {
+		divided[1] = strings.Join(divided[1:], "")
+	}
+	return divided
+}
+
 func getSection(line string) string {
 	line = strings.TrimSpace(line)
 	if strings.HasPrefix(line, "[") {
@@ -183,7 +198,7 @@ func ParseBeatMap(file *os.File) *BeatMap {
 			}
 			break
 		case "Metadata":
-			if arr := tokenize(line, ":"); len(arr) > 1 {
+			if arr := tokenizeintergal(line, ":"); len(arr) > 1 {
 				parseMetadata(arr, beatMap)
 			}
 			break

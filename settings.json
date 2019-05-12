@@ -5,17 +5,17 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 21,
+			"Players": 22,
 			"SpecifiedPlayers": false,
-			"SpecifiedLine": "6"
+			"SpecifiedLine": "16"
 		},
 		"PlayerInfoUI": {
 			"BaseSize": 6,
 			"BaseX": 14,
 			"BaseY": 696,
 			"ShowMouse1": true,
-			"ShowMouse2": false,
-			"ShowRealTimePP": true,
+			"ShowMouse2": true,
+			"ShowRealTimePP": false,
 			"RealTimePPGap": 800,
 			"ShowRealTimeUR": true,
 			"ShowPPAndURRank": true,
@@ -37,7 +37,7 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Miraizu feat.Aida Miou(CV",
+			"Title": "Miraizu feat.Aida Miou(CVToyosaki Aki)",
 			"Difficulty": "Special"
 		},
 		"Mods": {

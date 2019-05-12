@@ -12,7 +12,13 @@ import (
 	"strconv"
 )
 
-func UImain() {
+func UImain(noGUI bool) {
+	if noGUI {
+		mainthread.CallQueueCap = 100000
+		mainthread.Run(runplayfield.RunPlayField)
+		return
+	}
+
 	// 首先载入设置
 	settings.LoadSettings(runplayfield.SettingsVersion)
 

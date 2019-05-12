@@ -8,3 +8,7 @@ func AngleBetween(centre, p1, p2 Vector2d) float64 {
 	c := p1.Dst(p2)
 	return math.Acos((a*a + b*b - c*c) / (2 * a * b))
 }
+
+func Xor(v1 bool, v2 bool) bool {
+	return (v1 && v2) != (v1 || v2)
+}

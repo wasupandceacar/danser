@@ -95,7 +95,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 	keyindex := 3
 	time := r[1].Time + r[2].Time
 	for k := 0; k < len(b.HitObjects); k++ {
-	//for k := 0; k < 1; k++ {
+	//for k := 0; k < 30; k++ {
 		//log.Println("Object", k+1)
 		obj :=  b.HitObjects[k]
 		if obj != nil {
@@ -112,15 +112,9 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 				CS_scale := CIRCLE_JUDGE_SCALE
 				// 寻找最近的Key
 				//log.Println("Slider head find", r[keyindex].Time, time, o.GetBasicData().StartTime, o.GetBasicData().StartPos)
-				ticktime := 0.0
-				if len(o.ScorePoints) != 0 {
-					ticktime = float64(o.ScorePoints[0].Time)
-				}else{
-					ticktime = float64(o.GetBasicData().EndTime - o.TailJudgeOffset)
-				}
 
 				// 滑条头占有键位，但这个键位依然对这个滑条的ticks有效
-				isfind, nearestindex, lasttime, newkeysoccupied, key := findNearestKey(keyindex, time, r, o.GetBasicData().StartTime, o.GetBasicData().StartPos, ODMiss, OD50, convert_CS * CS_scale, true, ticktime, keysoccupied)
+				isfind, nearestindex, lasttime, newkeysoccupied, key := findNearestKey(keyindex, time, r, o.GetBasicData().StartTime, o.GetBasicData().StartPos, ODMiss, OD50, convert_CS * CS_scale, true, float64(o.GetBasicData().StartTime), keysoccupied)
 				//log.Println("Slider hit on", key, r[nearestindex].Time, lasttime + r[nearestindex].Time)
 				copy(keysoccupied, newkeysoccupied)
 
@@ -136,25 +130,36 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 					switch keyhitresult {
 					case Hit300:
 						//log.Println("Slider head 300", o.GetBasicData().StartTime, hiterror, ODMiss, OD300, OD100, OD50)
-						CS_scale = checkInSliderBall(o, o.GetBasicData().StartTime + hiterror, bmath.Vector2d{float64(r[nearestindex].MosueX), float64(r[nearestindex].MouseY)}, convert_CS * CS_scale)
+						if hiterror >= 0 {
+							CS_scale = checkInSliderBall(o, o.GetBasicData().StartTime+hiterror, bmath.Vector2d{float64(r[nearestindex].MosueX), float64(r[nearestindex].MouseY)}, convert_CS*CS_scale)
+						}else {
+							CS_scale = CIRCLE_JUDGE_SCALE
+						}
 						realhits += 1
 						nowcombo += 1
 						break
 					case Hit100:
 						//log.Println("Slider head 100", o.GetBasicData().StartTime, hiterror, ODMiss, OD300, OD100, OD50)
-						CS_scale = checkInSliderBall(o, o.GetBasicData().StartTime + hiterror, bmath.Vector2d{float64(r[nearestindex].MosueX), float64(r[nearestindex].MouseY)}, convert_CS * CS_scale)
+						if hiterror >= 0 {
+							CS_scale = checkInSliderBall(o, o.GetBasicData().StartTime + hiterror, bmath.Vector2d{float64(r[nearestindex].MosueX), float64(r[nearestindex].MouseY)}, convert_CS * CS_scale)
+						}else {
+							CS_scale = CIRCLE_JUDGE_SCALE
+						}
 						realhits += 1
 						nowcombo += 1
 						break
 					case Hit50:
 						//log.Println("Slider head 50", o.GetBasicData().StartTime, hiterror, ODMiss, OD300, OD100, OD50)
-						CS_scale = checkInSliderBall(o, o.GetBasicData().StartTime + hiterror, bmath.Vector2d{float64(r[nearestindex].MosueX), float64(r[nearestindex].MouseY)}, convert_CS * CS_scale)
+						if hiterror >= 0 {
+							CS_scale = checkInSliderBall(o, o.GetBasicData().StartTime + hiterror, bmath.Vector2d{float64(r[nearestindex].MosueX), float64(r[nearestindex].MouseY)}, convert_CS * CS_scale)
+						}else {
+							CS_scale = CIRCLE_JUDGE_SCALE
+						}
 						realhits += 1
 						nowcombo += 1
 						break
 					case HitMiss:
 						//log.Println("Slider head miss", o.GetBasicData().StartTime, hiterror, ODMiss, OD300, OD100, OD50)
-						CS_scale = checkInSliderBall(o, o.GetBasicData().StartTime + hiterror, bmath.Vector2d{float64(r[nearestindex].MosueX), float64(r[nearestindex].MouseY)}, convert_CS * CS_scale)
 						CS_scale = CIRCLE_JUDGE_SCALE
 						isBreak = true
 						nowcombo = 0
@@ -218,12 +223,12 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 					nowcombo += 1
 					// 寻找状态改变后的时间点
 					//log.Println("Start find slider release", r[nextindex].Time, nexttime+ r[nextindex].Time)
-					keyindex, time, keysoccupied = findRelease(nextindex, nexttime + r[nextindex].Time, r, keysoccupied)
+					keyindex, time, keysoccupied = findRelease(nextindex, nexttime + r[nextindex].Time, r, keysoccupied, true)
 					time -= r[keyindex].Time
 				}else {
 					//log.Println("Slider tail not hit", o.GetBasicData().EndTime - o.TailJudgeOffset, o.TailJudgePoint)
 					//log.Println("Start find slider release", r[nextindex].Time, nexttime+ r[nextindex].Time)
-					keyindex, time, keysoccupied = findRelease(nextindex, nexttime + r[nextindex].Time, r, keysoccupied)
+					keyindex, time, keysoccupied = findRelease(nextindex, nexttime + r[nextindex].Time, r, keysoccupied, true)
 					time -= r[keyindex].Time
 				}
 				maxcombo = int(math.Max(float64(maxcombo), float64(nowcombo)))
@@ -306,11 +311,11 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 					time = lasttime + r[nearestindex].Time
 					//log.Println("hit in", time)
 					// 寻找状态改变后的时间点
-					keyindex, time, keysoccupied = findRelease(nearestindex, time, r, keysoccupied)
+					keyindex, time, keysoccupied = findRelease(nearestindex, time, r, keysoccupied, true)
 					time -= r[keyindex].Time
 				}else {
 					// 如果没找到，输出miss，设置下一个index
-					log.Println("Circle count as Late Miss", "Object", k+1)
+					log.Println("Circle count as Late Miss, Object", k+1)
 					countMiss += 1
 					nowcombo = 0
 					totalhits = append(totalhits, 0)
@@ -399,10 +404,30 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 }
 
 // 定位Key放下的位置
-func findRelease(keyindex int, starttime int64, r []*rplpa.ReplayData, keysoccupied []bool) (int, int64, []bool) {
+func findRelease(keyindex int, starttime int64, r []*rplpa.ReplayData, keysoccupied []bool, sametimecheck bool) (int, int64, []bool) {
 	keypress := r[keyindex].KeyPressed
 	index := keyindex
 	time := starttime
+
+	// 特殊情况：第一个片段就按下两个键，其中一个键对note生效，另一个note依然留存，即状态已经改变？
+	if sametimecheck {
+		isanykeyoccupied := keysoccupied[0] || keysoccupied[1] || keysoccupied[2] || keysoccupied[3]
+		if isanykeyoccupied {
+			keypressstatus := []bool{
+				getSameTimePressKeyStatus(keypress.Key1, keysoccupied[0]),
+				getSameTimePressKeyStatus(keypress.Key2, keysoccupied[1]),
+				getSameTimePressKeyStatus(trueClick(keypress.LeftClick, keypress.Key1), keysoccupied[2]),
+				getSameTimePressKeyStatus(trueClick(keypress.RightClick, keypress.Key2), keysoccupied[3]),
+			}
+			for _, status := range keypressstatus {
+				if status {
+					//log.Println("Same time press", time, keypress, keysoccupied, keypressstatus)
+					return index, time, keysoccupied
+				}
+			}
+		}
+	}
+
 	for {
 		index++
 		time += r[index].Time
@@ -415,7 +440,7 @@ func findRelease(keyindex int, starttime int64, r []*rplpa.ReplayData, keysoccup
 			// 重新设置占用键位情况
 			newkeysoccupied := resetKeysOccupied(*keypress, *r[index].KeyPressed, keysoccupied)
 			//log.Println("Reset key occupied release", *keypress, *r[index].KeyPressed, keysoccupied, newkeysoccupied)
-			//log.Println("Find release before", r[index].Time, time)
+			//log.Println("Find release before", r[index].Time, time, sametimecheck)
 			// 返回之前已判定的无效键
 			return index, time, newkeysoccupied
 		}
@@ -442,13 +467,13 @@ func isPressChanged(p1 rplpa.KeyPressed, p2 rplpa.KeyPressed) bool {
 					return true
 				}
 			}
-			if p2.LeftClick{
-				if !p1.LeftClick{
+			if trueClick(p2.LeftClick, p2.Key1){
+				if !trueClick(p1.LeftClick, p1.Key1){
 					return true
 				}
 			}
-			if p2.RightClick{
-				if !p1.RightClick{
+			if trueClick(p2.RightClick, p2.Key2){
+				if !trueClick(p1.RightClick, p1.Key2){
 					return true
 				}
 			}
@@ -473,13 +498,13 @@ func resetKeysOccupied(p1 rplpa.KeyPressed, p2 rplpa.KeyPressed, keysoccupied []
 			case 0:
 				if !p1.Key1 || (p1.Key1 && !p2.Key1) {
 					newkeysoccupied[0] = false
-					//log.Println("K1 no occupied", keysoccupied, newkeysoccupied)
+					//log.Println("K1 no occupied", p1.Key1, p2.Key1, p1.Key1 && !p2.Key1, keysoccupied, newkeysoccupied)
 				}
 				break
 			case 1:
 				if !p1.Key2 || (p1.Key2 && !p2.Key2) {
 					newkeysoccupied[1] = false
-					//log.Println("K2 no occupied", keysoccupied, newkeysoccupied)
+					//log.Println("K2 no occupied", p1.Key2, p2.Key2, p1.Key2 && !p2.Key2, keysoccupied, newkeysoccupied)
 				}
 				break
 			case 2:
@@ -505,13 +530,13 @@ func resetKeysOccupied(p1 rplpa.KeyPressed, p2 rplpa.KeyPressed, keysoccupied []
 }
 
 // 寻找最近的击中的Key
-func findNearestKey(start int, starttime int64, r []*rplpa.ReplayData, requirehittime int64, requirepos bmath.Vector2d, ODMiss float64, OD50 float64, CS float64, isNextTick bool, ticktime float64, keysoccupied []bool) (bool, int, int64, []bool, Key) {
+func findNearestKey(start int, starttime int64, r []*rplpa.ReplayData, requirehittime int64, requirepos bmath.Vector2d, ODMiss float64, OD50 float64, CS float64, isNextTick bool, headtime float64, keysoccupied []bool) (bool, int, int64, []bool, Key) {
 	index := start
 	time := starttime
 	for {
 		hit := r[index]
-		//ispress, newkeysoccupy, _ := isPressed(hit, keysoccupied)
-		//log.Println("Find move", hit.Time + time, requirehittime, isInCircle(hit, requirepos, CS), ispress, newkeysoccupy, bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos), ODMiss, OD50, CS + 0.01, keysoccupied)
+		//ispress, newkeysoccupied, _ := isPressed(hit, keysoccupied)
+		//log.Println("Find move", hit.Time + time, requirehittime, isInCircle(hit, requirepos, CS), ispress, newkeysoccupied, bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos), ODMiss, OD50, CS + 0.01, keysoccupied)
 		//if hit.Time + time > -500 {
 		//	os.Exit(2)
 		//}
@@ -520,6 +545,13 @@ func findNearestKey(start int, starttime int64, r []*rplpa.ReplayData, requirehi
 		if float64(realhittime) > float64(requirehittime) + OD50 {
 			//log.Println("Find move already too late", realhittime, float64(requirehittime) + OD50)
 			// 占用状态不变，直接返回原占用数组
+			if isNextTick {
+				// （tick、滑条尾）返回上一个生效点
+				index, time = findFirstAfterHead(headtime, r)
+				time -= r[index].Time
+				//log.Println("Return to head", r[index].Time, time)
+			}
+			// 此键位未被占用
 			return false, index, time, keysoccupied, NoKey
 		}
 		// 判断是否在圈内
@@ -543,7 +575,7 @@ func findNearestKey(start int, starttime int64, r []*rplpa.ReplayData, requirehi
 				}
 			}
 		}else {
-			ispressed, _, key := isPressed(hit, keysoccupied)
+			ispressed, newkeysoccupied, key := isPressed(hit, keysoccupied)
 			// 如果不在圈内，且按下按键
 			if ispressed {
 				realhittime := hit.Time + time
@@ -554,23 +586,23 @@ func findNearestKey(start int, starttime int64, r []*rplpa.ReplayData, requirehi
 					//log.Println("Hit too late", realhittime, requirehittime)
 					if isNextTick {
 						// （tick、滑条尾）返回上一个生效点
-						index, time = findFirstAfterLastHit(ticktime, r)
+						index, time = findFirstAfterHead(headtime, r)
 						time -= r[index].Time
-						//log.Println("Return to last tick point", r[index].Time, time)
+						//log.Println("Return to last head", r[index].Time, time)
 					}
 					// 此键位未被占用
-					return false, index, time, keysoccupied, NoKey
+					return false, index, time, newkeysoccupied, NoKey
 				}else {
 					// 如果最后时间前按下，没效果，此键位失去对下一个非tick的object（note、滑条头）的效果，寻找下一个按键放下的地方
 					//log.Println("Tap out is no use!")
-					index, time, keysoccupied = findRelease(index, realhittime, r, keysoccupied)
+					index, time, keysoccupied = findRelease(index, realhittime, r, newkeysoccupied, false)
 					time -= r[index].Time
 					// （tick、滑条尾）如果这个时间大于最后时间，则用最后时间重新定位tick生效位置
 					if float64(time) > float64(requirehittime) + OD50 {
 						if isNextTick {
-							index, time = findFirstAfterLastHit(ticktime, r)
+							index, time = findFirstAfterHead(headtime, r)
 							time -= r[index].Time
-							//log.Println("Return to last tick point", r[index].Time, time)
+							//log.Println("Return to last head", r[index].Time, time)
 						}
 						// 此键位被占用
 						return false, index, time, keysoccupied, key
@@ -603,7 +635,7 @@ func isPressed(hit *rplpa.ReplayData, keysoccupied []bool) (bool, []bool, Key) {
 			case 1:
 				if press.Key2 {
 					newkeysoccupied[1] = true
-					//log.Println("K2 occupied", keysoccupied, newkeysoccupied)
+					///log.Println("K2 occupied", keysoccupied, newkeysoccupied)
 					return true, newkeysoccupied, Key2
 				}
 				break
@@ -775,12 +807,15 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 		copy(keysoccupied, newkeysoccupied)
 
 		// 每次判断前，还要检查这一时刻的replay光标在不在sliderball中，调整CS范围
-		//log.Println("Check if in sliderball", realhittime, bmath.Vector2d{float64(hit.MosueX), float64(hit.MouseY)}, CSscale)
-		CSscale = checkInSliderBall(slider, realhittime, bmath.Vector2d{float64(hit.MosueX), float64(hit.MouseY)}, CS * CSscale)
+		// 在滑条头真实时间开始后再检查
+		if realhittime >= slider.GetBasicData().StartTime {
+			//log.Println("Check if in sliderball", realhittime, bmath.Vector2d{float64(hit.MosueX), float64(hit.MouseY)}, CSscale)
+			CSscale = checkInSliderBall(slider, realhittime, bmath.Vector2d{float64(hit.MosueX), float64(hit.MouseY)}, CS * CSscale)
+		}
 
 		if realhittime == requirehittime {
 			// 找到正好的一点
-			//log.Println("Tick Judge Tap", requirehittime, realhittime, bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos), CS * CSscale)
+			///log.Println("Tick Judge Tap", requirehittime, realhittime, bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos), CS * CSscale)
 			if isInCircle(hit, requirepos, CS * CSscale) {
 				// 在圈内
 				// tick判断不会改变占用情况
@@ -810,9 +845,10 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 				// 1.起始点
 				// 2.结束点
 				// 3.离哪个近用哪个
-				// 暂时使用离哪个近用哪个
+				// 暂时使用离哪个近用哪个，最中间点可以算按下或者未按下
+				// 暂时最中间算未按下
 				presshit := hit
-				if requirehittime - realhittime > realhittime + r[index+1].Time - requirehittime {
+				if requirehittime - realhittime >= realhittime + r[index+1].Time - requirehittime {
 					presshit = r[index+1]
 				}
 				ispressed := isPressedTick(presshit, keysoccupied, key)
@@ -908,14 +944,14 @@ func judgeSlider(requirehits int, realhits int) HitResult {
 	}
 }
 
-// 通过最后时间找第一个tick生效位置
-func findFirstAfterLastHit(ticktime float64, r []*rplpa.ReplayData) (int, int64) {
+// 通过最后时间找第一个滑条头生效位置
+func findFirstAfterHead(headtime float64, r []*rplpa.ReplayData) (int, int64) {
 	index := 3
 	time := r[1].Time + r[2].Time
 	for {
 		time += r[index].Time
-		if float64(time) > ticktime {
-			//log.Println("Find FirstbeforeTick before", r[index].Time, time, ticktime)
+		if float64(time) > headtime {
+			//log.Println("Find FirstbeforeHead before", r[index].Time, time, headtime)
 			time -= r[index].Time
 			return index - 1, time
 		}
@@ -1102,3 +1138,9 @@ func checkSliderBallBeforeHit(index int, lasttime int64, r []*rplpa.ReplayData, 
 		i++
 	}
 }
+
+// 获取是否重复按下的键位状态数组
+func getSameTimePressKeyStatus(key bool, occupied bool) bool {
+	return (key && bmath.Xor(key, occupied))
+}
+

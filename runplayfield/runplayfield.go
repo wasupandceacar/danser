@@ -223,7 +223,7 @@ func RunPlayField() {
 				win.SetShouldClose(true)
 			}
 
-			if win.GetKey(glfw.KeyF2) == glfw.Press {
+			if win.GetKey(glfw.KeyP) == glfw.Press {
 
 				if !pressed {
 					utils.MakeScreenshot(*win)
@@ -232,7 +232,7 @@ func RunPlayField() {
 				pressed = true
 			}
 
-			if win.GetKey(glfw.KeyF2) == glfw.Release {
+			if win.GetKey(glfw.KeyP) == glfw.Release {
 				pressed = false
 			}
 
