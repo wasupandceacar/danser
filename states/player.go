@@ -454,15 +454,16 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	// 初始化实时pp、ur参数数组
 	if settings.VSplayer.PlayerInfoUI.ShowRealTimePP {
 		for k := 0; k < player.players; k++ {
-			player.lastb4PP = make([]float64, player.players)
-			player.lastPP = make([]float64, player.players)
 			player.lastPPTime = make([]int64, player.players)
-			player.lastb4PP[k] = player.controller[k].GetTotalResult()[0].PP.Total
-			player.lastPP[k] = player.controller[k].GetTotalResult()[0].PP.Total
 			player.lastPPTime[k] = player.controller[k].GetHitResult()[0].JudgeTime
 		}
 	}
-
+	for k := 0; k < player.players; k++ {
+		player.lastb4PP = make([]float64, player.players)
+		player.lastPP = make([]float64, player.players)
+		player.lastb4PP[k] = player.controller[k].GetTotalResult()[0].PP.Total
+		player.lastPP[k] = player.controller[k].GetTotalResult()[0].PP.Total
+	}
 	if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 		for k := 0; k < player.players; k++ {
 			player.lastb4UR = make([]float64, player.players)
@@ -550,9 +551,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	player.missfontsize = settings.VSplayer.Knockout.MissMult * player.fontsize
 	player.misssize = 1.5 * settings.VSplayer.Knockout.MissMult * settings.VSplayer.PlayerInfoUI.BaseSize
 	player.keysize = 1.25 * settings.VSplayer.PlayerInfoUI.BaseSize
-	if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
-		player.gapsize = 0.6 * settings.VSplayer.PlayerInfoUI.BaseSize
-	}
+	player.gapsize = settings.VSplayer.PlayerInfoUI.LineGapMult * settings.VSplayer.PlayerInfoUI.BaseSize
 	player.modoffset =  settings.VSplayer.PlayerInfoUI.BaseSize
 	player.missoffsetX =  2 * settings.VSplayer.Knockout.MissMult * settings.VSplayer.PlayerInfoUI.BaseSize
 	player.missoffsetY =  0.6 * settings.VSplayer.Knockout.MissMult * settings.VSplayer.PlayerInfoUI.BaseSize
@@ -1054,10 +1053,7 @@ func (pl *Player) Draw(delta float64) {
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			linecount *= 2
 		}
-		gapY := 0.0
-		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
-			gapY = pl.gapsize * float64(k)
-		}
+		gapY := pl.gapsize * float64(k)
 		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
 		namecolor := colors1[colornum]
 		if settings.VSplayer.Knockout.EnableKnockout && (!pl.controller[k].GetIsShow()) {
@@ -1126,10 +1122,7 @@ func (pl *Player) Draw(delta float64) {
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			linecount *= 2
 		}
-		gapY := 0.0
-		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
-			gapY = pl.gapsize * float64(k)
-		}
+		gapY := pl.gapsize * float64(k)
 		pl.batch.SetAdditive(true)
 		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
 		namecolor := colors1[colornum]
@@ -1213,10 +1206,7 @@ func (pl *Player) Draw(delta float64) {
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			linecount *= 2
 		}
-		gapY := 0.0
-		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
-			gapY = pl.gapsize * float64(k)
-		}
+		gapY := pl.gapsize * float64(k)
 		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
 		namecolor := colors1[colornum]
 		// 如果设置不显示，开始降低透明度
@@ -1257,7 +1247,11 @@ func (pl *Player) Draw(delta float64) {
 			pl.batch.SetCamera(pl.scamera.GetProjectionView())
 		}
 		if !settings.VSplayer.PlayerInfoUI.ShowRealTimePP{
-			pl.controller[k].SetPP(pl.controller[k].GetTotalResult()[0].PP.Total)
+			if len(pl.controller[k].GetHitResult()) > 0 {
+				pl.controller[k].SetPP(pl.controller[k].GetTotalResult()[0].PP.Total)
+			}else {
+				pl.controller[k].SetPP(pl.lastPP[k])
+			}
 		}else {
 			// 显示每帧实时pp变化
 			if len(pl.controller[k].GetHitResult()) > 0 {
@@ -1388,10 +1382,10 @@ func (pl *Player) Draw(delta float64) {
 						break
 					}
 					if settings.VSplayer.PlayerInfoUI.ShowRealTimePP {
-						pl.lastb4PP[k] = pl.lastPP[k]
-						pl.lastPP[k] = pl.controller[k].GetTotalResult()[0].PP.Total
 						pl.lastPPTime[k] = pl.controller[k].GetHitResult()[0].JudgeTime
 					}
+					pl.lastb4PP[k] = pl.lastPP[k]
+					pl.lastPP[k] = pl.controller[k].GetTotalResult()[0].PP.Total
 					if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 						pl.lastb4UR[k] = pl.lastUR[k]
 						pl.lastUR[k] = pl.controller[k].GetTotalResult()[0].UR
@@ -1458,10 +1452,7 @@ func (pl *Player) Draw(delta float64) {
 			if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 				linecount *= 2
 			}
-			gapY := 0.0
-			if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
-				gapY = pl.gapsize * float64(k)
-			}
+			gapY := pl.gapsize * float64(k)
 			colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
 			namecolor := colors1[colornum]
 			// 渲染pp排名

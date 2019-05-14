@@ -31,6 +31,7 @@ type playerinfoUI struct {
 	ShowPPAndURRank	bool
 	Rank1Highlight	bool
 	HighlightMult	float64
+	LineGapMult		float64
 }
 
 type recordinfoUI struct {

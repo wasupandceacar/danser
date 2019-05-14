@@ -218,6 +218,18 @@ func UImain(noGUI bool) {
 											},
 										},
 									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "行间距倍数：",
+											},
+											LineEdit{
+												AssignTo: &vsw.lineGapMult,
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.LineGapMult),
+											},
+										},
+									},
 								},
 							},
 							VSpacer{},

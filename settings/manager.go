@@ -30,6 +30,7 @@ func initDefaults() {
 			false,
 			false,
 			1.3,
+			0.6,
 		},
 		&recordinfoUI{
 			"who are you",

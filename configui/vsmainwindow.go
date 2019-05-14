@@ -47,6 +47,11 @@ func (vsw VSPlayerMainWindow) SaveConfig() {
 		panic(err)
 	}
 	settings.VSplayer.PlayerInfoUI.HighlightMult = highlightmult
+	linegapmult, err := strconv.ParseFloat(vsw.lineGapMult.Text(), 64)
+	if err != nil {
+		panic(err)
+	}
+	settings.VSplayer.PlayerInfoUI.LineGapMult = linegapmult
 
 	settings.VSplayer.RecordInfoUI.Recorder = vsw.recorder.Text()
 	settings.VSplayer.RecordInfoUI.RecordTime = vsw.recordTime.Text()
@@ -143,6 +148,7 @@ type VSPlayerMainWindow struct {
 	showPPAndURRank *walk.CheckBox
 	rank1Highlight *walk.CheckBox
 	highlightMult *walk.LineEdit
+	lineGapMult *walk.LineEdit
 
 	recorder *walk.LineEdit
 	recordTime *walk.LineEdit
