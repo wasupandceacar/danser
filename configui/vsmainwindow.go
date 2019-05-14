@@ -76,6 +76,23 @@ func (vsw VSPlayerMainWindow) SaveConfig() {
 	}
 	settings.VSplayer.RecordInfoUI.RecordAlpha = recordalpha
 
+	hitfadetime, err := strconv.Atoi(vsw.hitFadeTime.Text())
+	if err != nil {
+		panic(err)
+	}
+	settings.VSplayer.PlayerFieldUI.HitFadeTime = int64(hitfadetime)
+	cursorcolornum, err := strconv.Atoi(vsw.cursorColorNum.Text())
+	if err != nil {
+		panic(err)
+	}
+	settings.VSplayer.PlayerFieldUI.CursorColorNum = cursorcolornum
+	cursorcolorskipnum, err := strconv.Atoi(vsw.cursorColorSkipNum.Text())
+	if err != nil {
+		panic(err)
+	}
+	settings.VSplayer.PlayerFieldUI.CursorColorSkipNum = cursorcolorskipnum
+	settings.VSplayer.PlayerFieldUI.ShowHitCircleNumber = vsw.showHitCircleNumber.Checked()
+
 	settings.VSplayer.MapInfo.Title = vsw.title.Text()
 	settings.VSplayer.MapInfo.Difficulty = vsw.difficulty.Text()
 

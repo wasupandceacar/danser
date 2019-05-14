@@ -17,8 +17,8 @@
 - [x]  [Teo(Kroytz)](https://osu.ppy.sh/s/721804) 断尾非常集中
 - [ ]  **[孤高](https://osu.ppy.sh/s/28705)**
 - [ ]  [Hoshi o Kakeru Adventure](https://osu.ppy.sh/s/677573) 知名度太低
-- [ ]  [冻僵](https://osu.ppy.sh/s/158023) HT FC 太多
-- [ ]  [deltamax](https://osu.ppy.sh/s/18315) 太短，断连显示极为频繁
+- [ ]  **[冻僵](https://osu.ppy.sh/s/158023)** HT FC 太多
+- [x]  [deltamax](https://osu.ppy.sh/s/18315) 太短，断连显示极为频繁
 - [ ]  [ghost rule](https://osu.ppy.sh/s/413117) 基本全部断尾
 - [ ]  [quaver](https://osu.ppy.sh/s/423527) 基本全部断尾
 - [ ]  [透明哀歌](https://osu.ppy.sh/s/219380) 断尾太多
@@ -55,23 +55,22 @@
 - [ ]  [Kegare Naki Bara Juuji](https://osu.ppy.sh/s/448818)
 - [x]  [Kegare Naki Yume](https://osu.ppy.sh/s/386619)*967pp
 - [ ]  [Candle Master](https://osu.ppy.sh/s/357632)
-- [ ]  [Glorious Crown](https://osu.ppy.sh/s/558694) 只有EZFC
 - [ ]  [地狱乐](https://osu.ppy.sh/s/437683) 判定差太多
 - [x]  [红皮(Cry Thunder)](https://osu.ppy.sh/s/316050)
 
 ## 有人FC HR 图 ##
 - [ ]  [Ange du Blanc Pur](https://osu.ppy.sh/s/564165)
-- [ ]  **[蓝极光](https://osu.ppy.sh/s/292301)**
+- [x]  [蓝极光](https://osu.ppy.sh/s/292301)
 - [ ]  [highscore](https://osu.ppy.sh/s/332532)
 - [ ]  [新黄泉](https://osu.ppy.sh/s/575330)
 - [ ]  [Sidetracked Day](https://osu.ppy.sh/s/728276) pp图
 - [ ]  [Hades: The rise](https://osu.ppy.sh/s/662526) 曲奇HDHRSS
 - [ ]  [chocolate](https://osu.ppy.sh/s/452230) 
 - [ ]  [绿皮(Defenders)](https://osu.ppy.sh/s/323059) 
-- [ ]  **[梦地图(Loved)](https://osu.ppy.sh/b/1226524?m=0)**
+- [x]  [梦地图(Loved)](https://osu.ppy.sh/b/1226524?m=0)
 
 ## 有人FC DT 图 ##
-- [ ]  **[未来图](https://osu.ppy.sh/s/306591)**
+- [x]  [未来图](https://osu.ppy.sh/s/306591)
 - [ ]  [best friends](https://osu.ppy.sh/s/249939)
 - [x]  [遥控器](https://osu.ppy.sh/s/351630)
 - [ ]  [necro fatansia](https://osu.ppy.sh/s/516494)
