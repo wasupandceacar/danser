@@ -57,6 +57,8 @@
 - [ ]  [Candle Master](https://osu.ppy.sh/s/357632)
 - [ ]  [地狱乐](https://osu.ppy.sh/s/437683) 判定差太多
 - [x]  [红皮(Cry Thunder)](https://osu.ppy.sh/s/316050)
+- [ ]  [Youka to Yumeutsutsu](https://osu.ppy.sh/b/1164254)
+- [ ]  [Embraced by the Flame](https://osu.ppy.sh/b/894744)
 
 ## 有人FC HR 图 ##
 - [ ]  [Ange du Blanc Pur](https://osu.ppy.sh/s/564165)
