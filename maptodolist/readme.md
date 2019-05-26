@@ -59,6 +59,7 @@
 - [x]  [红皮(Cry Thunder)](https://osu.ppy.sh/s/316050)
 - [ ]  [Youka to Yumeutsutsu](https://osu.ppy.sh/b/1164254)
 - [ ]  [Embraced by the Flame](https://osu.ppy.sh/b/894744)
+- [ ]  [ODDS&ENDS](https://osu.ppy.sh/b/1302567)
 
 ## 有人FC HR 图 ##
 - [ ]  [Ange du Blanc Pur](https://osu.ppy.sh/s/564165)
@@ -99,4 +100,4 @@
 - [ ]  [V0(Enon)](https://osu.ppy.sh/s/402837) 
 - [ ]  [doki-doki(Loved)](https://osu.ppy.sh/s/638414) 
 - [ ]  [阴蜂(阴蜂难度)](https://osu.ppy.sh/s/120515) 
-- [ ]  [Milk Crown on Sonnetica(Loved,9*难度)](https://osu.ppy.sh/s/327557) 
+- [ ]  [**Milk Crown on Sonnetica(Loved,9*难度)**](https://osu.ppy.sh/s/327557) 
