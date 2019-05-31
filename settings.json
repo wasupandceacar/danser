@@ -7,13 +7,13 @@
 		"PlayerInfo": {
 			"Players": 50,
 			"SpecifiedPlayers": false,
-			"SpecifiedLine": "16"
+			"SpecifiedLine": "4"
 		},
 		"PlayerInfoUI": {
 			"BaseSize": 6,
 			"BaseX": 14,
 			"BaseY": 696,
-			"ShowMouse1": true,
+			"ShowMouse1": false,
 			"ShowMouse2": false,
 			"ShowRealTimePP": true,
 			"RealTimePPGap": 800,
@@ -38,14 +38,14 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Yume Chizu (Speed Up Ver.)",
-			"Difficulty": "My Dream"
+			"Title": "Happppy song",
+			"Difficulty": "happy birthday to me."
 		},
 		"Mods": {
 			"EnableDT": false,
 			"EnableHT": false,
 			"EnableEZ": false,
-			"EnableHR": true,
+			"EnableHR": false,
 			"EnableHD": false
 		},
 		"Knockout": {
@@ -68,7 +68,7 @@
 		},
 		"Skin": {
 			"EnableSkin": true,
-			"SkinDir": "skin\\cookiezi3\\",
+			"SkinDir": "skin\\bubbleman\\",
 			"NumberOffset": 0
 		}
 	},
