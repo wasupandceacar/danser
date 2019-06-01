@@ -6,20 +6,20 @@
 	"VSplayer": {
 		"PlayerInfo": {
 			"Players": 50,
-			"SpecifiedPlayers": false,
+			"SpecifiedPlayers": true,
 			"SpecifiedLine": "4"
 		},
 		"PlayerInfoUI": {
 			"BaseSize": 6,
 			"BaseX": 14,
 			"BaseY": 696,
-			"ShowMouse1": false,
+			"ShowMouse1": true,
 			"ShowMouse2": false,
 			"ShowRealTimePP": true,
 			"RealTimePPGap": 800,
 			"ShowRealTimeUR": false,
 			"ShowPPAndURRank": false,
-			"Rank1Highlight": false,
+			"Rank1Highlight": true,
 			"HighlightMult": 1.3,
 			"LineGapMult": 0
 		},
@@ -38,8 +38,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Happppy song",
-			"Difficulty": "happy birthday to me."
+			"Title": "Kokou no Sousei",
+			"Difficulty": "Chaos"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -60,7 +60,7 @@
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
 			"ReadResultCache": false,
-			"ReplayDebug": false
+			"ReplayDebug": true
 		},
 		"ErrorFix": {
 			"EnableErrorFix": false,
@@ -68,7 +68,7 @@
 		},
 		"Skin": {
 			"EnableSkin": true,
-			"SkinDir": "skin\\bubbleman\\",
+			"SkinDir": "skin\\flyingtuna1\\",
 			"NumberOffset": 0
 		}
 	},

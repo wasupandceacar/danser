@@ -11,13 +11,13 @@
 - [x]  [axion(扶老二)](https://osu.ppy.sh/s/115193) 较短，断连显示频繁
 - [ ]  [摩天楼](https://osu.ppy.sh/s/100348)
 - [ ]  [女武神(arles)](https://osu.ppy.sh/s/378400) 集体断尾
-- [ ]  **[happy song](https://osu.ppy.sh/s/744593)** 断的比较后
+- [x]  [happy song](https://osu.ppy.sh/s/744593) 断的比较后
 - [x]  [飞升(Kroytz)](https://osu.ppy.sh/s/368060)
-- [ ]  [Crystalia](https://osu.ppy.sh/s/691220)
+- [ ]  [**Crystalia**](https://osu.ppy.sh/s/691220)
 - [x]  [Teo(Kroytz)](https://osu.ppy.sh/s/721804) 断尾非常集中
-- [ ]  **[孤高](https://osu.ppy.sh/s/28705)**
+- [x]  [孤高](https://osu.ppy.sh/s/28705)
 - [ ]  [Hoshi o Kakeru Adventure](https://osu.ppy.sh/s/677573) 知名度太低
-- [ ]  **[冻僵](https://osu.ppy.sh/s/158023)** HT FC 太多
+- [x]  [冻僵](https://osu.ppy.sh/s/158023) HT FC 太多
 - [x]  [deltamax](https://osu.ppy.sh/s/18315) 太短，断连显示极为频繁
 - [ ]  [ghost rule](https://osu.ppy.sh/s/413117) 基本全部断尾
 - [ ]  [quaver](https://osu.ppy.sh/s/423527) 基本全部断尾
@@ -27,15 +27,15 @@
 - [ ]  [新龙力](https://osu.ppy.sh/s/871946) pp图
 - [ ]  [翡翠鸟](https://osu.ppy.sh/s/557145)
 - [ ]  [shounen ripples(Arles)](https://osu.ppy.sh/s/356426)
-- [ ]  [High Free Spirits(Speed Up Ver.)](https://osu.ppy.sh/s/467220)
-- [ ]  [Atama no Taisou](https://osu.ppy.sh/s/40344)
+- [ ]  [**High Free Spirits(Speed Up Ver.)**](https://osu.ppy.sh/s/467220)
+- [ ]  [**Atama no Taisou**](https://osu.ppy.sh/s/40344)
 - [ ]  [Packet Hero](https://osu.ppy.sh/s/404910) 集体断尾
 - [ ]  [Light it up](https://osu.ppy.sh/s/650738) 知名度太低
 - [ ]  [Owata \(^o^)/](https://osu.ppy.sh/s/399096) 知名度太低
 - [x]  [量子海](https://osu.ppy.sh/s/372850)
-- [ ]  [量子海(Crystal)](https://osu.ppy.sh/s/405167)
+- [ ]  [**量子海(Crystal)**](https://osu.ppy.sh/s/405167)
 - [x]  [多巴胺](https://osu.ppy.sh/s/210316)
-- [ ]  [雪司机(Snow Drive)](https://osu.ppy.sh/s/291154)
+- [ ]  [**雪司机(Snow Drive)**](https://osu.ppy.sh/s/291154)
 - [ ]  [TRY UNITE](https://osu.ppy.sh/s/319815)
 - [ ]  [RAISE MY SWORD](https://osu.ppy.sh/s/889855)
 - [ ]  [Gensou Roman Kikou](https://osu.ppy.sh/s/736862)
@@ -51,7 +51,7 @@
 - [ ]  [阴蜂(阳蜂难度)](https://osu.ppy.sh/s/120515) 
 - [ ]  [Milk Crown on Sonnetica(Loved,101%难度)](https://osu.ppy.sh/s/327557) 
 - [ ]  [玻璃花(Loved)](https://osu.ppy.sh/s/394834) 
-- [ ]  [Louder than steel](https://osu.ppy.sh/s/864869) 
+- [ ]  [**Louder than steel**](https://osu.ppy.sh/s/864869) 
 - [ ]  [Kegare Naki Bara Juuji](https://osu.ppy.sh/s/448818)
 - [x]  [Kegare Naki Yume](https://osu.ppy.sh/s/386619)*967pp
 - [ ]  [Candle Master](https://osu.ppy.sh/s/357632)
@@ -59,18 +59,20 @@
 - [x]  [红皮(Cry Thunder)](https://osu.ppy.sh/s/316050)
 - [ ]  [Youka to Yumeutsutsu](https://osu.ppy.sh/b/1164254)
 - [ ]  [Embraced by the Flame](https://osu.ppy.sh/b/894744)
-- [ ]  [ODDS&ENDS](https://osu.ppy.sh/b/1302567)
+- [ ]  [**ODDS&ENDS**](https://osu.ppy.sh/b/1302567)
+- [ ]  [Monsters](https://osu.ppy.sh/b/1586453)
 
 ## 有人FC HR 图 ##
-- [ ]  [Ange du Blanc Pur](https://osu.ppy.sh/s/564165)
+- [ ]  [**Ange du Blanc Pur**](https://osu.ppy.sh/s/564165)
 - [x]  [蓝极光](https://osu.ppy.sh/s/292301)
-- [ ]  [highscore](https://osu.ppy.sh/s/332532)
+- [ ]  [**highscore**](https://osu.ppy.sh/s/332532)
 - [ ]  [新黄泉](https://osu.ppy.sh/s/575330)
-- [ ]  [Sidetracked Day](https://osu.ppy.sh/s/728276) pp图
+- [ ]  [**Sidetracked Day**](https://osu.ppy.sh/s/728276) pp图
 - [ ]  [Hades: The rise](https://osu.ppy.sh/s/662526) 曲奇HDHRSS
 - [ ]  [chocolate](https://osu.ppy.sh/s/452230) 
 - [ ]  [绿皮(Defenders)](https://osu.ppy.sh/s/323059) 
 - [x]  [梦地图(Loved)](https://osu.ppy.sh/b/1226524?m=0)
+- [ ]  [oddloop](https://osu.ppy.sh/b/1142960) 
 
 ## 有人FC DT 图 ##
 - [x]  [未来图](https://osu.ppy.sh/s/306591)
@@ -78,7 +80,7 @@
 - [x]  [遥控器](https://osu.ppy.sh/s/351630)
 - [ ]  [necro fatansia](https://osu.ppy.sh/s/516494)
 - [ ]  [Akatsuki Zukuyo](https://osu.ppy.sh/s/351280)
-- [ ]  [樱之诗](https://osu.ppy.sh/s/738656)
+- [ ]  [**樱之诗**](https://osu.ppy.sh/s/738656)
 - [ ]  [剑舞](https://osu.ppy.sh/s/745312) pp图
 - [ ]  [In A Night When Her Sorrow Resounds Around](https://osu.ppy.sh/s/901755)
 
@@ -100,4 +102,4 @@
 - [ ]  [V0(Enon)](https://osu.ppy.sh/s/402837) 
 - [ ]  [doki-doki(Loved)](https://osu.ppy.sh/s/638414) 
 - [ ]  [阴蜂(阴蜂难度)](https://osu.ppy.sh/s/120515) 
-- [ ]  [**Milk Crown on Sonnetica(Loved,9*难度)**](https://osu.ppy.sh/s/327557) 
+- [x]  [Milk Crown on Sonnetica(Loved,9*难度)](https://osu.ppy.sh/s/327557) 
