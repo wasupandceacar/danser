@@ -87,23 +87,44 @@ func (self *Spinner) Draw(time int64, preempt float64, fadeIn float64, color mgl
 
 	if time < self.renderStartTime - int64(preempt) {
 		return false
-	} else if time < self.renderStartTime {
-		alpha = float64(color[3]) / preempt
-	}else {
+	}else if time < self.renderStartTime {
+		alpha = float64(color[3]) * clampF((float64(time - self.renderStartTime) + preempt) / preempt, 0, 1)
+	}else if time <= self.objData.EndTime{
 		alpha = float64(color[3])
+	}else if time <= self.objData.EndTime + int64(preempt) / 2 {
+		alpha = float64(color[3]) * clampF((float64(self.objData.EndTime - time) + preempt/2) / preempt*2, 0, 1)
 	}
 
 	batch.SetTranslation(self.objData.StartPos)
 
 	batch.SetColor(1, 1, 1, alpha)
-	// 绘制Spinner转圈
-	batch.DrawUnitSR(*render.SpinnerCircle, bmath.Vector2d{float64(render.SpinnerCircle.Width) / 4.75, float64(render.SpinnerCircle.Height) / 4.75}, angle)
-	batch.DrawUnitSR(*render.SpinnerMiddle, bmath.Vector2d{float64(render.SpinnerMiddle.Width) / 2, float64(render.SpinnerMiddle.Height) / 2}, angle)
-	batch.DrawUnitSR(*render.SpinnerBottom, bmath.Vector2d{float64(render.SpinnerBottom.Width) / 4, float64(render.SpinnerBottom.Height) / 4}, angle)
+
+	if time <= self.objData.EndTime + int64(preempt) / 2 {
+		// 绘制Spinner转圈
+		if (render.SpinnerBackground.Height != 1 || render.SpinnerBackground.Width != 1) || render.SkinVersion < 2.0 {
+			// 旧样式的spinner
+			spinnerCircleScale := float64(render.SpinnerCircle.Height) / (DEFAULT_SKIN_SIZE * 2) * PLAYFIELD_HEIGHT
+			batch.DrawUnitSR(*render.SpinnerCircle, bmath.Vector2d{float64(render.SpinnerCircle.Width) / float64(render.SpinnerCircle.Height) * spinnerCircleScale, spinnerCircleScale}, angle)
+		} else {
+			// 新样式的spinner
+			// 设置转满的时间
+			cleartime := float64(self.objData.EndTime-self.renderStartTime) * 0.75
+			clearmult := clampF(float64(time-self.renderStartTime)/cleartime, 0, 1)
+			clearmult = -clearmult * (clearmult - 2)
+			finishScale := 0.8 + 0.2*clearmult
+			spinnerTopScale := float64(render.SpinnerTop.Height) / (DEFAULT_SKIN_SIZE * 2) * PLAYFIELD_HEIGHT
+			batch.DrawUnitSR(*render.SpinnerTop, bmath.Vector2d{float64(render.SpinnerTop.Width) / float64(render.SpinnerTop.Height) * spinnerTopScale * finishScale, spinnerTopScale * finishScale}, angle)
+			spinnerMiddleScale := float64(render.SpinnerMiddle.Height) / (DEFAULT_SKIN_SIZE * 2) * PLAYFIELD_HEIGHT
+			batch.DrawUnitSR(*render.SpinnerMiddle, bmath.Vector2d{float64(render.SpinnerMiddle.Width) / float64(render.SpinnerMiddle.Height) * spinnerMiddleScale * finishScale, spinnerMiddleScale * finishScale}, angle)
+			spinnerBottomScale := float64(render.SpinnerBottom.Height) / (DEFAULT_SKIN_SIZE * 2) * PLAYFIELD_HEIGHT
+			batch.DrawUnitSR(*render.SpinnerBottom, bmath.Vector2d{float64(render.SpinnerBottom.Width) / float64(render.SpinnerBottom.Height) * spinnerBottomScale * finishScale, spinnerBottomScale * finishScale}, angle)
+		}
+	}
+
 
 	batch.SetSubScale(1, 1)
 
-	if time >= self.objData.EndTime+int64(preempt/4) {
+	if time > self.objData.EndTime + int64(preempt) / 2 {
 		return true
 	}
 	return false
@@ -121,20 +142,21 @@ func (self *Spinner) DrawApproach(time int64, preempt float64, fadeIn float64, c
 
 	alpha := 1.0
 	// 计算AR
-	fake_preempt := 2 * float64(self.objData.EndTime - self.renderStartTime) / PLAYFIELD_HEIGHT
-	arr := float64(self.objData.EndTime - time) / fake_preempt
+	arr := clampF(float64(self.objData.EndTime - time) / float64(self.objData.EndTime - self.renderStartTime) ,0 ,1) * PLAYFIELD_HEIGHT / 2
 
 	if time < self.renderStartTime - int64(preempt){
 		alpha = 0
-	} else if time < self.renderStartTime{
-		alpha = float64(color[3]) / preempt
-	}else {
+	}else if time < self.renderStartTime{
+		alpha = float64(color[3]) * clampF((float64(time - self.renderStartTime) + preempt) / preempt, 0, 1)
+	}else if time <= self.objData.EndTime{
 		alpha = float64(color[3])
+	}else if time <= self.objData.EndTime + int64(preempt) / 2 {
+		alpha = float64(color[3]) * clampF((float64(self.objData.EndTime - time) + preempt/2) / preempt*2, 0, 1)
 	}
 
 	batch.SetTranslation(self.objData.StartPos)
 
-	if time <= self.objData.EndTime {
+	if time <= self.objData.EndTime + int64(preempt) / 2 {
 		batch.SetColor(1, 1, 1, alpha)
 		batch.DrawUnitS(*render.SpinnerApproachCircle, bmath.Vector2d{arr, arr})
 	}

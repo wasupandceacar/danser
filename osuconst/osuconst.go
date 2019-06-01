@@ -4,6 +4,9 @@ package osuconst
 const PLAYFIELD_WIDTH  = 512.0
 const PLAYFIELD_HEIGHT  = 384.0
 
+// 原始皮肤基准大小
+const DEFAULT_SKIN_SIZE = 667.0
+
 // 各个object的判定大小倍数
 const CIRCLE_JUDGE_SCALE = 1.0
 const TICK_JUDGE_SCALE = 2.4

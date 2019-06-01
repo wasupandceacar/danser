@@ -59,7 +59,7 @@
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
-			"ReadResultCache": true,
+			"ReadResultCache": false,
 			"ReplayDebug": false
 		},
 		"ErrorFix": {

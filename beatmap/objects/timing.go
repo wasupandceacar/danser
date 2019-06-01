@@ -55,7 +55,17 @@ func (tim *Timings) Update(time int64) {
 	}
 }
 
-func clamp(a, min, max int) int {
+func clamp(a int, min int, max int) int {
+	if a > max {
+		return max
+	}
+	if a < min {
+		return min
+	}
+	return a
+}
+
+func clampF(a float64, min float64, max float64) float64 {
 	if a > max {
 		return max
 	}

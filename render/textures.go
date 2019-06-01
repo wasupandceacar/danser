@@ -6,15 +6,18 @@ import (
 	"danser/settings"
 	"danser/utils"
 	"log"
+	"strconv"
 )
 
 var Atlas *texture.TextureAtlas
 
 var Circle *texture.TextureRegion
-var SpinnerBottom *texture.TextureRegion
 var ApproachCircle *texture.TextureRegion
 var SpinnerCircle *texture.TextureRegion
+var SpinnerBackground *texture.TextureRegion
+var SpinnerTop *texture.TextureRegion
 var SpinnerMiddle *texture.TextureRegion
+var SpinnerBottom *texture.TextureRegion
 var SpinnerApproachCircle *texture.TextureRegion
 var CircleFull *texture.TextureRegion
 var CircleOverlay *texture.TextureRegion
@@ -52,6 +55,9 @@ var RankB *texture.TextureRegion
 var RankC *texture.TextureRegion
 var RankD *texture.TextureRegion
 
+// 皮肤版本
+var SkinVersion float64
+
 // 圈内数字的偏移
 var HitCircleOverlap int64
 
@@ -59,10 +65,12 @@ func LoadTextures() {
 	Atlas = texture.NewTextureAtlas(8192, 4)
 	Atlas.Bind(16)
 	Circle, _ = loadTextureToAtlas(Atlas, "hitcircle.png")
-	SpinnerBottom, _ = loadTextureToAtlas(Atlas, "spinner-bottom.png")
 	ApproachCircle, _ = loadTextureToAtlas(Atlas, "approachcircle.png")
 	SpinnerCircle, _ = loadTextureToAtlas(Atlas, "spinner-circle.png")
+	SpinnerBackground, _ = loadTextureToAtlas(Atlas, "spinner-background.png")
+	SpinnerTop, _ = loadTextureToAtlas(Atlas, "spinner-top.png")
 	SpinnerMiddle, _ = loadTextureToAtlas(Atlas, "spinner-middle.png")
+	SpinnerBottom, _ = loadTextureToAtlas(Atlas, "spinner-bottom.png")
 	SpinnerApproachCircle, _ = loadTextureToAtlas(Atlas, "spinner-approachcircle.png")
 	CircleFull, _ = loadTextureToAtlas(Atlas, "hitcircle-full.png")
 	CircleOverlay, _ = loadTextureToAtlas(Atlas, "hitcircleoverlay.png")
@@ -175,6 +183,16 @@ func LoadSkinConfiguration() {
 	if err != nil {
 		panic(err)
 	}
+	SkinVersionstring := skinConfig.String("General.Version")
+	if SkinVersionstring == "latest" || SkinVersionstring == "User" {
+		SkinVersion = 2.5
+	}else {
+		SkinVersion, err = strconv.ParseFloat(SkinVersionstring, 64)
+		if err != nil {
+			panic(err)
+		}
+	}
+	log.Println("皮肤版本：", SkinVersion)
 	HitCircleOverlap, err = skinConfig.Int64("Fonts.HitCircleOverlap")
 	if err != nil {
 		panic(err)
