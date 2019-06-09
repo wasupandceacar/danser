@@ -15,7 +15,7 @@
 - [x]  [飞升(Kroytz)](https://osu.ppy.sh/s/368060)
 - [ ]  [**Crystalia**](https://osu.ppy.sh/s/691220)
 - [x]  [Teo(Kroytz)](https://osu.ppy.sh/s/721804) 断尾非常集中
-- [x]  [孤高](https://osu.ppy.sh/s/28705)
+- [ ]  [**孤高**](https://osu.ppy.sh/s/28705)
 - [ ]  [Hoshi o Kakeru Adventure](https://osu.ppy.sh/s/677573) 知名度太低
 - [x]  [冻僵](https://osu.ppy.sh/s/158023) HT FC 太多
 - [x]  [deltamax](https://osu.ppy.sh/s/18315) 太短，断连显示极为频繁
@@ -73,6 +73,8 @@
 - [ ]  [绿皮(Defenders)](https://osu.ppy.sh/s/323059) 
 - [x]  [梦地图(Loved)](https://osu.ppy.sh/b/1226524?m=0)
 - [ ]  [oddloop](https://osu.ppy.sh/b/1142960) 
+- [ ]  [Ringo Uri no Utakata Shoujo](https://osu.ppy.sh/b/1583228?m=0) 
+- [ ]  [小埋](https://osu.ppy.sh/b/737100?m=0) 
 
 ## 有人FC DT 图 ##
 - [x]  [未来图](https://osu.ppy.sh/s/306591)
