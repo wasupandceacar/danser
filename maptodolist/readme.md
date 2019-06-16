@@ -61,6 +61,7 @@
 - [ ]  [Embraced by the Flame](https://osu.ppy.sh/b/894744)
 - [ ]  [**ODDS&ENDS**](https://osu.ppy.sh/b/1302567)
 - [ ]  [Monsters](https://osu.ppy.sh/b/1586453)
+- [ ]  [幽灵法则](https://osu.ppy.sh/b/960875)
 
 ## 有人FC HR 图 ##
 - [ ]  [**Ange du Blanc Pur**](https://osu.ppy.sh/s/564165)
@@ -75,6 +76,7 @@
 - [ ]  [oddloop](https://osu.ppy.sh/b/1142960) 
 - [ ]  [Ringo Uri no Utakata Shoujo](https://osu.ppy.sh/b/1583228?m=0) 
 - [ ]  [小埋](https://osu.ppy.sh/b/737100?m=0) 
+- [ ]  [高分](https://osu.ppy.sh/b/736215) 
 
 ## 有人FC DT 图 ##
 - [x]  [未来图](https://osu.ppy.sh/s/306591)

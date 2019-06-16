@@ -5,8 +5,8 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 50,
-			"SpecifiedPlayers": true,
+			"Players": 1,
+			"SpecifiedPlayers": false,
 			"SpecifiedLine": "4"
 		},
 		"PlayerInfoUI": {
@@ -59,8 +59,8 @@
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
-			"ReadResultCache": false,
-			"ReplayDebug": true
+			"ReadResultCache": true,
+			"ReplayDebug": false
 		},
 		"ErrorFix": {
 			"EnableErrorFix": false,

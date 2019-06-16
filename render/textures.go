@@ -189,7 +189,8 @@ func LoadSkinConfiguration() {
 	}else {
 		SkinVersion, err = strconv.ParseFloat(SkinVersionstring, 64)
 		if err != nil {
-			panic(err)
+			log.Println("未找到皮肤版本配置，将使用最新版本。")
+			SkinVersion = 2.5
 		}
 	}
 	log.Println("皮肤版本：", SkinVersion)
