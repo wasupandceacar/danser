@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 1,
+			"Players": 0,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "4"
 		},
@@ -38,8 +38,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Kokou no Sousei",
-			"Difficulty": "Chaos"
+			"Title": "Lovely Girls Anthem -EuroBeatRemix-",
+			"Difficulty": "Normal"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -68,7 +68,7 @@
 		},
 		"Skin": {
 			"EnableSkin": true,
-			"SkinDir": "skin\\flyingtuna1\\",
+			"SkinDir": "skin\\cookiezi3\\",
 			"NumberOffset": 0
 		}
 	},

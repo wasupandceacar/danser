@@ -75,20 +75,22 @@ func (self *Spinner) Draw(time int64, preempt float64, fadeIn float64, color mgl
 
 	// 2.5秒之内rpm从0到300
 	// 1秒之内rpm从300到0
-	if time - self.renderStartTime <= 2500 {
-		rpm := float64(time - self.renderStartTime)*0.12
-		angle = float64(time - self.renderStartTime) * (rpm * math.Pi / 30000)
+	if time <= self.objData.StartTime {
+		angle = 0.0
+	}else if time - self.objData.StartTime <= 2500 {
+		rpm := float64(time - self.objData.StartTime)*0.12
+		angle = float64(time - self.objData.StartTime) * (rpm * math.Pi / 30000)
 	}else if self.objData.EndTime - time <= 1000 {
 		rpm := float64(self.objData.EndTime - time)*0.3
-		angle = float64(self.objData.EndTime - self.renderStartTime - 3500) * math.Pi / 100 - float64(self.objData.EndTime - time) * (rpm * math.Pi / 30000)
+		angle = float64(self.objData.EndTime - self.objData.StartTime - 3500) * math.Pi / 100 - float64(self.objData.EndTime - time) * (rpm * math.Pi / 30000)
 	}else {
-		angle = float64(time - self.renderStartTime - 2500) * math.Pi / 100
+		angle = float64(time - self.objData.StartTime - 2500) * math.Pi / 100
 	}
 
-	if time < self.renderStartTime - int64(preempt) {
+	if time < self.renderStartTime {
 		return false
-	}else if time < self.renderStartTime {
-		alpha = float64(color[3]) * clampF((float64(time - self.renderStartTime) + preempt) / preempt, 0, 1)
+	}else if time < self.objData.StartTime {
+		alpha = float64(color[3]) * clampF((float64(time - self.objData.StartTime) + preempt) / preempt, 0, 1)
 	}else if time <= self.objData.EndTime{
 		alpha = float64(color[3])
 	}else if time <= self.objData.EndTime + int64(preempt) / 2 {
@@ -108,8 +110,8 @@ func (self *Spinner) Draw(time int64, preempt float64, fadeIn float64, color mgl
 		} else {
 			// 新样式的spinner
 			// 设置转满的时间
-			cleartime := float64(self.objData.EndTime-self.renderStartTime) * 0.75
-			clearmult := clampF(float64(time-self.renderStartTime)/cleartime, 0, 1)
+			cleartime := float64(self.objData.EndTime-self.objData.StartTime) * 0.75
+			clearmult := clampF(float64(time-self.objData.StartTime)/cleartime, 0, 1)
 			clearmult = -clearmult * (clearmult - 2)
 			finishScale := 0.8 + 0.2*clearmult
 			spinnerTopScale := float64(render.SpinnerTop.Height) / (DEFAULT_SKIN_SIZE * 2) * PLAYFIELD_HEIGHT
@@ -135,19 +137,21 @@ func (self *Spinner) SetDifficulty(preempt, fadeIn float64) {
 }
 
 func (self *Spinner) DrawApproach(time int64, preempt float64, fadeIn float64, color mgl32.Vec4, batch *render.SpriteBatch) {
-	// 记录第一次渲染转盘的时间，第一次渲染时，转盘正好撑满整个屏幕，随后逐渐变小
+	// 记录第一次渲染转盘的时间，第一次渲染时，转盘正好撑满整个屏幕，并开始淡入。
+	// 转盘时间开始，淡入完成，随后转盘逐渐变小
+	// 转盘时间结束，开始淡出
 	if self.renderStartTime == -12345 {
 		self.renderStartTime = time
 	}
 
 	alpha := 1.0
 	// 计算AR
-	arr := clampF(float64(self.objData.EndTime - time) / float64(self.objData.EndTime - self.renderStartTime) ,0 ,1) * PLAYFIELD_HEIGHT / 2
+	arr := clampF(float64(self.objData.EndTime - time) / float64(self.objData.EndTime - self.objData.StartTime) ,0 ,1) * PLAYFIELD_HEIGHT / 2
 
-	if time < self.renderStartTime - int64(preempt){
+	if time < self.renderStartTime {
 		alpha = 0
-	}else if time < self.renderStartTime{
-		alpha = float64(color[3]) * clampF((float64(time - self.renderStartTime) + preempt) / preempt, 0, 1)
+	}else if time < self.objData.StartTime{
+		alpha = float64(color[3]) * clampF((float64(time - self.objData.StartTime) + preempt) / preempt, 0, 1)
 	}else if time <= self.objData.EndTime{
 		alpha = float64(color[3])
 	}else if time <= self.objData.EndTime + int64(preempt) / 2 {
