@@ -1,6 +1,6 @@
 ## 有人FC None 图 ##
 
-- [x]  [V0](https://osu.ppy.sh/s/93523) 有人做过了
+- [ ]  [***V0***](https://osu.ppy.sh/s/93523) 新成绩
 - [x]  [黑太阳](https://osu.ppy.sh/s/280107) 有人做过了,可更新曲奇HDHR
 - [x]  [雪司机(Kroytz)](https://osu.ppy.sh/s/478405) 集体断尾
 - [x]  [ROR(Kroytz)](https://osu.ppy.sh/s/567324) 完美
@@ -13,9 +13,9 @@
 - [ ]  [女武神(arles)](https://osu.ppy.sh/s/378400) 集体断尾
 - [x]  [happy song](https://osu.ppy.sh/s/744593) 断的比较后
 - [x]  [飞升(Kroytz)](https://osu.ppy.sh/s/368060)
-- [ ]  [**Crystalia**](https://osu.ppy.sh/s/691220)
+- [ ]  [***Crystalia***](https://osu.ppy.sh/s/691220)
 - [x]  [Teo(Kroytz)](https://osu.ppy.sh/s/721804) 断尾非常集中
-- [ ]  [**孤高**](https://osu.ppy.sh/s/28705)
+- [ ]  [***孤高***](https://osu.ppy.sh/s/28705)
 - [ ]  [Hoshi o Kakeru Adventure](https://osu.ppy.sh/s/677573) 知名度太低
 - [x]  [冻僵](https://osu.ppy.sh/s/158023) HT FC 太多
 - [x]  [deltamax](https://osu.ppy.sh/s/18315) 太短，断连显示极为频繁
@@ -64,7 +64,7 @@
 - [ ]  [幽灵法则](https://osu.ppy.sh/b/960875)
 
 ## 有人FC HR 图 ##
-- [ ]  [**Ange du Blanc Pur**](https://osu.ppy.sh/s/564165)
+- [ ]  [***Ange du Blanc Pur***](https://osu.ppy.sh/s/564165)
 - [x]  [蓝极光](https://osu.ppy.sh/s/292301)
 - [ ]  [**highscore**](https://osu.ppy.sh/s/332532)
 - [ ]  [新黄泉](https://osu.ppy.sh/s/575330)
