@@ -95,7 +95,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 	keyindex := 3
 	time := r[1].Time + r[2].Time
 	for k := 0; k < len(b.HitObjects); k++ {
-	//for k := 0; k < 1205; k++ {
+	//for k := 0; k < 411; k++ {
 		//log.Println("Object", k+1)
 		obj :=  b.HitObjects[k]
 		if obj != nil {
@@ -116,10 +116,12 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 				// 滑条头占有键位，但这个键位依然对这个滑条的ticks有效
 				isfind, nearestindex, lasttime, newkeysoccupied, key := findNearestKey(keyindex, time, r, o.GetBasicData().StartTime, o.GetBasicData().StartPos, ODMiss, OD50, convert_CS * CS_scale, true, float64(o.GetBasicData().StartTime), keysoccupied)
 				//log.Println("Slider hit on", key, r[nearestindex].Time, lasttime + r[nearestindex].Time)
+				// 后续还可能存在其他的只对滑条ticks有效的键位
+				keys := []Key{key}
 				copy(keysoccupied, newkeysoccupied)
 
 				// 检查从滑条开始到击中之前的sliderball情况，调整CS
-				CS_scale = checkSliderBallBeforeHit(nearestindex, lasttime, r, o, convert_CS, CS_scale, keysoccupied, key)
+				CS_scale = checkSliderBallBeforeHit(nearestindex, lasttime, r, o, convert_CS, CS_scale)
 
 				if isfind {
 					// 如果找到，判断hit结果，设置下一个index+1
@@ -186,7 +188,8 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 				for _, t := range o.ScorePoints {
 					requirehits += 1
 					//log.Println("Check Tick hit", i+1, time, CS_scale * convert_CS)
-					isHit, nextindex, nexttime, newkeysoccupied, newCSscale, newistailjudge, newistailhit := isTickHit(o, keyindex, time, r, t.Time, t.Pos, convert_CS, CS_scale, keysoccupied, key, o.GetBasicData().EndTime - o.TailJudgeOffset, o.TailJudgePoint, istailjudge, istailhit)
+					isHit, nextindex, nexttime, newkeysoccupied, newCSscale, newistailjudge, newistailhit, newkeys := isTickHit(o, keyindex, time, r, t.Time, t.Pos, convert_CS, CS_scale, keysoccupied, keys, o.GetBasicData().EndTime - o.TailJudgeOffset, o.TailJudgePoint, istailjudge, istailhit)
+					keys = newkeys
 					istailjudge = newistailjudge
 					istailhit = newistailhit
 					CS_scale = newCSscale
@@ -227,7 +230,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 					}
 				}else {
 					//log.Println("Slider tail judge", r[keyindex], time, o.GetBasicData().EndTime-o.TailJudgeOffset, o.TailJudgeOffset, o.TailJudgePoint, convert_CS, CS_scale*convert_CS)
-					isHit, nextindex, nexttime, newkeysoccupied, newCSscale, _, _ := isTickHit(o, keyindex, time, r, o.GetBasicData().EndTime-o.TailJudgeOffset, o.TailJudgePoint, convert_CS, CS_scale, keysoccupied, key, 0, bmath.Vector2d{0, 0}, false, false)
+					isHit, nextindex, nexttime, newkeysoccupied, newCSscale, _, _, _ := isTickHit(o, keyindex, time, r, o.GetBasicData().EndTime-o.TailJudgeOffset, o.TailJudgePoint, convert_CS, CS_scale, keysoccupied, keys,0, bmath.Vector2d{0, 0}, false, false)
 					CS_scale = newCSscale
 					//log.Println("Slider tail judge result", r[nextindex].Time, nexttime + r[nextindex].Time)
 					// 滑条头如果判定得比滑条尾还晚！！！
@@ -459,7 +462,7 @@ func findRelease(keyindex int, starttime int64, r []*rplpa.ReplayData, keysoccup
 		//}
 		if isPressChanged(*keypress, *r[index].KeyPressed) {
 			// 重新设置占用键位情况
-			newkeysoccupied := resetKeysOccupied(*keypress, *r[index].KeyPressed, keysoccupied)
+			newkeysoccupied, _ := resetKeysOccupied(*keypress, *r[index].KeyPressed, keysoccupied,false, []Key{})
 			//log.Println("Reset key occupied release", *keypress, *r[index].KeyPressed, keysoccupied, newkeysoccupied)
 			//log.Println("Find release before", r[index].Time, time, sametimecheck)
 			// 返回之前已判定的无效键
@@ -507,7 +510,7 @@ func isPressChanged(p1 rplpa.KeyPressed, p2 rplpa.KeyPressed) bool {
 }
 
 // 根据前后两个按键状况重新设置键位占用情况
-func resetKeysOccupied(p1 rplpa.KeyPressed, p2 rplpa.KeyPressed, keysoccupied []bool) []bool {
+func resetKeysOccupied(p1 rplpa.KeyPressed, p2 rplpa.KeyPressed, keysoccupied []bool, presscheck bool, keys []Key) ([]bool, []Key) {
 	newkeysoccupied := make([]bool, 4)
 	copy(newkeysoccupied, keysoccupied)
 	for i, keyoccupied := range keysoccupied {
@@ -547,7 +550,49 @@ func resetKeysOccupied(p1 rplpa.KeyPressed, p2 rplpa.KeyPressed, keysoccupied []
 			}
 		}
 	}
-	return newkeysoccupied
+	if presscheck {
+		for i, keyoccupied := range keysoccupied {
+			// 遍历按键，如果未被占用
+			// 1.前一个按键未按着，后一个按键按着，则被占用
+			if !keyoccupied {
+				switch i {
+				case 0:
+					if !p1.Key1 && p2.Key1 {
+						newkeysoccupied[0] = true
+						keys = append(keys, Key1)
+						//log.Println("K1 occupied", p1.Key1, p2.Key1, p1.Key1 && !p2.Key1, keysoccupied, newkeysoccupied, keys)
+					}
+					break
+				case 1:
+					if !p1.Key2 && p2.Key2 {
+						newkeysoccupied[1] = true
+						keys = append(keys, Key2)
+						//log.Println("K2 occupied", p1.Key2, p2.Key2, p1.Key2 && !p2.Key2, keysoccupied, newkeysoccupied)
+					}
+					break
+				case 2:
+					p1M1 := trueClick(p1.LeftClick, p1.Key1)
+					p2M1 := trueClick(p2.LeftClick, p2.Key1)
+					if !p1M1 && p2M1 {
+						newkeysoccupied[2] = true
+						keys = append(keys, Mouse1)
+						//log.Println("M1 occupied", keysoccupied, newkeysoccupied)
+					}
+					break
+				case 3:
+					p1M2 := trueClick(p1.RightClick, p1.Key2)
+					p2M2 := trueClick(p2.RightClick, p2.Key2)
+					if !p1M2 && p2M2 {
+						newkeysoccupied[3] = true
+						keys = append(keys, Mouse2)
+						//log.Println("M2 occupied", keysoccupied, newkeysoccupied)
+					}
+					break
+				}
+			}
+		}
+	}
+	return newkeysoccupied, keys
 }
 
 // 寻找最近的击中的Key
@@ -556,8 +601,9 @@ func findNearestKey(start int, starttime int64, r []*rplpa.ReplayData, requirehi
 	time := starttime
 	for {
 		hit := r[index]
-		//ispress, newkeysoccupied, _ := isPressed(hit, keysoccupied)
-		//log.Println("Find move", hit.Time + time, requirehittime, isInCircle(hit, requirepos, CS), ispress, newkeysoccupied, bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos), ODMiss, OD50, CS + 0.01, keysoccupied)
+		//newkeysoccupied := checkBeforePress(hit, keysoccupied)
+		//ispress, nnewkeysoccupied, _ := isPressed(hit, newkeysoccupied)
+		//log.Println("Find move", hit.Time + time, requirehittime, isInCircle(hit, requirepos, CS), ispress, newkeysoccupied, nnewkeysoccupied, bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos), ODMiss, OD50, CS + 0.01, keysoccupied)
 		//if hit.Time + time > -500 {
 		//	os.Exit(2)
 		//}
@@ -578,6 +624,8 @@ func findNearestKey(start int, starttime int64, r []*rplpa.ReplayData, requirehi
 		// 判断是否在圈内
 		if isInCircle(hit, requirepos, CS){
 			// 如果在圈内，且按下按键
+			newkeysoccupied := checkBeforePress(hit, keysoccupied)
+			copy(keysoccupied, newkeysoccupied)
 			ispressed, newkeysoccupied, key := isPressed(hit, keysoccupied)
 			if ispressed {
 				realhittime := hit.Time + time
@@ -596,6 +644,8 @@ func findNearestKey(start int, starttime int64, r []*rplpa.ReplayData, requirehi
 				}
 			}
 		}else {
+			newkeysoccupied := checkBeforePress(hit, keysoccupied)
+			copy(keysoccupied, newkeysoccupied)
 			ispressed, newkeysoccupied, key := isPressed(hit, keysoccupied)
 			// 如果不在圈内，且按下按键
 			if ispressed {
@@ -635,6 +685,41 @@ func findNearestKey(start int, starttime int64, r []*rplpa.ReplayData, requirehi
 		index++
 		time += hit.Time
 	}
+}
+
+// 按下前查看松开的键位
+func checkBeforePress(hit *rplpa.ReplayData, keysoccupied []bool) ([]bool) {
+	press := hit.KeyPressed
+	newkeysoccupied := make([]bool, 4)
+	copy(newkeysoccupied, keysoccupied)
+	for i, keyoccupied := range keysoccupied {
+		if keyoccupied {
+			// 首先遍历按键，如果占用且被放开，修改占用数组
+			switch i {
+			case 0:
+				if !press.Key1 {
+					newkeysoccupied[0] = false
+				}
+				break
+			case 1:
+				if !press.Key2 {
+					newkeysoccupied[1] = false
+				}
+				break
+			case 2:
+				if !trueClick(press.LeftClick, press.Key1) {
+					newkeysoccupied[2] = false
+				}
+				break
+			case 3:
+				if !trueClick(press.RightClick, press.Key2) {
+					newkeysoccupied[3] = false
+				}
+				break
+			}
+		}
+	}
+	return newkeysoccupied
 }
 
 // 该时间点是否按下按键
@@ -683,9 +768,9 @@ func isPressed(hit *rplpa.ReplayData, keysoccupied []bool) (bool, []bool, Key) {
 }
 
 // 该时间点是否按下按键（ticks）
-func isPressedTick(hit *rplpa.ReplayData, keysoccupied []bool, key Key) bool {
+func isPressedTick(hit *rplpa.ReplayData, keysoccupied []bool, keys []Key) bool {
 	press := hit.KeyPressed
-	tickkeysoccupied := getTickKeysOccupied(keysoccupied, key)
+	tickkeysoccupied := getTickKeysOccupied(keysoccupied, keys)
 	for i, keyoccupied := range tickkeysoccupied {
 		if !keyoccupied {
 			// 遍历按键，如果不占用且按下，立即返回，并修改占用数组
@@ -729,42 +814,40 @@ func isPressedNoTick(hit *rplpa.ReplayData) bool {
 }
 
 // 获取ticks的键位占有数组
-func getTickKeysOccupied(keysoccupied []bool, key Key) []bool {
+func getTickKeysOccupied(keysoccupied []bool, keys []Key) []bool {
 	//log.Println("Tick KeysOccupied", keysoccupied, key)
 	newkeysoccupied := make([]bool, 4)
 	copy(newkeysoccupied, keysoccupied)
-	for i, keyoccupied := range keysoccupied {
-		if keyoccupied {
-			// 遍历按键，如果占用且符合滑条头的占用键位，去除
-			switch i {
-			case 0:
-				if key == Key1 {
-					newkeysoccupied[0] = false
-					//log.Println("K1 occupied delete", keysoccupied, newkeysoccupied)
-					return newkeysoccupied
+	for _, key := range keys {
+		for i, keyoccupied := range keysoccupied {
+			if keyoccupied {
+				// 遍历按键，如果占用且符合滑条头的占用键位，去除
+				switch i {
+				case 0:
+					if key == Key1 {
+						newkeysoccupied[0] = false
+						//log.Println("K1 occupied delete", keysoccupied, newkeysoccupied)
+					}
+					break
+				case 1:
+					if key == Key2 {
+						newkeysoccupied[1] = false
+						//log.Println("K2 occupied delete", keysoccupied, newkeysoccupied)
+					}
+					break
+				case 2:
+					if key == Mouse1 {
+						newkeysoccupied[2] = false
+						//log.Println("M1 occupied delete", keysoccupied, newkeysoccupied)
+					}
+					break
+				case 3:
+					if key == Mouse2 {
+						newkeysoccupied[3] = false
+						//log.Println("M2 occupied delete", keysoccupied, newkeysoccupied)
+					}
+					break
 				}
-				break
-			case 1:
-				if key == Key2 {
-					newkeysoccupied[1] = false
-					//log.Println("K2 occupied delete", keysoccupied, newkeysoccupied)
-					return newkeysoccupied
-				}
-				break
-			case 2:
-				if key == Mouse1 {
-					newkeysoccupied[2] = false
-					//log.Println("M1 occupied delete", keysoccupied, newkeysoccupied)
-					return newkeysoccupied
-				}
-				break
-			case 3:
-				if key == Mouse2 {
-					newkeysoccupied[3] = false
-					//log.Println("M2 occupied delete", keysoccupied, newkeysoccupied)
-					return newkeysoccupied
-				}
-				break
 			}
 		}
 	}
@@ -816,7 +899,7 @@ func isHit300(realhittime int64, requirehittime int64, OD300 float64) bool {
 }
 
 // 判断tick是否被击中并按下
-func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.ReplayData, requirehittime int64, requirepos bmath.Vector2d, CS float64, initialCSscale float64, keysoccupied []bool, key Key, tailrequirehittime int64, tailrequirepos bmath.Vector2d, judgetail bool, hittail bool) (bool, int, int64, []bool, float64, bool, bool) {
+func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.ReplayData, requirehittime int64, requirepos bmath.Vector2d, CS float64, initialCSscale float64, keysoccupied []bool, keys []Key, tailrequirehittime int64, tailrequirepos bmath.Vector2d, judgetail bool, hittail bool) (bool, int, int64, []bool, float64, bool, bool, []Key) {
 	index := start
 	time := starttime
 	// 初始的CS范围
@@ -831,15 +914,16 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 
 		// 判断前，每次都要检查键位占用情况
 		// 为什么要这样做，见 https://github.com/ppy/osu/blob/f134b9c886edcd42eb1aa8a6e232789a017a61aa/osu.Game.Rulesets.Osu/Objects/Drawables/Pieces/SliderBall.cs#L153
-		newkeysoccupied := resetKeysOccupied(*r[index-1].KeyPressed, *r[index].KeyPressed, keysoccupied)
-		//log.Println("Reset key occupied tick", *r[index-1].KeyPressed, *r[index].KeyPressed, keysoccupied, newkeysoccupied)
+		newkeysoccupied, newkeys := resetKeysOccupied(*r[index-1].KeyPressed, *r[index].KeyPressed, keysoccupied,true, keys)
+		keys = newkeys
+		//log.Println("Reset key occupied tick", *r[index-1].KeyPressed, *r[index].KeyPressed, keysoccupied, newkeysoccupied, keys, newkeys)
 		copy(keysoccupied, newkeysoccupied)
 
 		// 每次判断前，还要检查这一时刻的replay光标在不在sliderball中，调整CS范围
 		// 在滑条头真实时间开始后再检查
 		if realhittime >= slider.GetBasicData().StartTime {
 			//log.Println("Check if in sliderball", realhittime, bmath.Vector2d{float64(hit.MosueX), float64(hit.MouseY)}, CSscale)
-			CSscale = checkInSliderBall(slider, realhittime, bmath.Vector2d{float64(hit.MosueX), float64(hit.MouseY)}, CS * CSscale, isPressedTick(hit, keysoccupied, key))
+			CSscale = checkInSliderBall(slider, realhittime, bmath.Vector2d{float64(hit.MosueX), float64(hit.MouseY)}, CS * CSscale, isPressedTick(hit, keysoccupied, keys))
 		}
 
 		// 存在滑条尾早于tick的情况，所以在判断tick时顺便判断滑条
@@ -850,7 +934,7 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 				if isInCircle(hit, tailrequirepos, CS*CSscale) {
 					// 在圈内
 					// tick判断不会改变占用情况
-					ispressed := isPressedTick(hit, keysoccupied, key)
+					ispressed := isPressedTick(hit, keysoccupied, keys)
 					//log.Println("Tail Tick Judge Tap Press", ispressed, hit.KeyPressed, keysoccupied)
 					if ispressed {
 						//按下，则击中成功
@@ -883,7 +967,7 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 					if tailrequirehittime-realhittime >= realhittime+r[index+1].Time-tailrequirehittime {
 						presshit = r[index+1]
 					}
-					ispressed := isPressedTick(presshit, keysoccupied, key)
+					ispressed := isPressedTick(presshit, keysoccupied, keys)
 					//log.Println("Tail Tick Judge Range Press", ispressed, presshit.KeyPressed, keysoccupied)
 					if ispressed {
 						//按下，则击中成功
@@ -900,14 +984,14 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 			if isInCircle(hit, requirepos, CS * CSscale) {
 				// 在圈内
 				// tick判断不会改变占用情况
-				ispressed := isPressedTick(hit, keysoccupied, key)
+				ispressed := isPressedTick(hit, keysoccupied, keys)
 				//log.Println("Tick Judge Tap Press", ispressed, hit.KeyPressed, keysoccupied)
 				if ispressed {
 					//按下，则击中成功
-					return true, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit
+					return true, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys
 				}
 			}
-			return false, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit
+			return false, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys
 		}else if realhittime < requirehittime && realhittime + r[index+1].Time > requirehittime{
 			// 找到正好的区间
 			//log.Println("Tick Judge Range", requirehittime, realhittime, realhittime + r[index+1].Time, hit, r[index+1])
@@ -932,14 +1016,14 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 				if requirehittime - realhittime >= realhittime + r[index+1].Time - requirehittime {
 					presshit = r[index+1]
 				}
-				ispressed := isPressedTick(presshit, keysoccupied, key)
+				ispressed := isPressedTick(presshit, keysoccupied, keys)
 				//log.Println("Tick Judge Range Press", ispressed, presshit.KeyPressed, keysoccupied)
 				if ispressed {
 					//按下，则击中成功
-					return true, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit
+					return true, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys
 				}
 			}
-			return false, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit
+			return false, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys
 		}else if realhittime > requirehittime {
 			// 时间点已经超过需要的击中时间
 			// 1.已经无法击中
@@ -955,14 +1039,14 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 					if isInCircle(hit, requirepos, CS * CSscale) {
 						// 在圈内
 						// tick判断不会改变占用情况
-						ispressed := isPressedTick(hit, keysoccupied, key)
+						ispressed := isPressedTick(hit, keysoccupied, keys)
 						//log.Println("Forward Tick Judge Tap Press", ispressed, hit.KeyPressed, keysoccupied)
 						if ispressed {
 							//按下，则击中成功
-							return true, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit
+							return true, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys
 						}
 					}
-					return false, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit
+					return false, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys
 				}else if realhittime < requirehittime && realhittime + r[index+1].Time > requirehittime{
 					// 找到正好的区间
 					//log.Println("Forward Tick Judge Range", requirehittime, realhittime, realhittime + r[index+1].Time, r[index], r[index+1])
@@ -986,20 +1070,20 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 						if requirehittime - realhittime > realhittime + r[index+1].Time - requirehittime {
 							presshit = r[index+1]
 						}
-						ispressed := isPressedTick(presshit, keysoccupied, key)
+						ispressed := isPressedTick(presshit, keysoccupied, keys)
 						//log.Println("Forward Tick Judge Range Press", ispressed, presshit.KeyPressed, keysoccupied)
 						if ispressed {
 							//按下，则击中成功
-							return true, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit
+							return true, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys
 						}
 					}
-					return false, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit
+					return false, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys
 				}
 			}
 
 			// 无法击中
 			//log.Println("Too late to hit tick", realhittime, requirehittime)
-			return false, index, realhittime - r[index].Time, keysoccupied, CSscale, istailjugde, istailhit
+			return false, index, realhittime - r[index].Time, keysoccupied, CSscale, istailjugde, istailhit, keys
 		}
 		index++
 		time += hit.Time
@@ -1187,7 +1271,7 @@ func checkInSliderBall(slider *objects.Slider, time int64, realpos bmath.Vector2
 }
 
 // 检查滑条开始到击中前的sliderball
-func checkSliderBallBeforeHit(index int, lasttime int64, r []*rplpa.ReplayData, slider *objects.Slider, CS float64, scale float64, keysoccupied []bool, key Key) float64 {
+func checkSliderBallBeforeHit(index int, lasttime int64, r []*rplpa.ReplayData, slider *objects.Slider, CS float64, scale float64) float64 {
 	// 击中时间
 	realhittime := r[index].Time + lasttime
 	// 根据滑条开始时间确定开始查找的replay片段

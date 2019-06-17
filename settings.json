@@ -5,15 +5,15 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 0,
+			"Players": 5,
 			"SpecifiedPlayers": false,
-			"SpecifiedLine": "4"
+			"SpecifiedLine": "1"
 		},
 		"PlayerInfoUI": {
 			"BaseSize": 6,
 			"BaseX": 14,
 			"BaseY": 696,
-			"ShowMouse1": true,
+			"ShowMouse1": false,
 			"ShowMouse2": false,
 			"ShowRealTimePP": true,
 			"RealTimePPGap": 800,
@@ -38,8 +38,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Lovely Girls Anthem -EuroBeatRemix-",
-			"Difficulty": "Normal"
+			"Title": "IMAGE -MATERIAL- \u003cVersion 0\u003e",
+			"Difficulty": "Scorpiour"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -60,7 +60,7 @@
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
 			"ReadResultCache": true,
-			"ReplayDebug": false
+			"ReplayDebug": true
 		},
 		"ErrorFix": {
 			"EnableErrorFix": false,
@@ -68,7 +68,7 @@
 		},
 		"Skin": {
 			"EnableSkin": true,
-			"SkinDir": "skin\\cookiezi3\\",
+			"SkinDir": "skin\\delis\\",
 			"NumberOffset": 0
 		}
 	},

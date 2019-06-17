@@ -1478,34 +1478,6 @@ func (pl *Player) Draw(delta float64) {
 
 	//endregion
 
-	//region 多个光标渲染
-
-	for k := 0; k < pl.players; k++ {
-		if !(settings.VSplayer.Knockout.EnableKnockout && (!pl.controller[k].GetIsShow())) {
-			for _, g := range pl.controller[k].GetCursors() {
-				g.UpdateRenderer()
-			}
-			gl.BlendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
-			gl.BlendEquation(gl.FUNC_ADD)
-			pl.batch.SetAdditive(true)
-			render.BeginCursorRender()
-			for j := 0; j < settings.DIVIDES; j++ {
-				pl.batch.SetCamera(cameras[j])
-				for i, g := range pl.controller[k].GetCursors() {
-					ind := k*len(pl.controller[k].GetCursors()) + i - 1
-					if ind < 0 {
-						ind = settings.DIVIDES*len(pl.controller[k].GetCursors()) - 1
-					}
-					colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
-					g.DrawM(scale2, pl.batch, colors1[colornum], colors1[ind])
-				}
-			}
-			render.EndCursorRender()
-		}
-	}
-
-	//endregion
-
 	//region 无关4
 
 	if pl.start {
@@ -1629,6 +1601,34 @@ func (pl *Player) Draw(delta float64) {
 	//
 	//	pl.batch.End()
 	//}
+
+	//endregion
+
+	//region 多个光标渲染
+
+	for k := 0; k < pl.players; k++ {
+		if !(settings.VSplayer.Knockout.EnableKnockout && (!pl.controller[k].GetIsShow())) {
+			for _, g := range pl.controller[k].GetCursors() {
+				g.UpdateRenderer()
+			}
+			gl.BlendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
+			gl.BlendEquation(gl.FUNC_ADD)
+			pl.batch.SetAdditive(true)
+			render.BeginCursorRender()
+			for j := 0; j < settings.DIVIDES; j++ {
+				pl.batch.SetCamera(cameras[j])
+				for i, g := range pl.controller[k].GetCursors() {
+					ind := k*len(pl.controller[k].GetCursors()) + i - 1
+					if ind < 0 {
+						ind = settings.DIVIDES*len(pl.controller[k].GetCursors()) - 1
+					}
+					colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
+					g.DrawM(scale2, pl.batch, colors1[colornum], colors1[ind])
+				}
+			}
+			render.EndCursorRender()
+		}
+	}
 
 	//endregion
 
