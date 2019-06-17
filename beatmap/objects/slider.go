@@ -276,6 +276,7 @@ func (self *Slider) SetTiming(timings *Timings) {
 	self.calculateFollowPoints()
 	// 计算滑条尾判定点
 	self.calculateTailJudgePoint()
+	self.objData.JudgeTime = self.objData.EndTime - self.TailJudgeOffset
 	self.discreteCurve = self.GetCurve()
 	self.startAngle = self.GetStartAngle()
 	self.endAngle = self.curveEndPos.AngleRV(self.discreteCurve[len(self.discreteCurve)-1])

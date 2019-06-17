@@ -40,6 +40,13 @@ func initDefaults() {
 			18,
 			0.5,
 		},
+		&diffinfoUI{
+			true,
+			1049,
+			678,
+			18,
+			0.8,
+		},
 		&playerfieldUI{
 			200,
 			25,

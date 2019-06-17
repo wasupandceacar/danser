@@ -232,6 +232,72 @@ func UImain(noGUI bool) {
 									},
 								},
 							},
+							GroupBox{
+								Title: "难度信息设置",
+								Layout: VBox{},
+								Children: []Widget{
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "显示难度：",
+											},
+											CheckBox{
+												AssignTo: &vsw.showDiffInfo,
+												Alignment: AlignHNearVNear,
+												Checked: settings.VSplayer.DiffInfoUI.ShowDiffInfo,
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "难度基准X：",
+											},
+											LineEdit{
+												AssignTo: &vsw.diffBaseX,
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.VSplayer.DiffInfoUI.DiffBaseX),
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "难度基准Y：",
+											},
+											LineEdit{
+												AssignTo: &vsw.diffBaseY,
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.VSplayer.DiffInfoUI.DiffBaseY),
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "难度基准大小：",
+											},
+											LineEdit{
+												AssignTo: &vsw.diffBaseSize,
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.VSplayer.DiffInfoUI.DiffBaseSize),
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "难度透明度：",
+											},
+											LineEdit{
+												AssignTo: &vsw.diffAlpha,
+												Alignment: AlignHNearVNear,
+												Text: fmt.Sprintf("%g", settings.VSplayer.DiffInfoUI.DiffAlpha),
+											},
+										},
+									},
+								},
+							},
 							VSpacer{},
 						},
 					},

@@ -34,6 +34,12 @@ type basicData struct {
 	ObjectNumber	   int64
 	SliderPoint        bool
 
+	// 物件的判定时间
+	// note：开始时间
+	// 滑条：结束时间减滑条尾偏移
+	// 转盘：结束时间
+	JudgeTime	int64
+
 	sampleSet    int
 	additionSet  int
 	customIndex  int

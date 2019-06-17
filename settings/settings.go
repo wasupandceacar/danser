@@ -43,6 +43,14 @@ type recordinfoUI struct {
 	RecordAlpha		float64
 }
 
+type diffinfoUI struct {
+	ShowDiffInfo	bool
+	DiffBaseX		float64
+	DiffBaseY		float64
+	DiffBaseSize	float64
+	DiffAlpha		float64
+}
+
 type playerfieldUI struct {
 	HitFadeTime			int64
 	CursorColorNum		int
@@ -94,6 +102,7 @@ type vsplayer struct {
 	PlayerInfo     *playerinfo
 	PlayerInfoUI   *playerinfoUI
 	RecordInfoUI   *recordinfoUI
+	DiffInfoUI	   *diffinfoUI
 	PlayerFieldUI  *playerfieldUI
 	MapInfo        *mapinfo
 	Mods           *mods

@@ -23,6 +23,7 @@ func NewSpinner(data []string, number int64) *Spinner {
 	spinner.objData = commonParse(data, number)
 	endtime, _ := strconv.ParseInt(data[5], 10, 64)
 	spinner.objData.EndTime = int64(endtime)
+	spinner.objData.JudgeTime = spinner.objData.EndTime
 	spinner.pos = bmath.Vector2d{PLAYFIELD_WIDTH / 2,PLAYFIELD_HEIGHT / 2}
 
 	sample, _ := strconv.ParseInt(data[4], 10, 64)

@@ -22,6 +22,7 @@ import (
 	"danser/storyboard"
 	"danser/utils"
 	"fmt"
+	"github.com/flesnuk/oppai5"
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/go-gl/glfw/v3.2/glfw"
 	"github.com/go-gl/mathgl/mgl32"
@@ -121,6 +122,11 @@ type Player struct {
 	recordbasesize	float64
 	recordtimeoffsetY	float64
 
+	diffbaseX		float64
+	diffbaseY		float64
+	diffbasesize	float64
+	diffoffsetY		float64
+
 	// 色彩参数
 	objectcolorIndex	int
 
@@ -146,7 +152,12 @@ type Player struct {
 	// 退出所有协程的flag
 	exitGoFlag		bool
 	// 退出处理event协程
-	exitPollFlag		bool
+	exitPollFlag	bool
+
+	// 实时难度数组
+	difficulties	[]oppai.PP
+	// 现在物件指针
+	objindex		int
 }
 
 //endregion
@@ -596,6 +607,13 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	player.recordbasesize = settings.VSplayer.RecordInfoUI.RecordBaseSize
 	player.recordtimeoffsetY = 1.25 * player.recordbasesize
 
+	if settings.VSplayer.DiffInfoUI.ShowDiffInfo {
+		player.diffbaseX = settings.VSplayer.DiffInfoUI.DiffBaseX
+		player.diffbaseY = settings.VSplayer.DiffInfoUI.DiffBaseY
+		player.diffbasesize = settings.VSplayer.DiffInfoUI.DiffBaseSize
+		player.diffoffsetY = 1.25 * player.recordbasesize
+	}
+
 	// 超过色彩上限使用最后一个（未使用）的颜色来渲染object
 	if settings.VSplayer.PlayerFieldUI.CursorColorNum > player.players + 1 {
 		player.objectcolorIndex = player.players
@@ -607,6 +625,50 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	player.SameRate = 0
 	player.lastMissPos = bmath.Vector2d{-1, -1}
 	player.SameMissRate = 0
+
+	//endregion
+
+	//region 计算实时难度
+
+	log.Println("开始计算实时难度")
+	t = time.Now()
+	// 计算mods
+	mods := 0
+	if settings.VSplayer.Mods.EnableDT {
+		mods += MOD_DT
+	}
+	if settings.VSplayer.Mods.EnableHR {
+		mods += MOD_HR
+	}
+	if settings.VSplayer.Mods.EnableHT {
+		mods += MOD_HT
+	}
+	if settings.VSplayer.Mods.EnableHD {
+		mods += MOD_HD
+	}
+	if settings.VSplayer.Mods.EnableEZ {
+		mods += MOD_EZ
+	}
+	beatmapLength := len(beatMap.HitObjects)
+	player.difficulties = make([]oppai.PP, beatmapLength)
+	if !settings.VSplayer.ReplayandCache.ReplayDebug {
+		player.batch.Begin()
+		loadwords = append(loadwords, font.Word{14, float64(screenheight - 320), 24, "Calculate realtime difficulty... 0/" + strconv.Itoa(beatmapLength)})
+		player.font.DrawAll(player.batch, loadwords)
+		player.batch.End()
+		win.SwapBuffers()
+	}
+	for k := 0; k < beatmapLength; k++ {
+		player.difficulties[k] = score.CalculateDiffbyNum(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, k+1, uint32(mods))
+		if !settings.VSplayer.ReplayandCache.ReplayDebug {
+			player.batch.Begin()
+			loadwords = append(loadwords[:len(loadwords)-1], font.Word{14, float64(screenheight - 320), 24, "Calculate realtime difficulty... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(beatmapLength)})
+			player.font.DrawAll(player.batch, loadwords)
+			player.batch.End()
+			win.SwapBuffers()
+		}
+	}
+	log.Println("计算实时难度完成，耗时", time.Now().Sub(t))
 
 	//endregion
 
@@ -1475,6 +1537,54 @@ func (pl *Player) Draw(delta float64) {
 		pl.batch.End()
 	}
 
+
+	//endregion
+
+	//region 渲染实时难度
+
+	if settings.VSplayer.DiffInfoUI.ShowDiffInfo {
+		pl.batch.Begin()
+		pl.batch.SetCamera(pl.scamera.GetProjectionView())
+		pl.batch.SetColor(1, 1, 1, settings.VSplayer.RecordInfoUI.RecordAlpha)
+		if pl.progressMs > pl.bMap.HitObjects[pl.objindex].GetBasicData().JudgeTime {
+			if pl.objindex < len(pl.bMap.HitObjects)-1 {
+				pl.objindex += 1
+			}
+		}
+		diff := pl.difficulties[pl.objindex].Diff
+		var aim float64
+		var speed float64
+		var total float64
+		if pl.objindex == 0 || pl.progressMs > pl.bMap.HitObjects[len(pl.bMap.HitObjects)-1].GetBasicData().JudgeTime {
+			aim = diff.Aim
+			speed = diff.Speed
+			total = diff.Total
+		} else {
+			beforediff := pl.difficulties[pl.objindex-1].Diff
+			aim = score.CalculateRealtimeValue(
+				beforediff.Aim,
+				diff.Aim,
+				pl.bMap.HitObjects[pl.objindex-1].GetBasicData().JudgeTime,
+				pl.bMap.HitObjects[pl.objindex-1].GetBasicData().JudgeTime+int64(settings.VSplayer.PlayerInfoUI.RealTimePPGap),
+				pl.progressMsF)
+			speed = score.CalculateRealtimeValue(
+				beforediff.Speed,
+				diff.Speed,
+				pl.bMap.HitObjects[pl.objindex-1].GetBasicData().JudgeTime,
+				pl.bMap.HitObjects[pl.objindex-1].GetBasicData().JudgeTime+int64(settings.VSplayer.PlayerInfoUI.RealTimePPGap),
+				pl.progressMsF)
+			total = score.CalculateRealtimeValue(
+				beforediff.Total,
+				diff.Total,
+				pl.bMap.HitObjects[pl.objindex-1].GetBasicData().JudgeTime,
+				pl.bMap.HitObjects[pl.objindex-1].GetBasicData().JudgeTime+int64(settings.VSplayer.PlayerInfoUI.RealTimePPGap),
+				pl.progressMsF)
+		}
+		pl.font.Draw(pl.batch, pl.diffbaseX, pl.diffbaseY, pl.diffbasesize, "Aim Stars : "+fmt.Sprintf("%.4f", aim))
+		pl.font.Draw(pl.batch, pl.diffbaseX, pl.diffbaseY-pl.diffoffsetY, pl.diffbasesize, "Speed Stars : "+fmt.Sprintf("%.4f", speed))
+		pl.font.Draw(pl.batch, pl.diffbaseX, pl.diffbaseY-pl.diffoffsetY*2, pl.diffbasesize, "Total Stars : "+fmt.Sprintf("%.4f", total))
+		pl.batch.End()
+	}
 
 	//endregion
 

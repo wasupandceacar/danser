@@ -4,144 +4,73 @@ import (
 	"danser/settings"
 	"github.com/lxn/walk"
 	"log"
-	"strconv"
 )
 
 func (vsw VSPlayerMainWindow) SaveConfig() {
-	players, err := strconv.Atoi(vsw.players.Text())
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.PlayerInfo.Players = players
-	settings.VSplayer.PlayerInfo.SpecifiedPlayers = vsw.specifiedPlayers.Checked()
-	settings.VSplayer.PlayerInfo.SpecifiedLine = vsw.specifiedLine.Text()
+	assign(&settings.VSplayer.PlayerInfo.Players, settings.VSplayer.PlayerInfo.Players, vsw.players)
+	assign(&settings.VSplayer.PlayerInfo.SpecifiedPlayers, settings.VSplayer.PlayerInfo.SpecifiedPlayers, vsw.specifiedPlayers)
+	assign(&settings.VSplayer.PlayerInfo.SpecifiedLine, settings.VSplayer.PlayerInfo.SpecifiedLine, vsw.specifiedLine)
 
-	basesize, err := strconv.ParseFloat(vsw.baseSize.Text(), 64)
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.PlayerInfoUI.BaseSize = basesize
-	basex, err := strconv.ParseFloat(vsw.baseX.Text(), 64)
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.PlayerInfoUI.BaseX = basex
-	basey, err := strconv.ParseFloat(vsw.baseY.Text(), 64)
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.PlayerInfoUI.BaseY = basey
-	settings.VSplayer.PlayerInfoUI.ShowMouse1 = vsw.showMouse1.Checked()
-	settings.VSplayer.PlayerInfoUI.ShowMouse2 = vsw.showMouse2.Checked()
-	settings.VSplayer.PlayerInfoUI.ShowRealTimePP = vsw.showRealTimePP.Checked()
-	realtimeppgap, err := strconv.ParseFloat(vsw.realTimePPGap.Text(), 64)
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.PlayerInfoUI.RealTimePPGap = realtimeppgap
-	settings.VSplayer.PlayerInfoUI.ShowRealTimeUR = vsw.showRealTimeUR.Checked()
-	settings.VSplayer.PlayerInfoUI.ShowPPAndURRank = vsw.showPPAndURRank.Checked()
-	settings.VSplayer.PlayerInfoUI.Rank1Highlight = vsw.rank1Highlight.Checked()
-	highlightmult, err := strconv.ParseFloat(vsw.highlightMult.Text(), 64)
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.PlayerInfoUI.HighlightMult = highlightmult
-	linegapmult, err := strconv.ParseFloat(vsw.lineGapMult.Text(), 64)
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.PlayerInfoUI.LineGapMult = linegapmult
+	assign(&settings.VSplayer.PlayerInfoUI.BaseSize, settings.VSplayer.PlayerInfoUI.BaseSize, vsw.baseSize)
+	assign(&settings.VSplayer.PlayerInfoUI.BaseX, settings.VSplayer.PlayerInfoUI.BaseX, vsw.baseX)
+	assign(&settings.VSplayer.PlayerInfoUI.BaseY, settings.VSplayer.PlayerInfoUI.BaseY, vsw.baseY)
+	assign(&settings.VSplayer.PlayerInfoUI.ShowMouse1, settings.VSplayer.PlayerInfoUI.ShowMouse1, vsw.showMouse1)
+	assign(&settings.VSplayer.PlayerInfoUI.ShowMouse2, settings.VSplayer.PlayerInfoUI.ShowMouse2, vsw.showMouse2)
+	assign(&settings.VSplayer.PlayerInfoUI.ShowRealTimePP, settings.VSplayer.PlayerInfoUI.ShowRealTimePP, vsw.showRealTimePP)
+	assign(&settings.VSplayer.PlayerInfoUI.RealTimePPGap, settings.VSplayer.PlayerInfoUI.RealTimePPGap, vsw.realTimePPGap)
+	assign(&settings.VSplayer.PlayerInfoUI.ShowRealTimeUR, settings.VSplayer.PlayerInfoUI.ShowRealTimeUR, vsw.showRealTimeUR)
+	assign(&settings.VSplayer.PlayerInfoUI.ShowPPAndURRank, settings.VSplayer.PlayerInfoUI.ShowPPAndURRank, vsw.showPPAndURRank)
+	assign(&settings.VSplayer.PlayerInfoUI.Rank1Highlight, settings.VSplayer.PlayerInfoUI.Rank1Highlight, vsw.rank1Highlight)
+	assign(&settings.VSplayer.PlayerInfoUI.HighlightMult, settings.VSplayer.PlayerInfoUI.HighlightMult, vsw.highlightMult)
+	assign(&settings.VSplayer.PlayerInfoUI.LineGapMult, settings.VSplayer.PlayerInfoUI.LineGapMult, vsw.lineGapMult)
 
-	settings.VSplayer.RecordInfoUI.Recorder = vsw.recorder.Text()
-	settings.VSplayer.RecordInfoUI.RecordTime = vsw.recordTime.Text()
-	recordbasex, err := strconv.ParseFloat(vsw.recordBaseX.Text(), 64)
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.RecordInfoUI.RecordBaseX = recordbasex
-	recordbasey, err := strconv.ParseFloat(vsw.recordBaseY.Text(), 64)
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.RecordInfoUI.RecordBaseY = recordbasey
-	recordbasesize, err := strconv.ParseFloat(vsw.recordBaseSize.Text(), 64)
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.RecordInfoUI.RecordBaseSize = recordbasesize
-	recordalpha, err := strconv.ParseFloat(vsw.recordAlpha.Text(), 64)
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.RecordInfoUI.RecordAlpha = recordalpha
+	assign(&settings.VSplayer.RecordInfoUI.Recorder, settings.VSplayer.RecordInfoUI.Recorder, vsw.recorder)
+	assign(&settings.VSplayer.RecordInfoUI.RecordTime, settings.VSplayer.RecordInfoUI.RecordTime, vsw.recordTime)
+	assign(&settings.VSplayer.RecordInfoUI.RecordBaseX, settings.VSplayer.RecordInfoUI.RecordBaseX, vsw.recordBaseX)
+	assign(&settings.VSplayer.RecordInfoUI.RecordBaseY, settings.VSplayer.RecordInfoUI.RecordBaseY, vsw.recordBaseY)
+	assign(&settings.VSplayer.RecordInfoUI.RecordBaseSize, settings.VSplayer.RecordInfoUI.RecordBaseSize, vsw.recordBaseSize)
+	assign(&settings.VSplayer.RecordInfoUI.RecordAlpha, settings.VSplayer.RecordInfoUI.RecordAlpha, vsw.recordAlpha)
 
-	hitfadetime, err := strconv.Atoi(vsw.hitFadeTime.Text())
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.PlayerFieldUI.HitFadeTime = int64(hitfadetime)
-	cursorcolornum, err := strconv.Atoi(vsw.cursorColorNum.Text())
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.PlayerFieldUI.CursorColorNum = cursorcolornum
-	cursorcolorskipnum, err := strconv.Atoi(vsw.cursorColorSkipNum.Text())
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.PlayerFieldUI.CursorColorSkipNum = cursorcolorskipnum
-	settings.VSplayer.PlayerFieldUI.ShowHitCircleNumber = vsw.showHitCircleNumber.Checked()
+	assign(&settings.VSplayer.DiffInfoUI.ShowDiffInfo, settings.VSplayer.DiffInfoUI.ShowDiffInfo, vsw.showDiffInfo)
+	assign(&settings.VSplayer.DiffInfoUI.DiffBaseX, settings.VSplayer.DiffInfoUI.DiffBaseX, vsw.diffBaseX)
+	assign(&settings.VSplayer.DiffInfoUI.DiffBaseY, settings.VSplayer.DiffInfoUI.DiffBaseY, vsw.diffBaseY)
+	assign(&settings.VSplayer.DiffInfoUI.DiffBaseSize, settings.VSplayer.DiffInfoUI.DiffBaseSize, vsw.diffBaseSize)
+	assign(&settings.VSplayer.DiffInfoUI.DiffAlpha, settings.VSplayer.DiffInfoUI.DiffAlpha, vsw.diffAlpha)
 
-	settings.VSplayer.MapInfo.Title = vsw.title.Text()
-	settings.VSplayer.MapInfo.Difficulty = vsw.difficulty.Text()
+	assign(&settings.VSplayer.PlayerFieldUI.HitFadeTime, settings.VSplayer.PlayerFieldUI.HitFadeTime, vsw.hitFadeTime)
+	assign(&settings.VSplayer.PlayerFieldUI.CursorColorNum, settings.VSplayer.PlayerFieldUI.CursorColorNum, vsw.cursorColorNum)
+	assign(&settings.VSplayer.PlayerFieldUI.CursorColorSkipNum, settings.VSplayer.PlayerFieldUI.CursorColorSkipNum, vsw.cursorColorSkipNum)
+	assign(&settings.VSplayer.PlayerFieldUI.ShowHitCircleNumber, settings.VSplayer.PlayerFieldUI.ShowHitCircleNumber, vsw.showHitCircleNumber)
 
-	settings.VSplayer.Mods.EnableDT = vsw.enableDT.Checked()
-	settings.VSplayer.Mods.EnableHT = vsw.enableHT.Checked()
-	settings.VSplayer.Mods.EnableEZ = vsw.enableEZ.Checked()
-	settings.VSplayer.Mods.EnableHR = vsw.enableHR.Checked()
-	settings.VSplayer.Mods.EnableHD = vsw.enableHD.Checked()
+	assign(&settings.VSplayer.MapInfo.Title, settings.VSplayer.MapInfo.Title, vsw.title)
+	assign(&settings.VSplayer.MapInfo.Difficulty, settings.VSplayer.MapInfo.Difficulty, vsw.difficulty)
 
-	settings.VSplayer.Knockout.EnableKnockout = vsw.enableKnockout.Checked()
-	settings.VSplayer.Knockout.ShowTrueMiss = vsw.showTrueMiss.Checked()
-	playerfadetime, err := strconv.ParseFloat(vsw.playerFadeTime.Text(), 64)
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.Knockout.PlayerFadeTime = playerfadetime
-	sametimeoffset, err := strconv.ParseFloat(vsw.sameTimeOffset.Text(), 64)
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.Knockout.SameTimeOffset = sametimeoffset
-	missmult, err := strconv.ParseFloat(vsw.missMult.Text(), 64)
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.Knockout.MissMult = missmult
+	assign(&settings.VSplayer.Mods.EnableDT, settings.VSplayer.Mods.EnableDT, vsw.enableDT)
+	assign(&settings.VSplayer.Mods.EnableHT, settings.VSplayer.Mods.EnableHT, vsw.enableHT)
+	assign(&settings.VSplayer.Mods.EnableEZ, settings.VSplayer.Mods.EnableEZ, vsw.enableEZ)
+	assign(&settings.VSplayer.Mods.EnableHR, settings.VSplayer.Mods.EnableHR, vsw.enableHR)
+	assign(&settings.VSplayer.Mods.EnableHD, settings.VSplayer.Mods.EnableHD, vsw.enableHD)
 
-	settings.VSplayer.ReplayandCache.ReplayDir = vsw.replayDir.Text()
-	settings.VSplayer.ReplayandCache.CacheDir = vsw.cacheDir.Text()
-	settings.VSplayer.ReplayandCache.SaveResultCache = vsw.saveResultCache.Checked()
-	settings.VSplayer.ReplayandCache.ReadResultCache = vsw.readResultCache.Checked()
-	settings.VSplayer.ReplayandCache.ReplayDebug = vsw.replayDebug.Checked()
+	assign(&settings.VSplayer.Knockout.EnableKnockout, settings.VSplayer.Knockout.EnableKnockout, vsw.enableKnockout)
+	assign(&settings.VSplayer.Knockout.ShowTrueMiss, settings.VSplayer.Knockout.ShowTrueMiss, vsw.showTrueMiss)
+	assign(&settings.VSplayer.Knockout.PlayerFadeTime, settings.VSplayer.Knockout.PlayerFadeTime, vsw.playerFadeTime)
+	assign(&settings.VSplayer.Knockout.SameTimeOffset, settings.VSplayer.Knockout.SameTimeOffset, vsw.sameTimeOffset)
+	assign(&settings.VSplayer.Knockout.MissMult, settings.VSplayer.Knockout.MissMult, vsw.missMult)
 
-	settings.VSplayer.ErrorFix.EnableErrorFix = vsw.enableErrorFix.Checked()
-	settings.VSplayer.ErrorFix.ErrorFixFile = vsw.errorFixFile.Text()
+	assign(&settings.VSplayer.ReplayandCache.ReplayDir, settings.VSplayer.ReplayandCache.ReplayDir, vsw.replayDir)
+	assign(&settings.VSplayer.ReplayandCache.CacheDir, settings.VSplayer.ReplayandCache.CacheDir, vsw.cacheDir)
+	assign(&settings.VSplayer.ReplayandCache.SaveResultCache, settings.VSplayer.ReplayandCache.SaveResultCache, vsw.saveResultCache)
+	assign(&settings.VSplayer.ReplayandCache.ReadResultCache, settings.VSplayer.ReplayandCache.ReadResultCache, vsw.readResultCache)
+	assign(&settings.VSplayer.ReplayandCache.ReplayDebug, settings.VSplayer.ReplayandCache.ReplayDebug, vsw.replayDebug)
 
-	settings.VSplayer.Skin.EnableSkin = vsw.enableSkin.Checked()
-	settings.VSplayer.Skin.SkinDir = vsw.skinDir.Text()
-	numberoffset, err := strconv.Atoi(vsw.numberOffset.Text())
-	if err != nil {
-		panic(err)
-	}
-	settings.VSplayer.Skin.NumberOffset = int64(numberoffset)
+	assign(&settings.VSplayer.ErrorFix.EnableErrorFix, settings.VSplayer.ErrorFix.EnableErrorFix, vsw.enableErrorFix)
+	assign(&settings.VSplayer.ErrorFix.ErrorFixFile, settings.VSplayer.ErrorFix.ErrorFixFile, vsw.errorFixFile)
 
-	cursorsize, err := strconv.ParseFloat(vsw.cursorSize.Text(), 64)
-	if err != nil {
-		panic(err)
-	}
-	settings.Cursor.CursorSize = cursorsize
+	assign(&settings.VSplayer.Skin.EnableSkin, settings.VSplayer.Skin.EnableSkin, vsw.enableSkin)
+	assign(&settings.VSplayer.Skin.SkinDir, settings.VSplayer.Skin.SkinDir, vsw.skinDir)
+	assign(&settings.VSplayer.Skin.NumberOffset, settings.VSplayer.Skin.NumberOffset, vsw.numberOffset)
+
+	assign(&settings.Cursor.CursorSize, settings.Cursor.CursorSize, vsw.cursorSize)
 
 	settings.Save()
 	log.Println("已保存设置")
@@ -173,6 +102,12 @@ type VSPlayerMainWindow struct {
 	recordBaseY *walk.LineEdit
 	recordBaseSize *walk.LineEdit
 	recordAlpha *walk.LineEdit
+
+	showDiffInfo *walk.CheckBox
+	diffBaseX *walk.LineEdit
+	diffBaseY *walk.LineEdit
+	diffBaseSize *walk.LineEdit
+	diffAlpha *walk.LineEdit
 
 	hitFadeTime *walk.LineEdit
 	cursorColorNum *walk.LineEdit

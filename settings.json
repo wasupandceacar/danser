@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 5,
+			"Players": 50,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "1"
 		},
@@ -30,6 +30,13 @@
 			"RecordBaseY": 35,
 			"RecordBaseSize": 18,
 			"RecordAlpha": 0.4
+		},
+		"DiffInfoUI": {
+			"ShowDiffInfo": true,
+			"DiffBaseX": 1085,
+			"DiffBaseY": 682,
+			"DiffBaseSize": 18,
+			"DiffAlpha": 0.7
 		},
 		"PlayerFieldUI": {
 			"HitFadeTime": 200,
@@ -60,7 +67,7 @@
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
 			"ReadResultCache": true,
-			"ReplayDebug": true
+			"ReplayDebug": false
 		},
 		"ErrorFix": {
 			"EnableErrorFix": false,

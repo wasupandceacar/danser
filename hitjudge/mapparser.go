@@ -289,7 +289,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 				}else {
 					//log.Println("Slider no breaks")
 				}
-				result = append(result, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().EndTime - o.TailJudgeOffset, sliderhitresult, isBreak})
+				result = append(result, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().JudgeTime, sliderhitresult, isBreak})
 			}
 			// note
 			if o, ok := obj.(*objects.Circle); ok {
@@ -350,7 +350,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 					isBreak = false
 				}
 				maxcombo = int(math.Max(float64(maxcombo), float64(nowcombo)))
-				result = append(result, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().StartTime, keyhitresult, isBreak})
+				result = append(result, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().JudgeTime, keyhitresult, isBreak})
 			}
 			// 转盘
 			if o, ok := obj.(*objects.Spinner); ok {
@@ -359,7 +359,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 				nowcombo += 1
 				totalhits = append(totalhits, 300)
 				maxcombo = int(math.Max(float64(maxcombo), float64(nowcombo)))
-				result = append(result, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().StartTime, Hit300, false})
+				result = append(result, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().JudgeTime, Hit300, false})
 			}
 		}
 		// 判定修正
