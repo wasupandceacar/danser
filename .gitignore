@@ -32,3 +32,4 @@ cache/
 skin/
 danser.log
 vsplayer.log
+*.prof

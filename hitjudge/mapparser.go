@@ -5,6 +5,7 @@ import (
 	"danser/beatmap/objects"
 	"danser/bmath"
 	. "danser/osuconst"
+	"danser/prof"
 	"danser/replay"
 	"danser/score"
 	"danser/settings"
@@ -39,6 +40,10 @@ func ParseReplay(name string) *rplpa.Replay {
 }
 
 func ParseHits(mapname string, replayname string, errors []Error) (result []ObjectResult, totalresult []TotalResult, mods uint32, allright bool) {
+
+	prof.ProfStart()
+	defer prof.ProfEnd()
+
 	// 加载replay
 	pr := ParseReplay(replayname)
 	r := pr.ReplayData
@@ -513,6 +518,10 @@ func isPressChanged(p1 rplpa.KeyPressed, p2 rplpa.KeyPressed) bool {
 func resetKeysOccupied(p1 rplpa.KeyPressed, p2 rplpa.KeyPressed, keysoccupied []bool, presscheck bool, keys []Key) ([]bool, []Key) {
 	newkeysoccupied := make([]bool, 4)
 	copy(newkeysoccupied, keysoccupied)
+	p1M1 := trueClick(p1.LeftClick, p1.Key1)
+	p2M1 := trueClick(p2.LeftClick, p2.Key1)
+	p1M2 := trueClick(p1.RightClick, p1.Key2)
+	p2M2 := trueClick(p2.RightClick, p2.Key2)
 	for i, keyoccupied := range keysoccupied {
 		// 遍历按键，如果被占用
 		// 1.前一个按键也按着，后一个按键没按着，则被占位被释放
@@ -532,16 +541,12 @@ func resetKeysOccupied(p1 rplpa.KeyPressed, p2 rplpa.KeyPressed, keysoccupied []
 				}
 				break
 			case 2:
-				p1M1 := trueClick(p1.LeftClick, p1.Key1)
-				p2M1 := trueClick(p2.LeftClick, p2.Key1)
 				if !p1M1 || (p1M1 && !p2M1) {
 					newkeysoccupied[2] = false
 					//log.Println("M1 no occupied", keysoccupied, newkeysoccupied)
 				}
 				break
 			case 3:
-				p1M2 := trueClick(p1.RightClick, p1.Key2)
-				p2M2 := trueClick(p2.RightClick, p2.Key2)
 				if !p1M2 || (p1M2 && !p2M2) {
 					newkeysoccupied[3] = false
 					//log.Println("M2 no occupied", keysoccupied, newkeysoccupied)
@@ -571,8 +576,6 @@ func resetKeysOccupied(p1 rplpa.KeyPressed, p2 rplpa.KeyPressed, keysoccupied []
 					}
 					break
 				case 2:
-					p1M1 := trueClick(p1.LeftClick, p1.Key1)
-					p2M1 := trueClick(p2.LeftClick, p2.Key1)
 					if !p1M1 && p2M1 {
 						newkeysoccupied[2] = true
 						keys = append(keys, Mouse1)
@@ -580,8 +583,6 @@ func resetKeysOccupied(p1 rplpa.KeyPressed, p2 rplpa.KeyPressed, keysoccupied []
 					}
 					break
 				case 3:
-					p1M2 := trueClick(p1.RightClick, p1.Key2)
-					p2M2 := trueClick(p2.RightClick, p2.Key2)
 					if !p1M2 && p2M2 {
 						newkeysoccupied[3] = true
 						keys = append(keys, Mouse2)
@@ -604,9 +605,6 @@ func findNearestKey(start int, starttime int64, r []*rplpa.ReplayData, requirehi
 		//newkeysoccupied := checkBeforePress(hit, keysoccupied)
 		//ispress, nnewkeysoccupied, _ := isPressed(hit, newkeysoccupied)
 		//log.Println("Find move", hit.Time + time, requirehittime, isInCircle(hit, requirepos, CS), ispress, newkeysoccupied, nnewkeysoccupied, bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos), ODMiss, OD50, CS + 0.01, keysoccupied)
-		//if hit.Time + time > -500 {
-		//	os.Exit(2)
-		//}
 		// 如果时间已经超过最后时间，直接返回
 		realhittime := hit.Time + time
 		if float64(realhittime) > float64(requirehittime) + OD50 {
@@ -855,9 +853,8 @@ func getTickKeysOccupied(keysoccupied []bool, keys []Key) []bool {
 }
 
 func isInCircle(hit *rplpa.ReplayData, requirepos bmath.Vector2d, CS float64) bool {
-	realpos := bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY))
 	// 加入少量误差
-	return bmath.Vector2d.Dst(realpos, requirepos) <= CS + 0.01
+	return bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos) <= CS + CS_JUDGE_OFFSET
 }
 
 // 是否超过object的最后时间点
@@ -1127,14 +1124,10 @@ func findFirstAfterHead(headtime float64, r []*rplpa.ReplayData) (int, int64) {
 // 根据区间上下界计算tick进行区间判定时的准确位置
 func getTickRangeJudgePoint(time int64, hit1 *rplpa.ReplayData, hit2 *rplpa.ReplayData, realhittime int64) *rplpa.ReplayData {
 	mult := float64(time - realhittime) / float64(hit2.Time)
-	deltax := hit2.MosueX - hit1.MosueX
-	deltay := hit2.MouseY - hit1.MouseY
-	x := hit1.MosueX + float32(mult) * deltax
-	y := hit1.MouseY + float32(mult) * deltay
 	return &rplpa.ReplayData{
 		Time: time - realhittime,
-		MosueX: x,
-		MouseY: y,
+		MosueX: hit1.MosueX + float32(mult) * (hit2.MosueX - hit1.MosueX),
+		MouseY: hit1.MouseY + float32(mult) * (hit2.MouseY - hit1.MouseY),
 		KeyPressed: hit1.KeyPressed,
 	}
 }
@@ -1169,7 +1162,7 @@ func fixError(error Error, result []ObjectResult, count300 int, count100 int, co
 	recount100 = count100
 	recount50 = count50
 	recountMiss = countMiss
-	// 修正判定计数
+	// 修正判定计数和判定数组
 	switch lastresult.Result {
 	case Hit300:
 		log.Println("Fix minus 300")
@@ -1191,18 +1184,22 @@ func fixError(error Error, result []ObjectResult, count300 int, count100 int, co
 	switch error.Result {
 	case Hit300:
 		log.Println("Fix plus 300")
+		retotalhits = append(totalhits[:len(totalhits)-2], 300)
 		recount300 += 1
 		break
 	case Hit100:
 		log.Println("Fix plus 100")
+		retotalhits = append(totalhits[:len(totalhits)-2], 100)
 		recount100 += 1
 		break
 	case Hit50:
 		log.Println("Fix plus 50")
+		retotalhits = append(totalhits[:len(totalhits)-2], 50)
 		recount50 += 1
 		break
 	case HitMiss:
 		log.Println("Fix plus miss")
+		retotalhits = append(totalhits[:len(totalhits)-2], 0)
 		recountMiss += 1
 		break
 	}
@@ -1210,22 +1207,7 @@ func fixError(error Error, result []ObjectResult, count300 int, count100 int, co
 	reresult = append(result[:len(result)-2], ObjectResult{lastresult.JudgePos, lastresult.JudgeTime, error.Result, error.IsBreak})
 	// 修正combo
 	remaxcombo = maxcombo + error.MaxComboOffset
-	renowcombo = maxcombo + error.NowComboOffset
-	// 修正判定数组
-	switch error.Result {
-	case Hit300:
-		retotalhits = append(totalhits[:len(totalhits)-2], 300)
-		break
-	case Hit100:
-		retotalhits = append(totalhits[:len(totalhits)-2], 100)
-		break
-	case Hit50:
-		retotalhits = append(totalhits[:len(totalhits)-2], 50)
-		break
-	case HitMiss:
-		retotalhits = append(totalhits[:len(totalhits)-2], 0)
-		break
-	}
+	renowcombo = nowcombo + error.NowComboOffset
 	return reresult, recount300, recount100, recount50, recountMiss, remaxcombo, renowcombo, retotalhits
 }
 
@@ -1237,16 +1219,15 @@ func float2unit(num float64) float64 {
 // 计算不稳定率
 func calculateUnstableRate(array []int64) (unstablerate float64) {
 	var sum int64
+	l := float64(len(array))
 	for _, a := range array {
 		sum += a
 	}
-	avg := float64(sum) / float64(len(array))
+	avg := float64(sum) / l
 	for _, a := range array {
 		unstablerate += math.Pow(float64(a) - avg, 2)
 	}
-	unstablerate /= float64(len(array))
-	unstablerate = 10 * math.Sqrt(unstablerate)
-	return unstablerate
+	return 10 * math.Sqrt(unstablerate / l)
 }
 
 // 检查判定个数
@@ -1261,7 +1242,7 @@ func trueClick(click bool, key bool) bool {
 
 // 检查replay某一瞬间在不在sliderball中
 func checkInSliderBall(slider *objects.Slider, time int64, realpos bmath.Vector2d, scale float64, ispress bool) float64 {
-	if bmath.Vector2d.Dst(slider.GetPointAt(time), realpos) < scale + 0.01 && ispress {
+	if bmath.Vector2d.Dst(slider.GetPointAt(time), realpos) < scale + CS_JUDGE_OFFSET && ispress {
 		//log.Println("Hit in sliderball", time, slider.GetPointAt(time), realpos, bmath.Vector2d.Dst(slider.GetPointAt(time), realpos), scale + 0.01)
 		return TICK_JUDGE_SCALE
 	}else {

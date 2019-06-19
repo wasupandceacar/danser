@@ -51,6 +51,9 @@ const OD_MAX = 10.0
 const CS_HR_HENSE = 1.3
 const CS_EZ_HENSE = 0.5
 
+// CS判定误差
+const CS_JUDGE_OFFSET = 0.01
+
 const CS_MAX = 10.0
 
 // AR参数
@@ -65,5 +68,6 @@ const FADE_OUT_DURATION_MULTIPLIER = 0.3
 
 // stackleniency参数
 const BASE_STACK_OFFSET = -6.4
+
 
 

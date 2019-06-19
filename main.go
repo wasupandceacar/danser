@@ -10,6 +10,7 @@ import (
 func main() {
 	stdinLog := flag.Bool("stdinLog", false, "")
 	noGUI := flag.Bool("noGUI", false, "")
+
 	flag.Parse()
 
 	if !*stdinLog{
