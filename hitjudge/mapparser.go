@@ -5,7 +5,6 @@ import (
 	"danser/beatmap/objects"
 	"danser/bmath"
 	. "danser/osuconst"
-	"danser/prof"
 	"danser/replay"
 	"danser/score"
 	"danser/settings"
@@ -41,8 +40,8 @@ func ParseReplay(name string) *rplpa.Replay {
 
 func ParseHits(mapname string, replayname string, errors []Error) (result []ObjectResult, totalresult []TotalResult, mods uint32, allright bool) {
 
-	prof.ProfStart()
-	defer prof.ProfEnd()
+	//prof.ProfStart()
+	//defer prof.ProfEnd()
 
 	// 加载replay
 	pr := ParseReplay(replayname)

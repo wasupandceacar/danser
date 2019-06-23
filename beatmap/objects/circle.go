@@ -23,7 +23,6 @@ func NewCircle(data []string, number int64) *Circle {
 	f, _ := strconv.ParseInt(data[4], 10, 64)
 	circle.sample = int(f)
 	circle.objData.EndTime = circle.objData.StartTime
-	circle.objData.JudgeTime = circle.objData.StartTime
 	circle.objData.EndPos = circle.objData.StartPos
 	circle.objData.parseExtras(data, 5)
 	return circle
@@ -78,6 +77,7 @@ func (self *Circle) Update(time int64) bool {
 
 func (self *Circle) SetTiming(timings *Timings) {
 	self.Timings = timings
+	self.objData.JudgeTime = self.objData.StartTime
 }
 
 func (self *Circle) GetPosition() bmath.Vector2d {

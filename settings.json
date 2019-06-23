@@ -5,9 +5,9 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 1,
-			"SpecifiedPlayers": false,
-			"SpecifiedLine": "1"
+			"Players": 50,
+			"SpecifiedPlayers": true,
+			"SpecifiedLine": "43,49"
 		},
 		"PlayerInfoUI": {
 			"BaseSize": 6,
@@ -33,10 +33,10 @@
 		},
 		"DiffInfoUI": {
 			"ShowDiffInfo": true,
-			"DiffBaseX": 1085,
-			"DiffBaseY": 682,
+			"DiffBaseX": 1049,
+			"DiffBaseY": 678,
 			"DiffBaseSize": 18,
-			"DiffAlpha": 0.7
+			"DiffAlpha": 0.8
 		},
 		"PlayerFieldUI": {
 			"HitFadeTime": 200,
@@ -45,8 +45,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "IMAGE -MATERIAL- \u003cVersion 0\u003e",
-			"Difficulty": "Scorpiour"
+			"Title": "Crystalia",
+			"Difficulty": "Luminosity"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -67,7 +67,7 @@
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
 			"ReadResultCache": true,
-			"ReplayDebug": true
+			"ReplayDebug": false
 		},
 		"ErrorFix": {
 			"EnableErrorFix": false,
@@ -75,7 +75,7 @@
 		},
 		"Skin": {
 			"EnableSkin": true,
-			"SkinDir": "skin\\delis\\",
+			"SkinDir": "skin\\mathi\\",
 			"NumberOffset": 0
 		}
 	},
