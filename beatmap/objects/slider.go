@@ -620,37 +620,41 @@ func (self *Slider) Draw(time int64, preempt float64, fadeIn float64, color mgl3
 						batch.SetRotation(self.startAngle + math.Pi)
 					}
 					batch.SetSubScale(p.pulse.GetValue(), p.pulse.GetValue())
-					mult := 1.0
 					num := k*2
 					if i == 0 {
 						num += 1
 					}
 					fnum := num
+					var reverseArrowFadeInStart int64
 					if (k!=0) || (i!=1) {
 						//如果不是第一个折返点，则多显示一倍时间
 						fnum -= 1
-						if time >= self.TickReverseTrue[num].Time {
-							mult = 0.0
-						}else if time >= self.TickReverse[fnum].Time{
-							mult = 1.0
-						}else {
-							mult = 0.0
-						}
+						reverseArrowFadeInStart = self.TickReverse[fnum].Time
 					}else {
-						if time >= self.TickReverseTrue[num].Time {
-							mult = 0.0
-						}else if time >= self.TickReverse[fnum].Time - int64(preempt){
-							if settings.Objects.SliderSnakeIn {
-								mult = Clamp(math.Abs(float64(time-(self.TickReverse[fnum].Time-int64(preempt)))) / (preempt / 2), 0.0, 1.0)
-							}else {
-								mult = 1.0
-							}
+						if settings.Objects.SliderSnakeIn {
+							reverseArrowFadeInStart = self.TickReverse[fnum].Time - int64(preempt) * 2 / 3
 						}else {
-							mult = 0.0
+							reverseArrowFadeInStart = self.TickReverse[fnum].Time - int64(preempt)
 						}
 					}
-					batch.SetColor(1, 1, 1, alphaB * mult)
-					batch.DrawUnit(*render.SliderReverse)
+					reverseArrowFadeInEnd := reverseArrowFadeInStart + 150
+					var reverseArrowAlpha float64
+					if time >= self.TickReverseTrue[num].Time {
+						reverseArrowAlpha = 0.0
+					}else if time >= reverseArrowFadeInStart{
+						if (k!=0) || (i!=1) {
+							reverseArrowAlpha = 1.0
+						}else {
+							reverseArrowAlpha = 1.0 - clampF((float64(reverseArrowFadeInEnd-time) / 150.0), 0.0, 1.0)
+						}
+						//reverseArrowAlpha = 1.0 - clampF((float64(reverseArrowFadeInEnd-time) / 150.0), 0.0, 1.0)
+					}else {
+						reverseArrowAlpha = 0.0
+					}
+					//pulse := (0.3 - bmath.Fmod(float64(time), 0.3))/0.3
+					//pulse *= pulse * 0.3
+					batch.SetColor(1, 1, 1, reverseArrowAlpha)
+					batch.DrawUnitFix(*render.SliderReverse, 118, 118)
 				}
 			}
 		}
@@ -816,7 +820,7 @@ func (self *Slider) DrawApproach(time int64, preempt float64, fadeIn float64, co
 	if settings.Objects.DrawApproachCircles && time <= self.objData.StartTime {
 		batch.SetColor(float64(color[0]), float64(color[1]), float64(color[2]), alpha)
 		batch.SetSubScale(1.0+arr*2, 1.0+arr*2)
-		batch.DrawUnitFix(*render.ApproachCircle, 128, 128)
+		batch.DrawUnitFix(*render.ApproachCircle, 126, 126)
 	}
 
 	batch.SetSubScale(1, 1)

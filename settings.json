@@ -5,8 +5,8 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 50,
-			"SpecifiedPlayers": true,
+			"Players": 1,
+			"SpecifiedPlayers": false,
 			"SpecifiedLine": "43,49"
 		},
 		"PlayerInfoUI": {

@@ -12,3 +12,7 @@ func AngleBetween(centre, p1, p2 Vector2d) float64 {
 func Xor(v1 bool, v2 bool) bool {
 	return (v1 && v2) != (v1 || v2)
 }
+
+func Fmod(a float64, b float64) float64 {
+	return a - float64(int(a / b)) * b
+}
