@@ -62,6 +62,10 @@
 - [ ]  [**ODDS&ENDS**](https://osu.ppy.sh/b/1302567)
 - [ ]  [Monsters](https://osu.ppy.sh/b/1586453)
 - [ ]  [幽灵法则](https://osu.ppy.sh/b/960875)
+- [ ]  [The World's End](https://osu.ppy.sh/b/1391815)
+- [ ]  [Saifu 'Kamiasobi no Uta'](https://osu.ppy.sh/b/1140087)
+- [ ]  [Sanae-san](https://osu.ppy.sh/b/1049018)
+- [ ]  [Koyoi wa Hyouitsu na Egoist ~ Ego, Schizoid, Beat.](https://osu.ppy.sh/b/1745634)
 
 ## 有人FC HR 图 ##
 - [ ]  [***Ange du Blanc Pur***](https://osu.ppy.sh/s/564165)

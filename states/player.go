@@ -1375,34 +1375,44 @@ func (pl *Player) Draw(delta float64) {
 						pl.controller[k].SetIsShow(false)
 						// 保存消失时间、消失位置
 						pl.controller[k].SetDishowTime(pl.progressMsF)
+						trueJudgePos := pl.controller[k].GetHitResult()[0].JudgePos
+						// 如果是HR且图整体未开HR，上下翻转
+						if !settings.VSplayer.Mods.EnableHR && pl.controller[k].GetMods()&MOD_HR > 0 {
+							trueJudgePos.Y = PLAYFIELD_HEIGHT - trueJudgePos.Y
+						}
 						if pl.lastDishowPos == defaultpos {
-							pl.lastDishowPos = pl.controller[k].GetHitResult()[0].JudgePos
+							pl.lastDishowPos = trueJudgePos
 						}else {
-							if pl.lastDishowPos == pl.controller[k].GetHitResult()[0].JudgePos {
+							if pl.lastDishowPos == trueJudgePos {
 								pl.SameRate += 1
 							}else {
 								pl.SameRate = 0
 							}
-							pl.lastDishowPos = pl.controller[k].GetHitResult()[0].JudgePos
+							pl.lastDishowPos = trueJudgePos
 						}
-						pl.controller[k].SetDishowPos(pl.controller[k].GetHitResult()[0].JudgePos, pl.SameRate)
+						pl.controller[k].SetDishowPos(trueJudgePos, pl.SameRate)
 					}
 				}
 				if pl.controller[k].GetHitResult()[0].Result == hitjudge.HitMiss {
 					// 检查是否已经录入
 					if pl.controller[k].IsInMiss(pl.controller[k].GetHitResult()[0].JudgeTime) {
 						// 保存miss时间、miss真实判断时间、miss位置
+						trueJudgePos := pl.controller[k].GetHitResult()[0].JudgePos
+						// 如果是HR且图整体未开HR，上下翻转
+						if !settings.VSplayer.Mods.EnableHR && pl.controller[k].GetMods()&MOD_HR > 0 {
+							trueJudgePos.Y = PLAYFIELD_HEIGHT - trueJudgePos.Y
+						}
 						if pl.lastMissPos == defaultpos {
-							pl.lastMissPos = pl.controller[k].GetHitResult()[0].JudgePos
+							pl.lastMissPos = trueJudgePos
 						}else {
-							if pl.lastMissPos == pl.controller[k].GetHitResult()[0].JudgePos {
+							if pl.lastMissPos == trueJudgePos {
 								pl.SameMissRate += 1
 							}else {
 								pl.SameMissRate = 0
 							}
-							pl.lastMissPos = pl.controller[k].GetHitResult()[0].JudgePos
+							pl.lastMissPos = trueJudgePos
 						}
-						pl.controller[k].AddMissInfo(pl.progressMsF, pl.controller[k].GetHitResult()[0].JudgeTime, pl.controller[k].GetHitResult()[0].JudgePos, pl.SameMissRate)
+						pl.controller[k].AddMissInfo(pl.progressMsF, pl.controller[k].GetHitResult()[0].JudgeTime, trueJudgePos, pl.SameMissRate)
 					}
 				}
 				judgeY := pl.hitbaseY - pl.lineoffset * float64(linecount)
