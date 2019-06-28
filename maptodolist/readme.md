@@ -66,6 +66,7 @@
 - [ ]  [Saifu 'Kamiasobi no Uta'](https://osu.ppy.sh/b/1140087)
 - [ ]  [Sanae-san](https://osu.ppy.sh/b/1049018)
 - [ ]  [Koyoi wa Hyouitsu na Egoist ~ Ego, Schizoid, Beat.](https://osu.ppy.sh/b/1745634)
+- [ ]  [雪司机(Lemur)](https://osu.ppy.sh/s/379783) 曲奇曾经FC
 
 ## 有人FC HR 图 ##
 - [ ]  [***Ange du Blanc Pur***](https://osu.ppy.sh/s/564165)
@@ -81,6 +82,7 @@
 - [ ]  [Ringo Uri no Utakata Shoujo](https://osu.ppy.sh/b/1583228?m=0) 
 - [ ]  [小埋](https://osu.ppy.sh/b/737100?m=0) 
 - [ ]  [高分](https://osu.ppy.sh/b/736215) 
+- [ ]  [Packet Hero](https://osu.ppy.sh/b/880321?m=0) 
 
 ## 有人FC DT 图 ##
 - [x]  [未来图](https://osu.ppy.sh/s/306591)
@@ -99,7 +101,6 @@
 - [ ]  [Euphoria](https://osu.ppy.sh/s/890438)
 - [ ]  [17RPG](https://osu.ppy.sh/s/304888)
 - [ ]  [解构星](https://osu.ppy.sh/s/292083)
-- [ ]  [雪司机(Lemur)](https://osu.ppy.sh/s/379783) 曲奇曾经FC
 - [ ]  [Smiling](https://osu.ppy.sh/s/450363)
 - [ ]  [Katayoku no tori](https://osu.ppy.sh/s/478303)
 - [ ]  [Toaru Shoukoku no Ohimesama](https://osu.ppy.sh/s/370605)
@@ -111,3 +112,4 @@
 - [ ]  [doki-doki(Loved)](https://osu.ppy.sh/s/638414) 
 - [ ]  [阴蜂(阴蜂难度)](https://osu.ppy.sh/s/120515) 
 - [x]  [Milk Crown on Sonnetica(Loved,9*难度)](https://osu.ppy.sh/s/327557) 
+- [x]  [Goodbye](https://osu.ppy.sh/b/1172819?m=0) 

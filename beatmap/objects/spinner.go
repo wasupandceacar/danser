@@ -124,8 +124,29 @@ func (self *Spinner) Draw(time int64, preempt float64, fadeIn float64, color mgl
 		}
 	}
 
-
 	batch.SetSubScale(1, 1)
+
+	// 绘制Clear
+	spincleartime := float64(self.objData.EndTime-self.objData.StartTime) * 0.75 + float64(self.objData.StartTime)
+	spinclearalpha := 1.0
+
+	if float64(time) <= spincleartime {
+		spinclearalpha = 0.0
+	}else if float64(time) <= spincleartime + preempt / 2 {
+		spinclearalpha = float64(color[3]) * clampF(2 * (float64(time) - spincleartime) / preempt, 0, 1)
+	}else if time <= self.objData.EndTime{
+		spinclearalpha = float64(color[3])
+	}else if time <= self.objData.EndTime + int64(preempt) / 2 {
+		spinclearalpha = float64(color[3]) * clampF((float64(self.objData.EndTime - time) + preempt/2) / preempt*2, 0, 1)
+	}else {
+		spinclearalpha = 0.0
+	}
+
+	batch.SetColor(1, 1, 1, spinclearalpha)
+	widthratio := float64(render.SpinnerClear.Width) / float64(render.Circle.Width)
+	heightratio := float64(render.SpinnerClear.Height) / float64(render.Circle.Height)
+	batch.SetNumberScale(widthratio, heightratio)
+	batch.DrawUnitN(*render.SpinnerClear, bmath.Vector2d{self.objData.StartPos.X, self.objData.StartPos.Y - 0.25*PLAYFIELD_HEIGHT})
 
 	if time > self.objData.EndTime + int64(preempt) / 2 {
 		return true

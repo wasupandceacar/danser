@@ -14,6 +14,7 @@ var Atlas *texture.TextureAtlas
 var Circle *texture.TextureRegion
 var ApproachCircle *texture.TextureRegion
 var SpinnerCircle *texture.TextureRegion
+var SpinnerClear *texture.TextureRegion
 var SpinnerBackground *texture.TextureRegion
 var SpinnerTop *texture.TextureRegion
 var SpinnerMiddle *texture.TextureRegion
@@ -67,6 +68,7 @@ func LoadTextures() {
 	Circle, _ = loadTextureToAtlas(Atlas, "hitcircle.png")
 	ApproachCircle, _ = loadTextureToAtlas(Atlas, "approachcircle.png")
 	SpinnerCircle, _ = loadTextureToAtlas(Atlas, "spinner-circle.png")
+	SpinnerClear, _ = loadTextureToAtlas(Atlas, "spinner-clear.png")
 	SpinnerBackground, _ = loadTextureToAtlas(Atlas, "spinner-background.png")
 	SpinnerTop, _ = loadTextureToAtlas(Atlas, "spinner-top.png")
 	SpinnerMiddle, _ = loadTextureToAtlas(Atlas, "spinner-middle.png")

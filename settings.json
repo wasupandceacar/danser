@@ -5,9 +5,9 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 1,
+			"Players": 0,
 			"SpecifiedPlayers": false,
-			"SpecifiedLine": "43,49"
+			"SpecifiedLine": "43,44,49"
 		},
 		"PlayerInfoUI": {
 			"BaseSize": 6,
@@ -40,13 +40,13 @@
 		},
 		"PlayerFieldUI": {
 			"HitFadeTime": 200,
-			"CursorColorNum": 13,
+			"CursorColorNum": 25,
 			"CursorColorSkipNum": 13,
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Crystalia",
-			"Difficulty": "Luminosity"
+			"Title": "ODDS\u0026ENDS (Speed Up Ver.)",
+			"Difficulty": "Arles"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -66,7 +66,7 @@
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
-			"ReadResultCache": true,
+			"ReadResultCache": false,
 			"ReplayDebug": false
 		},
 		"ErrorFix": {
@@ -75,7 +75,7 @@
 		},
 		"Skin": {
 			"EnableSkin": true,
-			"SkinDir": "skin\\mathi\\",
+			"SkinDir": "skin\\idke\\",
 			"NumberOffset": 0
 		}
 	},
