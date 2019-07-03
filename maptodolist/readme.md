@@ -1,6 +1,7 @@
+ 
 ## 有人FC None 图 ##
 
-- [ ]  [***V0***](https://osu.ppy.sh/s/93523) 新成绩
+- [x]  [V0](https://osu.ppy.sh/s/93523) 新成绩
 - [x]  [黑太阳](https://osu.ppy.sh/s/280107) 有人做过了,可更新曲奇HDHR
 - [x]  [雪司机(Kroytz)](https://osu.ppy.sh/s/478405) 集体断尾
 - [x]  [ROR(Kroytz)](https://osu.ppy.sh/s/567324) 完美
@@ -13,9 +14,9 @@
 - [ ]  [女武神(arles)](https://osu.ppy.sh/s/378400) 集体断尾
 - [x]  [happy song](https://osu.ppy.sh/s/744593) 断的比较后
 - [x]  [飞升(Kroytz)](https://osu.ppy.sh/s/368060)
-- [ ]  [***Crystalia***](https://osu.ppy.sh/s/691220)
+- [x]  [Crystalia](https://osu.ppy.sh/s/691220)
 - [x]  [Teo(Kroytz)](https://osu.ppy.sh/s/721804) 断尾非常集中
-- [ ]  [***孤高***](https://osu.ppy.sh/s/28705)
+- [x]  [孤高](https://osu.ppy.sh/s/28705)
 - [ ]  [Hoshi o Kakeru Adventure](https://osu.ppy.sh/s/677573) 知名度太低
 - [x]  [冻僵](https://osu.ppy.sh/s/158023) HT FC 太多
 - [x]  [deltamax](https://osu.ppy.sh/s/18315) 太短，断连显示极为频繁
@@ -53,27 +54,28 @@
 - [ ]  [玻璃花(Loved)](https://osu.ppy.sh/s/394834) 
 - [ ]  [**Louder than steel**](https://osu.ppy.sh/s/864869) 
 - [ ]  [Kegare Naki Bara Juuji](https://osu.ppy.sh/s/448818)
-- [x]  [Kegare Naki Yume](https://osu.ppy.sh/s/386619)*967pp
+- [x]  [Kegare Naki Yume](https://osu.ppy.sh/s/386619)967pp
 - [ ]  [Candle Master](https://osu.ppy.sh/s/357632)
 - [ ]  [地狱乐](https://osu.ppy.sh/s/437683) 判定差太多
 - [x]  [红皮(Cry Thunder)](https://osu.ppy.sh/s/316050)
 - [ ]  [Youka to Yumeutsutsu](https://osu.ppy.sh/b/1164254)
 - [ ]  [Embraced by the Flame](https://osu.ppy.sh/b/894744)
-- [ ]  [**ODDS&ENDS**](https://osu.ppy.sh/b/1302567)
+- [x]  [ODDS&ENDS](https://osu.ppy.sh/b/1302567)
 - [ ]  [Monsters](https://osu.ppy.sh/b/1586453)
 - [ ]  [幽灵法则](https://osu.ppy.sh/b/960875)
 - [ ]  [The World's End](https://osu.ppy.sh/b/1391815)
 - [ ]  [Saifu 'Kamiasobi no Uta'](https://osu.ppy.sh/b/1140087)
-- [ ]  [Sanae-san](https://osu.ppy.sh/b/1049018)
+- [x]  [Sanae-san](https://osu.ppy.sh/b/1049018)
 - [ ]  [Koyoi wa Hyouitsu na Egoist ~ Ego, Schizoid, Beat.](https://osu.ppy.sh/b/1745634)
-- [ ]  [雪司机(Lemur)](https://osu.ppy.sh/s/379783) 曲奇曾经FC
+- [x]  [雪司机(Lemur)](https://osu.ppy.sh/s/379783) 曲奇曾经FC
+- [ ]  [哨戒班](https://osu.ppy.sh/s/596814) 刚loved
 
 ## 有人FC HR 图 ##
 - [ ]  [***Ange du Blanc Pur***](https://osu.ppy.sh/s/564165)
 - [x]  [蓝极光](https://osu.ppy.sh/s/292301)
 - [ ]  [**highscore**](https://osu.ppy.sh/s/332532)
 - [ ]  [新黄泉](https://osu.ppy.sh/s/575330)
-- [ ]  [**Sidetracked Day**](https://osu.ppy.sh/s/728276) pp图
+- [x]  [Sidetracked Day](https://osu.ppy.sh/s/728276) pp图
 - [ ]  [Hades: The rise](https://osu.ppy.sh/s/662526) 曲奇HDHRSS
 - [ ]  [chocolate](https://osu.ppy.sh/s/452230) 
 - [ ]  [绿皮(Defenders)](https://osu.ppy.sh/s/323059) 
