@@ -114,4 +114,4 @@
 - [ ]  [doki-doki(Loved)](https://osu.ppy.sh/s/638414) 
 - [ ]  [阴蜂(阴蜂难度)](https://osu.ppy.sh/s/120515) 
 - [x]  [Milk Crown on Sonnetica(Loved,9*难度)](https://osu.ppy.sh/s/327557) 
-- [x]  [Goodbye](https://osu.ppy.sh/b/1172819?m=0) 
+- [ ]  [Goodbye](https://osu.ppy.sh/b/1172819?m=0) 
