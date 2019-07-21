@@ -20,7 +20,7 @@
 - [ ]  [Hoshi o Kakeru Adventure](https://osu.ppy.sh/s/677573) 知名度太低
 - [x]  [冻僵](https://osu.ppy.sh/s/158023) HT FC 太多
 - [x]  [deltamax](https://osu.ppy.sh/s/18315) 太短，断连显示极为频繁
-- [ ]  [ghost rule](https://osu.ppy.sh/s/413117) 基本全部断尾
+- [ ]  [***ghost rule***](https://osu.ppy.sh/s/413117) 基本全部断尾
 - [ ]  [quaver](https://osu.ppy.sh/s/423527) 基本全部断尾
 - [ ]  [透明哀歌](https://osu.ppy.sh/s/219380) 断尾太多
 - [ ]  [大黑](https://osu.ppy.sh/s/41823) 集中断尾
@@ -62,13 +62,16 @@
 - [ ]  [Embraced by the Flame](https://osu.ppy.sh/b/894744)
 - [x]  [ODDS&ENDS](https://osu.ppy.sh/b/1302567)
 - [ ]  [Monsters](https://osu.ppy.sh/b/1586453)
-- [ ]  [幽灵法则](https://osu.ppy.sh/b/960875)
-- [ ]  [The World's End](https://osu.ppy.sh/b/1391815)
+- [ ]  [***The World's End***](https://osu.ppy.sh/b/1391815)
 - [ ]  [Saifu 'Kamiasobi no Uta'](https://osu.ppy.sh/b/1140087)
 - [x]  [Sanae-san](https://osu.ppy.sh/b/1049018)
 - [ ]  [Koyoi wa Hyouitsu na Egoist ~ Ego, Schizoid, Beat.](https://osu.ppy.sh/b/1745634)
 - [x]  [雪司机(Lemur)](https://osu.ppy.sh/s/379783) 曲奇曾经FC
 - [ ]  [哨戒班](https://osu.ppy.sh/s/596814) 刚loved
+- [ ]  [ghost rule（另外版）](https://osu.ppy.sh/b/1124488)
+- [ ]  [光速（次难）](https://osu.ppy.sh/b/792989)
+- [ ]  [狂赌之渊](https://osu.ppy.sh/b/1396342)
+- [ ]  [***神的随波逐流***](https://osu.ppy.sh/b/1259653)
 
 ## 有人FC HR 图 ##
 - [ ]  [***Ange du Blanc Pur***](https://osu.ppy.sh/s/564165)
@@ -96,6 +99,12 @@
 - [ ]  [剑舞](https://osu.ppy.sh/s/745312) pp图
 - [ ]  [In A Night When Her Sorrow Resounds Around](https://osu.ppy.sh/s/901755)
 
+## 有人FC EZ 图 ##
+- [ ]  [polygon](https://osu.ppy.sh/b/1227359)
+- [ ]  [***KAEDE***](https://osu.ppy.sh/s/660630)
+- [ ]  [老大气层](https://osu.ppy.sh/s/517474)
+- [x]  [王冠](https://osu.ppy.sh/s/558694)
+
 ## 无人FC None 图 ##
 - [ ]  [老黄泉](https://osu.ppy.sh/s/461744)
 - [ ]  [黑皇帝](https://osu.ppy.sh/s/396221) 掉的太多
@@ -107,7 +116,6 @@
 - [ ]  [Katayoku no tori](https://osu.ppy.sh/s/478303)
 - [ ]  [Toaru Shoukoku no Ohimesama](https://osu.ppy.sh/s/370605)
 - [ ]  [God and the Illusory Garden](https://osu.ppy.sh/s/375956)  
-- [x]  [王冠](https://osu.ppy.sh/s/558694)
 - [ ]  [小小恋歌](https://osu.ppy.sh/s/609189)   
 - [ ]  [lazy](https://osu.ppy.sh/s/6593)   
 - [ ]  [V0(Enon)](https://osu.ppy.sh/s/402837) 
