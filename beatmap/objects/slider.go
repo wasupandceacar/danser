@@ -310,7 +310,7 @@ func (self *Slider) calculateFollowPoints() {
 		time := self.objData.StartTime + int64(float64(r)*self.partLen)
 		point := tickPoint{time, self.GetPointAt(time)}
 		self.TickReverse = append(self.TickReverse, point)
-		//// 去掉第一个点（滑条头）
+		// 去掉第一个点（滑条头）
 		if r != 0 {
 			self.TickReverseTrue = append(self.TickReverseTrue, point)
 			self.ScorePoints = append(self.ScorePoints, point)

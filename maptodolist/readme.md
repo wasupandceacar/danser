@@ -72,6 +72,7 @@
 - [ ]  [光速（次难）](https://osu.ppy.sh/b/792989)
 - [ ]  [狂赌之渊](https://osu.ppy.sh/b/1396342)
 - [ ]  [***神的随波逐流***](https://osu.ppy.sh/b/1259653)
+- [ ]  [Shinchoku Doudesu ka?](https://osu.ppy.sh/b/958038)
 
 ## 有人FC HR 图 ##
 - [ ]  [***Ange du Blanc Pur***](https://osu.ppy.sh/s/564165)
@@ -104,6 +105,8 @@
 - [ ]  [***KAEDE***](https://osu.ppy.sh/s/660630)
 - [ ]  [老大气层](https://osu.ppy.sh/s/517474)
 - [x]  [王冠](https://osu.ppy.sh/s/558694)
+- [ ]  [TAG4(1)](https://osu.ppy.sh/s/4651)
+- [ ]  [TAG4(2)](https://osu.ppy.sh/s/5807)
 
 ## 无人FC None 图 ##
 - [ ]  [老黄泉](https://osu.ppy.sh/s/461744)
@@ -123,3 +126,4 @@
 - [ ]  [阴蜂(阴蜂难度)](https://osu.ppy.sh/s/120515) 
 - [x]  [Milk Crown on Sonnetica(Loved,9*难度)](https://osu.ppy.sh/s/327557) 
 - [ ]  [Goodbye](https://osu.ppy.sh/b/1172819?m=0) 
+- [ ]  [True truly love](https://osu.ppy.sh/b/260839)

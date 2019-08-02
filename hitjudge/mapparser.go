@@ -99,7 +99,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 	keyindex := 3
 	time := r[1].Time + r[2].Time
 	for k := 0; k < len(b.HitObjects); k++ {
-	//for k := 0; k < 411; k++ {
+	//for k := 0; k < 194; k++ {
 		//log.Println("Object", k+1)
 		obj :=  b.HitObjects[k]
 		if obj != nil {
@@ -124,8 +124,13 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 				keys := []Key{key}
 				copy(keysoccupied, newkeysoccupied)
 
+				// 滑条头前tick判定数组
+				var earlytick int
+				var earlytickjudge []bool
+				var tail bool
+				var tailjudge bool
 				// 检查从滑条开始到击中之前的sliderball情况，调整CS
-				CS_scale = checkSliderBallBeforeHit(nearestindex, lasttime, r, o, convert_CS, CS_scale)
+				CS_scale, earlytick, earlytickjudge, tail, tailjudge = checkSliderBallBeforeHit(nearestindex, lasttime, r, o, convert_CS, CS_scale)
 
 				if isfind {
 					// 如果找到，判断hit结果，设置下一个index+1
@@ -188,18 +193,25 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 				// 预先设置滑条尾判断，以防滑条尾判断早于tick
 				istailjudge := true
 				istailhit := false
-				//for i, t := range o.ScorePoints {
-				for _, t := range o.ScorePoints {
+				for i, t := range o.ScorePoints {
+				//for _, t := range o.ScorePoints {
 					requirehits += 1
-					//log.Println("Check Tick hit", i+1, time, CS_scale * convert_CS)
-					isHit, nextindex, nexttime, newkeysoccupied, newCSscale, newistailjudge, newistailhit, newkeys := isTickHit(o, keyindex, time, r, t.Time, t.Pos, convert_CS, CS_scale, keysoccupied, keys, o.GetBasicData().EndTime - o.TailJudgeOffset, o.TailJudgePoint, istailjudge, istailhit)
-					keys = newkeys
-					istailjudge = newistailjudge
-					istailhit = newistailhit
-					CS_scale = newCSscale
-					copy(keysoccupied, newkeysoccupied)
-					keyindex = nextindex
-					time = nexttime
+					var isHit bool
+					if i >= earlytick {
+						//log.Println("Normal Check Tick hit", i+1, time, CS_scale * convert_CS)
+						newisHit, nextindex, nexttime, newkeysoccupied, newCSscale, newistailjudge, newistailhit, newkeys := isTickHit(o, keyindex, time, r, t.Time, t.Pos, convert_CS, CS_scale, keysoccupied, keys, o.GetBasicData().EndTime-o.TailJudgeOffset, o.TailJudgePoint, istailjudge, istailhit)
+						isHit = newisHit
+						keys = newkeys
+						istailjudge = newistailjudge
+						istailhit = newistailhit
+						CS_scale = newCSscale
+						copy(keysoccupied, newkeysoccupied)
+						keyindex = nextindex
+						time = nexttime
+					}else {
+						//log.Println("Early Check Tick hit", i+1, time)
+						isHit = earlytickjudge[i]
+					}
 					if isHit {
 						//log.Println("Tick", i+1, "hit", t.Time, t.Pos)
 						CS_scale = TICK_JUDGE_SCALE
@@ -234,16 +246,28 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 					}
 				}else {
 					//log.Println("Slider tail judge", r[keyindex], time, o.GetBasicData().EndTime-o.TailJudgeOffset, o.TailJudgeOffset, o.TailJudgePoint, convert_CS, CS_scale*convert_CS)
-					isHit, nextindex, nexttime, newkeysoccupied, newCSscale, _, _, _ := isTickHit(o, keyindex, time, r, o.GetBasicData().EndTime-o.TailJudgeOffset, o.TailJudgePoint, convert_CS, CS_scale, keysoccupied, keys,0, bmath.Vector2d{0, 0}, false, false)
-					CS_scale = newCSscale
-					//log.Println("Slider tail judge result", r[nextindex].Time, nexttime + r[nextindex].Time)
-					// 滑条头如果判定得比滑条尾还晚！！！
-					if nearestindex > nextindex {
-						//log.Println("Slider head judged later than tail!!!", nexttime + r[nextindex].Time, lasttime + r[nearestindex].Time)
-						nextindex = nearestindex
-						nexttime = lasttime
+					var isHit bool
+					var nextindex int
+					var nexttime int64
+					// 滑条尾在滑条头前判断
+					if tail {
+						//log.Println("Slider head judged later than tail another!!!")
+						isHit = tailjudge
+					}else {
+						newisHit, newnextindex, newnexttime, newkeysoccupied, newCSscale, _, _, _ := isTickHit(o, keyindex, time, r, o.GetBasicData().EndTime-o.TailJudgeOffset, o.TailJudgePoint, convert_CS, CS_scale, keysoccupied, keys, 0, bmath.Vector2d{0, 0}, false, false)
+						isHit = newisHit
+						nextindex = newnextindex
+						nexttime = newnexttime
+						CS_scale = newCSscale
+						//log.Println("Slider tail judge result", r[nextindex].Time, nexttime+r[nextindex].Time, nearestindex, nextindex)
+						// 滑条头如果判定得比滑条尾还晚！！！
+						if nearestindex > nextindex {
+							//log.Println("Slider head judged later than tail!!!", nexttime+r[nextindex].Time, lasttime+r[nearestindex].Time)
+							nextindex = nearestindex
+							nexttime = lasttime
+						}
+						copy(keysoccupied, newkeysoccupied)
 					}
-					copy(keysoccupied, newkeysoccupied)
 					if isHit {
 						//log.Println("Slider tail hit", o.GetBasicData().EndTime-o.TailJudgeOffset, o.TailJudgePoint)
 						realhits += 1
@@ -1251,7 +1275,7 @@ func checkInSliderBall(slider *objects.Slider, time int64, realpos bmath.Vector2
 }
 
 // 检查滑条开始到击中前的sliderball
-func checkSliderBallBeforeHit(index int, lasttime int64, r []*rplpa.ReplayData, slider *objects.Slider, CS float64, scale float64) float64 {
+func checkSliderBallBeforeHit(index int, lasttime int64, r []*rplpa.ReplayData, slider *objects.Slider, CS float64, scale float64) (float64, int, []bool, bool, bool) {
 	// 击中时间
 	realhittime := r[index].Time + lasttime
 	// 根据滑条开始时间确定开始查找的replay片段
@@ -1263,19 +1287,53 @@ func checkSliderBallBeforeHit(index int, lasttime int64, r []*rplpa.ReplayData, 
 
 	// 暂时的变量
 	// 跳过滑条开始时间后的若干个replay片段？这段时间也许为sliderball的加载时间
-	skiptimes := 1
+	skiptimes := 0
+
+	// 初始tick索引，判定数组
+	tickindex := 0
+	tickjudge := []bool{}
+
+	// 初始slidertail判定
+	slidertailtime := slider.GetBasicData().EndTime - slider.TailJudgeOffset
+	tailjudge := false
+	tailresult := false
 
 	for {
 		time += r[i].Time
 		// 大于击中时间，检查结束
 		if time > realhittime {
-			return CSscale
+			return CSscale, tickindex, tickjudge, tailjudge, tailresult
 		}
 		// 大于滑条开始时间，开始检查
 		if time >= sliderstarttime {
 			if skiptimes == 0 {
 				//log.Println("Check sliderball before hit", r[index].Time, time, sliderstarttime)
 				CSscale = checkInSliderBall(slider, time, bmath.Vector2d{float64(r[i].MosueX), float64(r[i].MouseY)}, CS*CSscale, isPressedNoTick(r[i]))
+				if tickindex < len(slider.ScorePoints) {
+					ticktime := slider.ScorePoints[tickindex].Time
+					// 如果当前时间已经大于现tick时间，判断tick并指向下一个tick
+					if time >= ticktime {
+						tickindex++
+						if CSscale == TICK_JUDGE_SCALE {
+							//log.Println("Early Tick Hit", tickindex, ticktime, r[index].Time, time)
+							tickjudge = append(tickjudge, true)
+						}else if CSscale == CIRCLE_JUDGE_SCALE {
+							//log.Println("Early Tick Not Hit", tickindex, ticktime, r[index].Time, time)
+							tickjudge = append(tickjudge, false)
+						}
+					}
+				}
+				// 如果当前时间已经大于滑条尾时间，判断滑条尾击中情况
+				if time >= slidertailtime {
+					tailjudge = true
+					if CSscale == TICK_JUDGE_SCALE {
+						//log.Println("Early Slider Tail Hit", slidertailtime, r[index].Time, time)
+						tailresult = true
+					}else if CSscale == CIRCLE_JUDGE_SCALE {
+						//log.Println("Early Slider Tail Not Hit", slidertailtime, r[index].Time, time)
+						tailresult = false
+					}
+				}
 			}else {
 				skiptimes--
 			}

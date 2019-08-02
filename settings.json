@@ -5,9 +5,9 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 0,
-			"SpecifiedPlayers": false,
-			"SpecifiedLine": "43,44,49"
+			"Players": 10,
+			"SpecifiedPlayers": true,
+			"SpecifiedLine": "2"
 		},
 		"PlayerInfoUI": {
 			"BaseSize": 6,
@@ -45,8 +45,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "ODDS\u0026ENDS (Speed Up Ver.)",
-			"Difficulty": "Arles"
+			"Title": "KAEDE",
+			"Difficulty": "EX EX"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -67,7 +67,7 @@
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
 			"ReadResultCache": false,
-			"ReplayDebug": false
+			"ReplayDebug": true
 		},
 		"ErrorFix": {
 			"EnableErrorFix": false,
