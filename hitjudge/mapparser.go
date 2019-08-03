@@ -99,7 +99,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 	keyindex := 3
 	time := r[1].Time + r[2].Time
 	for k := 0; k < len(b.HitObjects); k++ {
-	//for k := 0; k < 194; k++ {
+	//for k := 0; k < 680; k++ {
 		//log.Println("Object", k+1)
 		obj :=  b.HitObjects[k]
 		if obj != nil {
@@ -249,25 +249,26 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 					var isHit bool
 					var nextindex int
 					var nexttime int64
+
+					newisHit, newnextindex, newnexttime, newkeysoccupied, newCSscale, _, _, _ := isTickHit(o, keyindex, time, r, o.GetBasicData().EndTime-o.TailJudgeOffset, o.TailJudgePoint, convert_CS, CS_scale, keysoccupied, keys, 0, bmath.Vector2d{0, 0}, false, false)
 					// 滑条尾在滑条头前判断
 					if tail {
 						//log.Println("Slider head judged later than tail another!!!")
 						isHit = tailjudge
 					}else {
-						newisHit, newnextindex, newnexttime, newkeysoccupied, newCSscale, _, _, _ := isTickHit(o, keyindex, time, r, o.GetBasicData().EndTime-o.TailJudgeOffset, o.TailJudgePoint, convert_CS, CS_scale, keysoccupied, keys, 0, bmath.Vector2d{0, 0}, false, false)
 						isHit = newisHit
-						nextindex = newnextindex
-						nexttime = newnexttime
-						CS_scale = newCSscale
-						//log.Println("Slider tail judge result", r[nextindex].Time, nexttime+r[nextindex].Time, nearestindex, nextindex)
-						// 滑条头如果判定得比滑条尾还晚！！！
-						if nearestindex > nextindex {
-							//log.Println("Slider head judged later than tail!!!", nexttime+r[nextindex].Time, lasttime+r[nearestindex].Time)
-							nextindex = nearestindex
-							nexttime = lasttime
-						}
-						copy(keysoccupied, newkeysoccupied)
 					}
+					nextindex = newnextindex
+					nexttime = newnexttime
+					CS_scale = newCSscale
+					//log.Println("Slider tail judge result", r[nextindex].Time, nexttime+r[nextindex].Time, nearestindex, nextindex)
+					// 滑条头如果判定得比滑条尾还晚！！！
+					if nearestindex > nextindex {
+						//log.Println("Slider head judged later than tail!!!", nexttime+r[nextindex].Time, lasttime+r[nearestindex].Time)
+						nextindex = nearestindex
+						nexttime = lasttime
+					}
+					copy(keysoccupied, newkeysoccupied)
 					if isHit {
 						//log.Println("Slider tail hit", o.GetBasicData().EndTime-o.TailJudgeOffset, o.TailJudgePoint)
 						realhits += 1
@@ -482,6 +483,11 @@ func findRelease(keyindex int, starttime int64, r []*rplpa.ReplayData, keysoccup
 
 	for {
 		index++
+		// 如果到了replay尽头还没有按下按键，直接返回原数组
+		if r[index].Time == REPLAY_END_TIME {
+			//log.Println("Reach Replay End, No more!", time)
+			return keyindex, starttime, keysoccupied
+		}
 		time += r[index].Time
 		// 如果按键状态改变，则返回
 		//log.Println("Key compare", time - r[index].Time, *keypress, time, *r[index].KeyPressed, isPressChanged(*keypress, *r[index].KeyPressed))

@@ -753,7 +753,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 				PressKey := *rdata.KeyPressed
 
 				// 如果offset=-12345，结束
-				if offset == -12345 {
+				if offset == REPLAY_END_TIME {
 					time.Sleep(1000 * time.Second)
 				}
 

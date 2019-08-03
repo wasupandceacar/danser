@@ -69,5 +69,8 @@ const FADE_OUT_DURATION_MULTIPLIER = 0.3
 // stackleniency参数
 const BASE_STACK_OFFSET = -6.4
 
+// replay时间结束默认时间
+const REPLAY_END_TIME = -12345
+
 
 

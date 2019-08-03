@@ -5,9 +5,9 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 10,
+			"Players": 5,
 			"SpecifiedPlayers": true,
-			"SpecifiedLine": "2"
+			"SpecifiedLine": "29"
 		},
 		"PlayerInfoUI": {
 			"BaseSize": 6,
@@ -45,8 +45,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "KAEDE",
-			"Difficulty": "EX EX"
+			"Title": "The World's End",
+			"Difficulty": "Prologue"
 		},
 		"Mods": {
 			"EnableDT": false,

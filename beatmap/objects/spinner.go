@@ -28,7 +28,7 @@ func NewSpinner(data []string, number int64) *Spinner {
 	sample, _ := strconv.ParseInt(data[4], 10, 64)
 	spinner.sample = int(sample)
 
-	spinner.renderStartTime = -12345
+	spinner.renderStartTime = REPLAY_END_TIME
 	return spinner
 }
 
@@ -66,7 +66,7 @@ func (self *Spinner) Update(time int64) bool {
 }
 
 func (self *Spinner) Draw(time int64, preempt float64, fadeIn float64, color mgl32.Vec4, batch *render.SpriteBatch) bool {
-	if self.renderStartTime == -12345 {
+	if self.renderStartTime == REPLAY_END_TIME {
 		self.renderStartTime = time
 	}
 
@@ -162,7 +162,7 @@ func (self *Spinner) DrawApproach(time int64, preempt float64, fadeIn float64, c
 	// 记录第一次渲染转盘的时间，第一次渲染时，转盘正好撑满整个屏幕，并开始淡入。
 	// 转盘时间开始，淡入完成，随后转盘逐渐变小
 	// 转盘时间结束，开始淡出
-	if self.renderStartTime == -12345 {
+	if self.renderStartTime == REPLAY_END_TIME {
 		self.renderStartTime = time
 	}
 
