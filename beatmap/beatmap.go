@@ -23,7 +23,7 @@ type BeatMap struct {
 }
 
 func NewBeatMap() *BeatMap {
-	return &BeatMap{Timings: objects.NewTimings(), StackLeniency: 0.7}
+	return &BeatMap{Timings: objects.NewTimings(), AR: 8.0, StackLeniency: 0.7}
 }
 
 func (b *BeatMap) Reset() {
