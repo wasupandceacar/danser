@@ -89,6 +89,8 @@
 - [ ]  [小埋](https://osu.ppy.sh/b/737100?m=0) 
 - [ ]  [高分](https://osu.ppy.sh/b/736215) 
 - [ ]  [Packet Hero](https://osu.ppy.sh/b/880321?m=0) 
+- [ ]  [the rise](https://osu.ppy.sh/b/1402392?m=0) 
+- [ ]  [泡沫少女](https://osu.ppy.sh/b/1583228?m=0) 
 
 ## 有人FC DT 图 ##
 - [x]  [未来图](https://osu.ppy.sh/s/306591)
