@@ -1,38 +1,38 @@
  
 ## 有人FC None 图 ##
 
-- [x]  [V0](https://osu.ppy.sh/s/93523) 新成绩
-- [x]  [黑太阳](https://osu.ppy.sh/s/280107) 有人做过了,可更新曲奇HDHR
-- [x]  [雪司机(Kroytz)](https://osu.ppy.sh/s/478405) 集体断尾
-- [x]  [ROR(Kroytz)](https://osu.ppy.sh/s/567324) 完美
-- [x]  [天乐](https://osu.ppy.sh/s/336414) 较多人断连过早
-- [x]  [源流懐古(HW)](https://osu.ppy.sh/s/180138) 完美
-- [x]  [fdfd](https://osu.ppy.sh/s/39804) FC人数较多 
-- [x]  [彩虹小马](https://osu.ppy.sh/s/57255) 坨坨滑条折返绘制出现反向问题
-- [x]  [axion(扶老二)](https://osu.ppy.sh/s/115193) 较短，断连显示频繁
+- [x]  [V0](https://osu.ppy.sh/s/93523) 
+- [x]  [黑太阳](https://osu.ppy.sh/s/280107) 
+- [x]  [雪司机(Kroytz)](https://osu.ppy.sh/s/478405) 
+- [x]  [ROR(Kroytz)](https://osu.ppy.sh/s/567324) 
+- [x]  [天乐](https://osu.ppy.sh/s/336414) 
+- [x]  [源流懐古(HW)](https://osu.ppy.sh/s/180138) 
+- [x]  [fdfd](https://osu.ppy.sh/s/39804)  
+- [x]  [彩虹小马](https://osu.ppy.sh/s/57255) 
+- [x]  [axion(扶老二)](https://osu.ppy.sh/s/115193) 
 - [ ]  [摩天楼](https://osu.ppy.sh/s/100348)
-- [ ]  [女武神(arles)](https://osu.ppy.sh/s/378400) 集体断尾
-- [x]  [happy song](https://osu.ppy.sh/s/744593) 断的比较后
+- [ ]  [女武神(arles)](https://osu.ppy.sh/s/378400) 
+- [x]  [happy song](https://osu.ppy.sh/s/744593) 
 - [x]  [飞升(Kroytz)](https://osu.ppy.sh/s/368060)
 - [x]  [Crystalia](https://osu.ppy.sh/s/691220)
-- [x]  [Teo(Kroytz)](https://osu.ppy.sh/s/721804) 断尾非常集中
+- [x]  [Teo(Kroytz)](https://osu.ppy.sh/s/721804) 
 - [x]  [孤高](https://osu.ppy.sh/s/28705)
-- [ ]  [Hoshi o Kakeru Adventure](https://osu.ppy.sh/s/677573) 知名度太低
-- [x]  [冻僵](https://osu.ppy.sh/s/158023) HT FC 太多
-- [x]  [deltamax](https://osu.ppy.sh/s/18315) 太短，断连显示极为频繁
-- [ ]  [***ghost rule***](https://osu.ppy.sh/s/413117) 基本全部断尾
-- [ ]  [quaver](https://osu.ppy.sh/s/423527) 基本全部断尾
-- [ ]  [透明哀歌](https://osu.ppy.sh/s/219380) 断尾太多
-- [ ]  [大黑](https://osu.ppy.sh/s/41823) 集中断尾
-- [ ]  [Foreground Eclipse 合集](https://osu.ppy.sh/s/765497) 还在变化
-- [ ]  [新龙力](https://osu.ppy.sh/s/871946) pp图
+- [ ]  [Hoshi o Kakeru Adventure](https://osu.ppy.sh/s/677573) 
+- [x]  [冻僵](https://osu.ppy.sh/s/158023) 
+- [x]  [deltamax](https://osu.ppy.sh/s/18315) 
+- [x]  [ghost rule](https://osu.ppy.sh/s/413117) 
+- [ ]  [quaver](https://osu.ppy.sh/s/423527) 
+- [ ]  [透明哀歌](https://osu.ppy.sh/s/219380) 
+- [ ]  [大黑](https://osu.ppy.sh/s/41823) 
+- [ ]  [Foreground Eclipse 合集](https://osu.ppy.sh/s/765497) 
+- [ ]  [新龙力](https://osu.ppy.sh/s/871946) 
 - [ ]  [翡翠鸟](https://osu.ppy.sh/s/557145)
 - [ ]  [shounen ripples(Arles)](https://osu.ppy.sh/s/356426)
 - [ ]  [**High Free Spirits(Speed Up Ver.)**](https://osu.ppy.sh/s/467220)
 - [ ]  [**Atama no Taisou**](https://osu.ppy.sh/s/40344)
-- [ ]  [Packet Hero](https://osu.ppy.sh/s/404910) 集体断尾
-- [ ]  [Light it up](https://osu.ppy.sh/s/650738) 知名度太低
-- [ ]  [Owata \(^o^)/](https://osu.ppy.sh/s/399096) 知名度太低
+- [ ]  [Packet Hero](https://osu.ppy.sh/s/404910) 
+- [ ]  [Light it up](https://osu.ppy.sh/s/650738) 
+- [ ]  [Owata \(^o^)/](https://osu.ppy.sh/s/399096) 
 - [x]  [量子海](https://osu.ppy.sh/s/372850)
 - [ ]  [**量子海(Crystal)**](https://osu.ppy.sh/s/405167)
 - [x]  [多巴胺](https://osu.ppy.sh/s/210316)
@@ -52,26 +52,26 @@
 - [ ]  [阴蜂(阳蜂难度)](https://osu.ppy.sh/s/120515) 
 - [ ]  [Milk Crown on Sonnetica(Loved,101%难度)](https://osu.ppy.sh/s/327557) 
 - [ ]  [玻璃花(Loved)](https://osu.ppy.sh/s/394834) 
-- [ ]  [**Louder than steel**](https://osu.ppy.sh/s/864869) 
+- [ ]  [**Louder than steel(Loved)**](https://osu.ppy.sh/s/864869) 
 - [ ]  [Kegare Naki Bara Juuji](https://osu.ppy.sh/s/448818)
-- [x]  [Kegare Naki Yume](https://osu.ppy.sh/s/386619)967pp
+- [x]  [Kegare Naki Yume](https://osu.ppy.sh/s/386619)
 - [ ]  [Candle Master](https://osu.ppy.sh/s/357632)
-- [ ]  [地狱乐](https://osu.ppy.sh/s/437683) 判定差太多
+- [ ]  [地狱乐](https://osu.ppy.sh/s/437683) 
 - [x]  [红皮(Cry Thunder)](https://osu.ppy.sh/s/316050)
 - [ ]  [Youka to Yumeutsutsu](https://osu.ppy.sh/b/1164254)
 - [ ]  [Embraced by the Flame](https://osu.ppy.sh/b/894744)
 - [x]  [ODDS&ENDS](https://osu.ppy.sh/b/1302567)
 - [ ]  [Monsters](https://osu.ppy.sh/b/1586453)
-- [ ]  [***The World's End***](https://osu.ppy.sh/b/1391815)
+- [x]  [The World's End](https://osu.ppy.sh/b/1391815)
 - [ ]  [Saifu 'Kamiasobi no Uta'](https://osu.ppy.sh/b/1140087)
 - [x]  [Sanae-san](https://osu.ppy.sh/b/1049018)
 - [ ]  [Koyoi wa Hyouitsu na Egoist ~ Ego, Schizoid, Beat.](https://osu.ppy.sh/b/1745634)
-- [x]  [雪司机(Lemur)](https://osu.ppy.sh/s/379783) 曲奇曾经FC
-- [ ]  [哨戒班](https://osu.ppy.sh/s/596814) 刚loved
+- [x]  [雪司机(Lemur)](https://osu.ppy.sh/s/379783) 
+- [ ]  [哨戒班](https://osu.ppy.sh/s/596814) 
 - [ ]  [ghost rule（另外版）](https://osu.ppy.sh/b/1124488)
 - [ ]  [光速（次难）](https://osu.ppy.sh/b/792989)
 - [ ]  [狂赌之渊](https://osu.ppy.sh/b/1396342)
-- [ ]  [***神的随波逐流***](https://osu.ppy.sh/b/1259653)
+- [x]  [神的随波逐流](https://osu.ppy.sh/b/1259653)
 - [ ]  [Shinchoku Doudesu ka?](https://osu.ppy.sh/b/958038)
 
 ## 有人FC HR 图 ##
@@ -79,8 +79,8 @@
 - [x]  [蓝极光](https://osu.ppy.sh/s/292301)
 - [ ]  [**highscore**](https://osu.ppy.sh/s/332532)
 - [ ]  [新黄泉](https://osu.ppy.sh/s/575330)
-- [x]  [Sidetracked Day](https://osu.ppy.sh/s/728276) pp图
-- [ ]  [Hades: The rise](https://osu.ppy.sh/s/662526) 曲奇HDHRSS
+- [ ]  [Sidetracked Day](https://osu.ppy.sh/s/728276) 
+- [ ]  [Hades: The rise](https://osu.ppy.sh/s/662526) 
 - [ ]  [chocolate](https://osu.ppy.sh/s/452230) 
 - [ ]  [绿皮(Defenders)](https://osu.ppy.sh/s/323059) 
 - [x]  [梦地图(Loved)](https://osu.ppy.sh/b/1226524?m=0)
@@ -89,7 +89,6 @@
 - [ ]  [小埋](https://osu.ppy.sh/b/737100?m=0) 
 - [ ]  [高分](https://osu.ppy.sh/b/736215) 
 - [ ]  [Packet Hero](https://osu.ppy.sh/b/880321?m=0) 
-- [ ]  [the rise](https://osu.ppy.sh/b/1402392?m=0) 
 - [ ]  [泡沫少女](https://osu.ppy.sh/b/1583228?m=0) 
 
 ## 有人FC DT 图 ##
@@ -99,20 +98,20 @@
 - [ ]  [necro fatansia](https://osu.ppy.sh/s/516494)
 - [ ]  [Akatsuki Zukuyo](https://osu.ppy.sh/s/351280)
 - [ ]  [**樱之诗**](https://osu.ppy.sh/s/738656)
-- [ ]  [剑舞](https://osu.ppy.sh/s/745312) pp图
+- [ ]  [剑舞](https://osu.ppy.sh/s/745312) 
 - [ ]  [In A Night When Her Sorrow Resounds Around](https://osu.ppy.sh/s/901755)
 
 ## 有人FC EZ 图 ##
-- [ ]  [polygon](https://osu.ppy.sh/b/1227359)
+- [x]  [polygon](https://osu.ppy.sh/b/1227359)
 - [ ]  [***KAEDE***](https://osu.ppy.sh/s/660630)
-- [ ]  [老大气层](https://osu.ppy.sh/s/517474)
+- [ ]  [***老大气层***](https://osu.ppy.sh/s/517474)
 - [x]  [王冠](https://osu.ppy.sh/s/558694)
 - [ ]  [TAG4(1)](https://osu.ppy.sh/s/4651)
 - [ ]  [TAG4(2)](https://osu.ppy.sh/s/5807)
 
 ## 无人FC None 图 ##
 - [ ]  [老黄泉](https://osu.ppy.sh/s/461744)
-- [ ]  [黑皇帝](https://osu.ppy.sh/s/396221) 掉的太多
+- [ ]  [黑皇帝](https://osu.ppy.sh/s/396221) 
 - [ ]  [大钱](https://osu.ppy.sh/s/293705)
 - [ ]  [Euphoria](https://osu.ppy.sh/s/890438)
 - [ ]  [17RPG](https://osu.ppy.sh/s/304888)
@@ -129,3 +128,4 @@
 - [x]  [Milk Crown on Sonnetica(Loved,9*难度)](https://osu.ppy.sh/s/327557) 
 - [ ]  [Goodbye](https://osu.ppy.sh/b/1172819?m=0) 
 - [ ]  [True truly love](https://osu.ppy.sh/b/260839)
+- [ ]  [Yakubyougami](https://osu.ppy.sh/s/455419)
