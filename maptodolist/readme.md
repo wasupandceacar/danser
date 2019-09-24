@@ -104,7 +104,7 @@
 ## 有人FC EZ 图 ##
 - [x]  [polygon](https://osu.ppy.sh/b/1227359)
 - [ ]  [***KAEDE***](https://osu.ppy.sh/s/660630)
-- [ ]  [***老大气层***](https://osu.ppy.sh/s/517474)
+- [x]  [老大气层](https://osu.ppy.sh/s/517474)
 - [x]  [王冠](https://osu.ppy.sh/s/558694)
 - [ ]  [TAG4(1)](https://osu.ppy.sh/s/4651)
 - [ ]  [TAG4(2)](https://osu.ppy.sh/s/5807)

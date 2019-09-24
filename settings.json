@@ -5,17 +5,17 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 5,
+			"Players": 50,
 			"SpecifiedPlayers": true,
-			"SpecifiedLine": "29"
+			"SpecifiedLine": "3"
 		},
 		"PlayerInfoUI": {
 			"BaseSize": 6,
 			"BaseX": 14,
 			"BaseY": 696,
-			"ShowMouse1": false,
+			"ShowMouse1": true,
 			"ShowMouse2": false,
-			"ShowRealTimePP": true,
+			"ShowRealTimePP": false,
 			"RealTimePPGap": 800,
 			"ShowRealTimeUR": false,
 			"ShowPPAndURRank": false,
@@ -45,8 +45,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "The World's End",
-			"Difficulty": "Prologue"
+			"Title": "Exit This Earth's Atomosphere",
+			"Difficulty": "Evolution"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -60,22 +60,22 @@
 			"ShowTrueMiss": false,
 			"PlayerFadeTime": 1500,
 			"SameTimeOffset": 22,
-			"MissMult": 1.15
+			"MissMult": 1
 		},
 		"ReplayandCache": {
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
-			"ReadResultCache": false,
+			"ReadResultCache": true,
 			"ReplayDebug": true
 		},
 		"ErrorFix": {
-			"EnableErrorFix": false,
+			"EnableErrorFix": true,
 			"ErrorFixFile": "error.err"
 		},
 		"Skin": {
 			"EnableSkin": true,
-			"SkinDir": "skin\\idke\\",
+			"SkinDir": "skin\\lain1\\",
 			"NumberOffset": 0
 		}
 	},

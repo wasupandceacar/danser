@@ -179,9 +179,16 @@ func calculateStackLeniency(b *BeatMap) {
 func calculateStackLeniencywithMods(b *BeatMap, isHR bool, isEZ bool) {
 	stack_distance := 3.0
 
-	preempt := difficultyRate(b.AR, 1800, 1200, 450)
+	newAR := b.AR
+	if isHR {
+		newAR = math.Max(newAR * 1.4, 1.0)
+	}
+	if isEZ {
+		newAR /= 2
+	}
+	preempt := difficultyRate(newAR, 1800, 1200, 450)
 	b.ARms = preempt
-	b.FadeIn = difficultyRate(b.AR, 1200, 800, 300)
+	b.FadeIn = difficultyRate(newAR, 1200, 800, 300)
 	// 加入OD
 	b.OD300 = AdjustOD(OD_300_BASE - ( b.OD * OD_300_MULT ) + OD_PRECISION_FIX)
 	b.OD100 = AdjustOD(OD_100_BASE - ( b.OD * OD_100_MULT ) + OD_PRECISION_FIX)
@@ -220,6 +227,7 @@ func calculateStackLeniencywithMods(b *BeatMap, isHR bool, isEZ bool) {
 			}
 
 			if stackBaseObject.GetBasicData().StartPos.Dst(objectN.GetBasicData().StartPos) < stack_distance || isSlider(stackBaseObject) && stackBaseObject.GetBasicData().EndPos.Dst(objectN.GetBasicData().StartPos) < stack_distance {
+
 				stackBaseIndex = n
 				objectN.GetBasicData().StackIndex = 0
 			}

@@ -12,11 +12,16 @@
 		"PlayerInfoUI": {
 			"BaseSize": 9,
 			"BaseX": 18,
-			"BaseY": 1007,
-			"ShowMouse1": false,
-			"ShowMouse2": false,
+			"BaseY": 1037,
+			"ShowMouse1": true,
+			"ShowMouse2": true,
 			"ShowRealTimePP": true,
-			"RealTimePPGap": 800
+			"RealTimePPGap": 800,
+			"ShowRealTimeUR": false,
+			"ShowPPAndURRank": false,
+			"Rank1Highlight": true,
+			"HighlightMult": 1.3,
+			"LineGapMult": 0
 		},
 		"RecordInfoUI": {
 			"Recorder": "wasupandceacar",
@@ -26,17 +31,22 @@
 			"RecordBaseSize": 22,
 			"RecordAlpha": 0.4
 		},
+		"DiffInfoUI": {
+			"ShowDiffInfo": true,
+			"DiffBaseX": 1649,
+			"DiffBaseY": 1035,
+			"DiffBaseSize": 22,
+			"DiffAlpha": 0.8
+		},
 		"PlayerFieldUI": {
 			"HitFadeTime": 200,
-			"SpinnerMinusTime": 1500,
-			"SpinnerMult": 380,
-			"ReverseFadeTime": 30,
-			"CursorColorNum": 25,
-			"CursorColorSkipNum": 13
+			"CursorColorNum": 13,
+			"CursorColorSkipNum": 13,
+			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "AXION",
-			"Difficulty": "AXION_REBORN"
+			"Title": "Exit This Earth's Atomosphere",
+			"Difficulty": "Evolution"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -45,11 +55,12 @@
 			"EnableHR": false,
 			"EnableHD": false
 		},
-		"BreakandQuit": {
-			"EnableBreakandQuit": true,
+		"Knockout": {
+			"EnableKnockout": true,
+			"ShowTrueMiss": false,
 			"PlayerFadeTime": 1500,
 			"SameTimeOffset": 22,
-			"MissMult": 1.15
+			"MissMult": 1
 		},
 		"ReplayandCache": {
 			"ReplayDir": "replays\\",
@@ -59,12 +70,13 @@
 			"ReplayDebug": false
 		},
 		"ErrorFix": {
-			"EnableErrorFix": false,
+			"EnableErrorFix": true,
 			"ErrorFixFile": "error.err"
 		},
 		"Skin": {
 			"EnableSkin": true,
-			"SkinDir": "skin\\cookiezi3\\"
+			"SkinDir": "skin\\lain1\\",
+			"NumberOffset": 0
 		}
 	},
 	"Graphics": {

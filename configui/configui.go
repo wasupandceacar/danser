@@ -32,7 +32,7 @@ func UImain(noGUI bool) {
 	MainWindow{
 		AssignTo: &vsw.MainWindow,
 		Title:    "osu vs player " + VERSION + " by " + OWNER,
-		Size: Size{900, 400},
+		Size: Size{600, 400},
 		Layout:  VBox{},
 		Children: []Widget{
 			HSplitter{
@@ -755,6 +755,18 @@ func UImain(noGUI bool) {
 												AssignTo: &vsw.cursorSize,
 												Alignment: AlignHNearVNear,
 												Text: fmt.Sprintf("%g", settings.Cursor.CursorSize),
+											},
+										},
+									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "全屏：",
+											},
+											CheckBox{
+												AssignTo: &vsw.fullScreen,
+												Alignment: AlignHNearVNear,
+												Checked: settings.Graphics.Fullscreen,
 											},
 										},
 									},

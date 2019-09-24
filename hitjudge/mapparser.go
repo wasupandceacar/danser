@@ -99,8 +99,8 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 	keyindex := 3
 	time := r[1].Time + r[2].Time
 	for k := 0; k < len(b.HitObjects); k++ {
-	//for k := 0; k < 680; k++ {
-		//log.Println("Object", k+1)
+	//for k := 0; k < 182; k++ {
+		log.Println("Object", k+1)
 		obj :=  b.HitObjects[k]
 		if obj != nil {
 			// 滑条

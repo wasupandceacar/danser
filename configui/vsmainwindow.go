@@ -71,6 +71,7 @@ func (vsw VSPlayerMainWindow) SaveConfig() {
 	assign(&settings.VSplayer.Skin.NumberOffset, settings.VSplayer.Skin.NumberOffset, vsw.numberOffset)
 
 	assign(&settings.Cursor.CursorSize, settings.Cursor.CursorSize, vsw.cursorSize)
+	assign(&settings.Graphics.Fullscreen, settings.Graphics.Fullscreen, vsw.fullScreen)
 
 	settings.Save()
 	log.Println("已保存设置")
@@ -143,4 +144,5 @@ type VSPlayerMainWindow struct {
 	numberOffset *walk.LineEdit
 
 	cursorSize *walk.LineEdit
+	fullScreen *walk.CheckBox
 }

@@ -1,8 +1,8 @@
 package replay
 
 import (
-	"io/ioutil"
 	"github.com/Mempler/rplpa"
+	"io/ioutil"
 )
 
 func ExtractReplay(name string) *rplpa.Replay {
