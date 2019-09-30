@@ -73,6 +73,8 @@
 - [ ]  [狂赌之渊](https://osu.ppy.sh/b/1396342)
 - [x]  [神的随波逐流](https://osu.ppy.sh/b/1259653)
 - [ ]  [Shinchoku Doudesu ka?](https://osu.ppy.sh/b/958038)
+- [ ]  [**新新黄泉**](https://osu.ppy.sh/s/742961)
+- [ ]  [小小恋歌](https://osu.ppy.sh/s/609189)   
 
 ## 有人FC HR 图 ##
 - [ ]  [***Ange du Blanc Pur***](https://osu.ppy.sh/s/564165)
@@ -89,7 +91,7 @@
 - [ ]  [小埋](https://osu.ppy.sh/b/737100?m=0) 
 - [ ]  [高分](https://osu.ppy.sh/b/736215) 
 - [ ]  [Packet Hero](https://osu.ppy.sh/b/880321?m=0) 
-- [ ]  [泡沫少女](https://osu.ppy.sh/b/1583228?m=0) 
+- [x]  [泡沫少女](https://osu.ppy.sh/b/1583228?m=0) 
 
 ## 有人FC DT 图 ##
 - [x]  [未来图](https://osu.ppy.sh/s/306591)
@@ -120,7 +122,6 @@
 - [ ]  [Katayoku no tori](https://osu.ppy.sh/s/478303)
 - [ ]  [Toaru Shoukoku no Ohimesama](https://osu.ppy.sh/s/370605)
 - [ ]  [God and the Illusory Garden](https://osu.ppy.sh/s/375956)  
-- [ ]  [小小恋歌](https://osu.ppy.sh/s/609189)   
 - [ ]  [lazy](https://osu.ppy.sh/s/6593)   
 - [ ]  [V0(Enon)](https://osu.ppy.sh/s/402837) 
 - [ ]  [doki-doki(Loved)](https://osu.ppy.sh/s/638414) 
