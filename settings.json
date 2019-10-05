@@ -5,8 +5,8 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 50,
-			"SpecifiedPlayers": true,
+			"Players": 10,
+			"SpecifiedPlayers": false,
 			"SpecifiedLine": "3"
 		},
 		"PlayerInfoUI": {
@@ -45,8 +45,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Exit This Earth's Atomosphere",
-			"Difficulty": "Evolution"
+			"Title": "Yomi yori Kikoyu, Koukoku no Tou to Honoo no Shoujo.",
+			"Difficulty": "Kurushimi"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -70,7 +70,7 @@
 			"ReplayDebug": true
 		},
 		"ErrorFix": {
-			"EnableErrorFix": true,
+			"EnableErrorFix": false,
 			"ErrorFixFile": "error.err"
 		},
 		"Skin": {

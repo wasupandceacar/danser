@@ -73,8 +73,9 @@
 - [ ]  [狂赌之渊](https://osu.ppy.sh/b/1396342)
 - [x]  [神的随波逐流](https://osu.ppy.sh/b/1259653)
 - [ ]  [Shinchoku Doudesu ka?](https://osu.ppy.sh/b/958038)
-- [ ]  [**新新黄泉**](https://osu.ppy.sh/s/742961)
+- [x]  [新新黄泉](https://osu.ppy.sh/s/742961)
 - [ ]  [小小恋歌](https://osu.ppy.sh/s/609189)   
+- [ ]  [Luminous Rage](https://osu.ppy.sh/b/1567435)  
 
 ## 有人FC HR 图 ##
 - [ ]  [***Ange du Blanc Pur***](https://osu.ppy.sh/s/564165)
