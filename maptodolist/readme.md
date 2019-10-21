@@ -76,7 +76,9 @@
 - [x]  [新新黄泉](https://osu.ppy.sh/s/742961)
 - [ ]  [小小恋歌](https://osu.ppy.sh/s/609189)   
 - [ ]  [Luminous Rage](https://osu.ppy.sh/b/1567435)  
-- [ ]  [R U Still xxxx?](https://osu.ppy.sh/b/839947)  
+- [x]  [R U Still xxxx?](https://osu.ppy.sh/b/839947)
+- [ ]  [Adrenaline](https://osu.ppy.sh/b/1236211)   
+- [ ]  [とある小国のお姫様が](https://osu.ppy.sh/b/812161)    
 
 ## 有人FC HR 图 ##
 - [ ]  [***Ange du Blanc Pur***](https://osu.ppy.sh/s/564165)
@@ -89,7 +91,6 @@
 - [ ]  [绿皮(Defenders)](https://osu.ppy.sh/s/323059) 
 - [x]  [梦地图(Loved)](https://osu.ppy.sh/b/1226524?m=0)
 - [ ]  [oddloop](https://osu.ppy.sh/b/1142960) 
-- [ ]  [Ringo Uri no Utakata Shoujo](https://osu.ppy.sh/b/1583228?m=0) 
 - [ ]  [小埋](https://osu.ppy.sh/b/737100?m=0) 
 - [ ]  [高分](https://osu.ppy.sh/b/736215) 
 - [ ]  [Packet Hero](https://osu.ppy.sh/b/880321?m=0) 
