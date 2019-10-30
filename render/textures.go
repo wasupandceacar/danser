@@ -56,6 +56,15 @@ var RankB *texture.TextureRegion
 var RankC *texture.TextureRegion
 var RankD *texture.TextureRegion
 
+// 贴图 2x 倍数
+var ApproachCircle2x int32
+var SliderReverse2x int32
+var DefaultNumber2x int32
+var SpinnerCircle2x int32
+var SpinnerTop2x int32
+var SpinnerMiddle2x int32
+var SpinnerBottom2x int32
+
 // 皮肤版本
 var SkinVersion float64
 
@@ -65,74 +74,84 @@ var HitCircleOverlap int64
 func LoadTextures() {
 	Atlas = texture.NewTextureAtlas(8192, 4)
 	Atlas.Bind(16)
-	Circle, _ = loadTextureToAtlas(Atlas, "hitcircle.png")
-	ApproachCircle, _ = loadTextureToAtlas(Atlas, "approachcircle.png")
-	SpinnerCircle, _ = loadTextureToAtlas(Atlas, "spinner-circle.png")
-	SpinnerClear, _ = loadTextureToAtlas(Atlas, "spinner-clear.png")
-	SpinnerBackground, _ = loadTextureToAtlas(Atlas, "spinner-background.png")
-	SpinnerTop, _ = loadTextureToAtlas(Atlas, "spinner-top.png")
-	SpinnerMiddle, _ = loadTextureToAtlas(Atlas, "spinner-middle.png")
-	SpinnerBottom, _ = loadTextureToAtlas(Atlas, "spinner-bottom.png")
-	SpinnerApproachCircle, _ = loadTextureToAtlas(Atlas, "spinner-approachcircle.png")
-	CircleFull, _ = loadTextureToAtlas(Atlas, "hitcircle-full.png")
-	CircleOverlay, _ = loadTextureToAtlas(Atlas, "hitcircleoverlay.png")
-	SliderReverse, _ = loadTextureToAtlas(Atlas, "reversearrow.png")
-	SliderTick, _ = loadTextureToAtlas(Atlas, "sliderscorepoint.png")
-	SliderBall, _ = loadTextureToAtlas(Atlas, "sliderball.png")
-	CursorTex, _ = loadTextureToAtlas(Atlas, "cursor.png")
-	CursorTop, _ = loadTextureToAtlas(Atlas, "cursor-top.png")
-	SliderGradient, _ = loadTexture("slidergradient.png")
-	CursorTrail, _ = loadTexture("cursortrail.png")
-	PressKey, _ = loadTextureToAtlas(Atlas,"presskey.png")
+	Circle, _, _ = loadTextureToAtlas(Atlas, "hitcircle")
+	ApproachCircle, _, ApproachCircle2x = loadTextureToAtlas(Atlas, "approachcircle")
+	SpinnerCircle, _, SpinnerCircle2x = loadTextureToAtlas(Atlas, "spinner-circle")
+	SpinnerClear, _, _ = loadTextureToAtlas(Atlas, "spinner-clear")
+	SpinnerBackground, _, _ = loadTextureToAtlas(Atlas, "spinner-background")
+	SpinnerTop, _, SpinnerTop2x = loadTextureToAtlas(Atlas, "spinner-top")
+	SpinnerMiddle, _, SpinnerMiddle2x = loadTextureToAtlas(Atlas, "spinner-middle")
+	SpinnerBottom, _, SpinnerBottom2x = loadTextureToAtlas(Atlas, "spinner-bottom")
+	SpinnerApproachCircle, _, _ = loadTextureToAtlas(Atlas, "spinner-approachcircle")
+	CircleFull, _, _ = loadTextureToAtlas(Atlas, "hitcircle-full")
+	CircleOverlay, _, _ = loadTextureToAtlas(Atlas, "hitcircleoverlay")
+	SliderReverse, _, SliderReverse2x = loadTextureToAtlas(Atlas, "reversearrow")
+	SliderTick, _, _ = loadTextureToAtlas(Atlas, "sliderscorepoint")
+	SliderBall, _, _ = loadTextureToAtlas(Atlas, "sliderball")
+	CursorTex, _, _ = loadTextureToAtlas(Atlas, "cursor")
+	CursorTop, _, _ = loadTextureToAtlas(Atlas, "cursor-top")
+	SliderGradient, _ = loadTexture("slidergradient")
+	CursorTrail, _ = loadTexture("cursortrail")
+	PressKey, _, _ = loadTextureToAtlas(Atlas,"presskey")
 
-	Hit300, _ = loadTextureToAtlas(Atlas,"hit-300.png")
-	Hit100, _ = loadTextureToAtlas(Atlas,"hit-100.png")
-	Hit50, _ = loadTextureToAtlas(Atlas,"hit-50.png")
-	Hit0, _ = loadTextureToAtlas(Atlas,"hit-0.png")
+	Hit300, _, _ = loadTextureToAtlas(Atlas,"hit-300")
+	Hit100, _, _ = loadTextureToAtlas(Atlas,"hit-100")
+	Hit50, _, _ = loadTextureToAtlas(Atlas,"hit-50")
+	Hit0, _, _ = loadTextureToAtlas(Atlas,"hit-0")
 
-	Circle0, _ = loadTextureToAtlas(Atlas,"default-0.png")
-	Circle1, _ = loadTextureToAtlas(Atlas,"default-1.png")
-	Circle2, _ = loadTextureToAtlas(Atlas,"default-2.png")
-	Circle3, _ = loadTextureToAtlas(Atlas,"default-3.png")
-	Circle4, _ = loadTextureToAtlas(Atlas,"default-4.png")
-	Circle5, _ = loadTextureToAtlas(Atlas,"default-5.png")
-	Circle6, _ = loadTextureToAtlas(Atlas,"default-6.png")
-	Circle7, _ = loadTextureToAtlas(Atlas,"default-7.png")
-	Circle8, _ = loadTextureToAtlas(Atlas,"default-8.png")
-	Circle9, _ = loadTextureToAtlas(Atlas,"default-9.png")
+	Circle0, _, DefaultNumber2x = loadTextureToAtlas(Atlas,"default-0")
+	Circle1, _, _ = loadTextureToAtlas(Atlas,"default-1")
+	Circle2, _, _ = loadTextureToAtlas(Atlas,"default-2")
+	Circle3, _, _ = loadTextureToAtlas(Atlas,"default-3")
+	Circle4, _, _ = loadTextureToAtlas(Atlas,"default-4")
+	Circle5, _, _ = loadTextureToAtlas(Atlas,"default-5")
+	Circle6, _, _ = loadTextureToAtlas(Atlas,"default-6")
+	Circle7, _, _ = loadTextureToAtlas(Atlas,"default-7")
+	Circle8, _, _ = loadTextureToAtlas(Atlas,"default-8")
+	Circle9, _, _ = loadTextureToAtlas(Atlas,"default-9")
 
-	RankXH, _ = loadTextureToAtlas(Atlas,"ranking-XH-small.png")
-	RankSH, _ = loadTextureToAtlas(Atlas,"ranking-SH-small.png")
-	RankX, _ = loadTextureToAtlas(Atlas,"ranking-X-small.png")
-	RankS, _ = loadTextureToAtlas(Atlas,"ranking-S-small.png")
-	RankA, _ = loadTextureToAtlas(Atlas,"ranking-A-small.png")
-	RankB, _ = loadTextureToAtlas(Atlas,"ranking-B-small.png")
-	RankC, _ = loadTextureToAtlas(Atlas,"ranking-C-small.png")
-	RankD, _ = loadTextureToAtlas(Atlas,"ranking-D-small.png")
+	RankXH, _, _ = loadTextureToAtlas(Atlas,"ranking-XH-small")
+	RankSH, _, _ = loadTextureToAtlas(Atlas,"ranking-SH-small")
+	RankX, _, _ = loadTextureToAtlas(Atlas,"ranking-X-small")
+	RankS, _, _ = loadTextureToAtlas(Atlas,"ranking-S-small")
+	RankA, _, _ = loadTextureToAtlas(Atlas,"ranking-A-small")
+	RankB, _, _ = loadTextureToAtlas(Atlas,"ranking-B-small")
+	RankC, _, _ = loadTextureToAtlas(Atlas,"ranking-C-small")
+	RankD, _, _ = loadTextureToAtlas(Atlas,"ranking-D-small")
 }
 
-func loadTextureToAtlas(atlas *texture.TextureAtlas, picname string) (*texture.TextureRegion, error){
+func loadTextureToAtlas(atlas *texture.TextureAtlas, picname string) (*texture.TextureRegion, error, int32){
 	var path string
+	is2x := 1
 	if settings.VSplayer.Skin.EnableSkin {
 		// 使用自定义皮肤，则检查皮肤文件夹是否存在相关贴图
 		dirExist, _ := utils.PathExists(settings.VSplayer.Skin.SkinDir)
 		if dirExist {
-			picExist, _ := utils.PathExists(settings.VSplayer.Skin.SkinDir + picname)
-			if picExist {
-				// 贴图存在，替换
-				path = settings.VSplayer.Skin.SkinDir + picname
+			// 检查是否存在 2x 贴图
+			pic2Exist, _ := utils.PathExists(settings.VSplayer.Skin.SkinDir + picname + "@2x.png")
+			if pic2Exist {
+				// 2x 贴图存在, 替换，设置 2x flag
+				path = settings.VSplayer.Skin.SkinDir + picname + "@2x.png"
+				is2x = 2
 			}else {
-				// 不存在，使用默认
-				path = "assets/textures/" + picname
+				picExist, _ := utils.PathExists(settings.VSplayer.Skin.SkinDir + picname + ".png")
+				if picExist {
+					// 贴图存在，替换
+					path = settings.VSplayer.Skin.SkinDir + picname + ".png"
+				}else {
+					// 不存在，使用默认
+					path = "assets/textures/" + picname + ".png"
+				}
 			}
 		}else {
 			// 皮肤文件夹不存在
 			panic("皮肤文件夹不存在！")
 		}
 	}else {
-		path = "assets/textures/" + picname
+		path = "assets/textures/" + picname + ".png"
 	}
-	return utils.LoadTextureToAtlas(atlas, path)
+	loadTexture, loadError := utils.LoadTextureToAtlas(atlas, path)
+	return loadTexture, loadError, int32(is2x)
 }
 
 func loadTexture(picname string) (*texture.TextureSingle, error){
@@ -141,20 +160,20 @@ func loadTexture(picname string) (*texture.TextureSingle, error){
 		// 使用自定义皮肤，则检查皮肤文件夹是否存在相关贴图
 		dirExist, _ := utils.PathExists(settings.VSplayer.Skin.SkinDir)
 		if dirExist {
-			picExist, _ := utils.PathExists(settings.VSplayer.Skin.SkinDir + picname)
+			picExist, _ := utils.PathExists(settings.VSplayer.Skin.SkinDir + picname + ".png")
 			if picExist {
 				// 贴图存在，替换
-				path = settings.VSplayer.Skin.SkinDir + picname
+				path = settings.VSplayer.Skin.SkinDir + picname + ".png"
 			}else {
 				// 不存在，使用默认
-				path = "assets/textures/" + picname
+				path = "assets/textures/" + picname + ".png"
 			}
 		}else {
 			// 皮肤文件夹不存在
 			panic("皮肤文件夹不存在！")
 		}
 	}else {
-		path = "assets/textures/" + picname
+		path = "assets/textures/" + picname + ".png"
 	}
 	return utils.LoadTexture(path)
 }
@@ -200,6 +219,7 @@ func LoadSkinConfiguration() {
 	if err != nil {
 		panic(err)
 	}
-	log.Println("圈内数字偏移：", HitCircleOverlap, "设置矫正偏移", settings.VSplayer.Skin.NumberOffset)
+	log.Println("圈内数字偏移：", HitCircleOverlap, "设置矫正偏移：", settings.VSplayer.Skin.NumberOffset)
 	HitCircleOverlap += settings.VSplayer.Skin.NumberOffset
+	HitCircleOverlap *= int64(DefaultNumber2x)
 }

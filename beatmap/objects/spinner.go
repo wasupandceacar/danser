@@ -106,7 +106,7 @@ func (self *Spinner) Draw(time int64, preempt float64, fadeIn float64, color mgl
 		// 绘制Spinner转圈
 		if (render.SpinnerBackground.Height != 1 || render.SpinnerBackground.Width != 1) || render.SkinVersion < 2.0 {
 			// 旧样式的spinner
-			spinnerCircleScale := float64(render.SpinnerCircle.Height) / (DEFAULT_SKIN_SIZE * 2) * PLAYFIELD_HEIGHT
+			spinnerCircleScale := float64(render.SpinnerCircle.Height / render.SpinnerCircle2x) / (DEFAULT_SKIN_SIZE * 2) * PLAYFIELD_HEIGHT
 			batch.DrawUnitSR(*render.SpinnerCircle, bmath.Vector2d{float64(render.SpinnerCircle.Width) / float64(render.SpinnerCircle.Height) * spinnerCircleScale, spinnerCircleScale}, angle)
 		} else {
 			// 新样式的spinner
@@ -115,11 +115,11 @@ func (self *Spinner) Draw(time int64, preempt float64, fadeIn float64, color mgl
 			clearmult := clampF(float64(time-self.objData.StartTime)/cleartime, 0, 1)
 			clearmult = -clearmult * (clearmult - 2)
 			finishScale := 0.8 + 0.2*clearmult
-			spinnerTopScale := float64(render.SpinnerTop.Height) / (DEFAULT_SKIN_SIZE * 2) * PLAYFIELD_HEIGHT
+			spinnerTopScale := float64(render.SpinnerTop.Height / render.SpinnerTop2x) / (DEFAULT_SKIN_SIZE * 2) * PLAYFIELD_HEIGHT
 			batch.DrawUnitSR(*render.SpinnerTop, bmath.Vector2d{float64(render.SpinnerTop.Width) / float64(render.SpinnerTop.Height) * spinnerTopScale * finishScale, spinnerTopScale * finishScale}, angle)
-			spinnerMiddleScale := float64(render.SpinnerMiddle.Height) / (DEFAULT_SKIN_SIZE * 2) * PLAYFIELD_HEIGHT
+			spinnerMiddleScale := float64(render.SpinnerMiddle.Height / render.SpinnerMiddle2x) / (DEFAULT_SKIN_SIZE * 2) * PLAYFIELD_HEIGHT
 			batch.DrawUnitSR(*render.SpinnerMiddle, bmath.Vector2d{float64(render.SpinnerMiddle.Width) / float64(render.SpinnerMiddle.Height) * spinnerMiddleScale * finishScale, spinnerMiddleScale * finishScale}, angle)
-			spinnerBottomScale := float64(render.SpinnerBottom.Height) / (DEFAULT_SKIN_SIZE * 2) * PLAYFIELD_HEIGHT
+			spinnerBottomScale := float64(render.SpinnerBottom.Height / render.SpinnerBottom2x) / (DEFAULT_SKIN_SIZE * 2) * PLAYFIELD_HEIGHT
 			batch.DrawUnitSR(*render.SpinnerBottom, bmath.Vector2d{float64(render.SpinnerBottom.Width) / float64(render.SpinnerBottom.Height) * spinnerBottomScale * finishScale, spinnerBottomScale * finishScale}, angle)
 		}
 	}

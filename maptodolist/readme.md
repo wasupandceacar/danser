@@ -78,7 +78,8 @@
 - [ ]  [Luminous Rage](https://osu.ppy.sh/b/1567435)  
 - [x]  [R U Still xxxx?](https://osu.ppy.sh/b/839947)
 - [ ]  [Adrenaline](https://osu.ppy.sh/b/1236211)   
-- [ ]  [とある小国のお姫様が](https://osu.ppy.sh/b/812161)    
+- [x]  [とある小国のお姫様が](https://osu.ppy.sh/b/812161) 
+- [x]  [HELIX](https://osu.ppy.sh/b/462700?m=0)     
 
 ## 有人FC HR 图 ##
 - [ ]  [***Ange du Blanc Pur***](https://osu.ppy.sh/s/564165)
@@ -95,6 +96,7 @@
 - [ ]  [高分](https://osu.ppy.sh/b/736215) 
 - [ ]  [Packet Hero](https://osu.ppy.sh/b/880321?m=0) 
 - [x]  [泡沫少女](https://osu.ppy.sh/b/1583228?m=0) 
+- [ ]  [空气人](https://osu.ppy.sh/b/104229?m=0) 
 
 ## 有人FC DT 图 ##
 - [x]  [未来图](https://osu.ppy.sh/s/306591)

@@ -654,7 +654,7 @@ func (self *Slider) Draw(time int64, preempt float64, fadeIn float64, color mgl3
 					//pulse := (0.3 - bmath.Fmod(float64(time), 0.3))/0.3
 					//pulse *= pulse * 0.3
 					batch.SetColor(1, 1, 1, reverseArrowAlpha)
-					batch.DrawUnitFix(*render.SliderReverse, 118, 118)
+					batch.DrawUnitFix(*render.SliderReverse, float64(118 * render.SliderReverse2x), float64(118 * render.SliderReverse2x))
 				}
 			}
 		}
@@ -820,7 +820,7 @@ func (self *Slider) DrawApproach(time int64, preempt float64, fadeIn float64, co
 	if settings.Objects.DrawApproachCircles && time <= self.objData.StartTime {
 		batch.SetColor(float64(color[0]), float64(color[1]), float64(color[2]), alpha)
 		batch.SetSubScale(1.0+arr*2, 1.0+arr*2)
-		batch.DrawUnitFix(*render.ApproachCircle, 126, 126)
+		batch.DrawUnitFix(*render.ApproachCircle, float64(128 * render.ApproachCircle2x), float64(128 * render.ApproachCircle2x))
 	}
 
 	batch.SetSubScale(1, 1)

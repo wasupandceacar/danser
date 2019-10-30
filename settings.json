@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 10,
+			"Players": 0,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "3"
 		},
@@ -45,8 +45,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Yomi yori Kikoyu, Koukoku no Tou to Honoo no Shoujo.",
-			"Difficulty": "Kurushimi"
+			"Title": "Lovely Girls Anthem -EuroBeatRemix-",
+			"Difficulty": "Normal"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -67,7 +67,7 @@
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
 			"ReadResultCache": true,
-			"ReplayDebug": true
+			"ReplayDebug": false
 		},
 		"ErrorFix": {
 			"EnableErrorFix": false,
@@ -75,8 +75,8 @@
 		},
 		"Skin": {
 			"EnableSkin": true,
-			"SkinDir": "skin\\lain1\\",
-			"NumberOffset": 0
+			"SkinDir": "skin\\ranie\\",
+			"NumberOffset": 30
 		}
 	},
 	"Graphics": {
