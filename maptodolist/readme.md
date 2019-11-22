@@ -77,7 +77,7 @@
 - [ ]  [小小恋歌](https://osu.ppy.sh/s/609189)   
 - [ ]  [Luminous Rage](https://osu.ppy.sh/b/1567435)  
 - [x]  [R U Still xxxx?](https://osu.ppy.sh/b/839947)
-- [ ]  [Adrenaline](https://osu.ppy.sh/b/1236211)   
+- [x]  [Adrenaline](https://osu.ppy.sh/b/1236211)   
 - [x]  [とある小国のお姫様が](https://osu.ppy.sh/b/812161) 
 - [x]  [HELIX](https://osu.ppy.sh/b/462700?m=0)     
 
@@ -115,6 +115,7 @@
 - [x]  [王冠](https://osu.ppy.sh/s/558694)
 - [ ]  [TAG4(1)](https://osu.ppy.sh/s/4651)
 - [ ]  [TAG4(2)](https://osu.ppy.sh/s/5807)
+- [x]  [月](https://osu.ppy.sh/b/715043)
 
 ## 无人FC None 图 ##
 - [ ]  [老黄泉](https://osu.ppy.sh/s/461744)
