@@ -5,9 +5,9 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 0,
+			"Players": 50,
 			"SpecifiedPlayers": false,
-			"SpecifiedLine": "3"
+			"SpecifiedLine": "50"
 		},
 		"PlayerInfoUI": {
 			"BaseSize": 6,
@@ -32,7 +32,7 @@
 			"RecordAlpha": 0.4
 		},
 		"DiffInfoUI": {
-			"ShowDiffInfo": true,
+			"ShowDiffInfo": false,
 			"DiffBaseX": 1049,
 			"DiffBaseY": 678,
 			"DiffBaseSize": 18,
@@ -45,8 +45,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Lovely Girls Anthem -EuroBeatRemix-",
-			"Difficulty": "Normal"
+			"Title": "Genryuu Kaiko",
+			"Difficulty": "Higan Torrent"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -75,7 +75,7 @@
 		},
 		"Skin": {
 			"EnableSkin": true,
-			"SkinDir": "skin\\ranie\\",
+			"SkinDir": "skin\\idke\\",
 			"NumberOffset": 30
 		}
 	},
@@ -187,8 +187,8 @@
 		"BackgroundDimBreaks": 0.1,
 		"BlurEnable": true,
 		"BackgroundInBlur": 0,
-		"BackgroundBlur": 0.6,
-		"BackgroundBlurBreaks": 0.6,
+		"BackgroundBlur": 0,
+		"BackgroundBlurBreaks": 0,
 		"SpectrumInDim": 0,
 		"SpectrumDim": 1,
 		"SpectrumDimBreaks": 0,

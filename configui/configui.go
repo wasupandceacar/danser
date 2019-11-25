@@ -770,6 +770,18 @@ func UImain(noGUI bool) {
 											},
 										},
 									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "开启sb：",
+											},
+											CheckBox{
+												AssignTo: &vsw.storyboardEnabled,
+												Alignment: AlignHNearVNear,
+												Checked: settings.Playfield.StoryboardEnabled,
+											},
+										},
+									},
 								},
 							},
 							VSpacer{},

@@ -57,6 +57,7 @@ type Slider struct {
 	TickReverse   []tickPoint
 	TickReverseTrue   []tickPoint
 	ScorePoints   []tickPoint
+	ScorePointsTrue    []tickPoint
 	lastTick      int
 	End           bool
 	vao           *glhf.VertexSlice
@@ -315,6 +316,8 @@ func (self *Slider) calculateFollowPoints() {
 			self.TickReverseTrue = append(self.TickReverseTrue, point)
 			self.ScorePoints = append(self.ScorePoints, point)
 		}
+		// 带滑条头
+		self.ScorePointsTrue = append(self.ScorePointsTrue, point)
 	}
 	self.TickReverse = append(self.TickReverse, tickPoint{self.objData.EndTime, self.GetPointAt(self.objData.EndTime)})
 	self.TickReverseTrue = append(self.TickReverseTrue, tickPoint{self.objData.EndTime, self.GetPointAt(self.objData.EndTime)})
@@ -528,6 +531,16 @@ func (self *Slider) DrawBody(time int64, preempt float64, fadeIn float64, color 
 	}
 }
 
+func (self *Slider) getPulse(time int64) float64 {
+	for k := 0; k < len(self.ScorePointsTrue) - 1; k++ {
+		if time >= self.ScorePointsTrue[k].Time && time < self.ScorePointsTrue[k+1].Time {
+			mult := m2.Fmod(float64(time - self.ScorePointsTrue[k].Time) / float64(self.ScorePointsTrue[k+1].Time - self.ScorePointsTrue[k].Time), 1.0)
+			return 1.0 + 0.15 * mult * mult
+		}
+	}
+	return 1.0
+}
+
 func (self *Slider) Draw(time int64, preempt float64, fadeIn float64, color mgl32.Vec4, batch *render.SpriteBatch) bool {
 	// 除note、sliderball的物件
 	alpha := 1.0
@@ -651,10 +664,10 @@ func (self *Slider) Draw(time int64, preempt float64, fadeIn float64, color mgl3
 					}else {
 						reverseArrowAlpha = 0.0
 					}
-					//pulse := (0.3 - bmath.Fmod(float64(time), 0.3))/0.3
-					//pulse *= pulse * 0.3
+
+					pulse := self.getPulse(time)
 					batch.SetColor(1, 1, 1, reverseArrowAlpha)
-					batch.DrawUnitFix(*render.SliderReverse, float64(118 * render.SliderReverse2x), float64(118 * render.SliderReverse2x))
+					batch.DrawUnitFix(*render.SliderReverse, float64(118 * render.SliderReverse2x) / pulse, float64(118 * render.SliderReverse2x) / pulse)
 				}
 			}
 		}

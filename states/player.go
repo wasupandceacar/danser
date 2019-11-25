@@ -229,13 +229,13 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 			log.Println(err)
 		}
 
-		//if settings.Playfield.StoryboardEnabled {
-		//	player.storyboard = storyboard.NewStoryboard(player.bMap)
-		//
-		//	if player.storyboard == nil {
-		//		log.Println("Storyboard not found!")
-		//	}
-		//}
+		if settings.Playfield.StoryboardEnabled {
+			player.storyboard = storyboard.NewStoryboard(player.bMap)
+
+			if player.storyboard == nil {
+				log.Println("Storyboard not found!")
+			}
+		}
 
 		//player.Logo, err = utils.LoadTextureToAtlas(render.Atlas, "assets/textures/logo-medium.png")
 
@@ -519,6 +519,13 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	player.fxGlider.AddEvent(-1500, -1000, 1.0-settings.Playfield.SpectrumInDim)
 	player.cursorGlider.AddEvent(-1500, -1000, 0.0)
 
+	// 开启storyborad，则关闭背景模糊，背景暗化设为0.55
+	if settings.Playfield.StoryboardEnabled {
+		settings.Playfield.BackgroundBlur = 0.0
+		settings.Playfield.BackgroundBlurBreaks = 0.0
+		settings.Playfield.BackgroundDim = 0.55
+	}
+
 	player.dimGlider.AddEvent(tmS-750, tmS-250, 1.0-settings.Playfield.BackgroundDim)
 	player.blurGlider.AddEvent(tmS-750, tmS-250, settings.Playfield.BackgroundBlur)
 	player.fxGlider.AddEvent(tmS-750, tmS-250, 1.0-settings.Playfield.SpectrumDim)
@@ -630,45 +637,47 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 
 	//region 计算实时难度
 
-	log.Println("开始计算实时难度")
-	t = time.Now()
-	// 计算mods
-	mods := 0
-	if settings.VSplayer.Mods.EnableDT {
-		mods += MOD_DT
-	}
-	if settings.VSplayer.Mods.EnableHR {
-		mods += MOD_HR
-	}
-	if settings.VSplayer.Mods.EnableHT {
-		mods += MOD_HT
-	}
-	if settings.VSplayer.Mods.EnableHD {
-		mods += MOD_HD
-	}
-	if settings.VSplayer.Mods.EnableEZ {
-		mods += MOD_EZ
-	}
-	beatmapLength := len(beatMap.HitObjects)
-	player.difficulties = make([]oppai.PP, beatmapLength)
-	if !settings.VSplayer.ReplayandCache.ReplayDebug {
-		player.batch.Begin()
-		loadwords = append(loadwords, font.Word{14, float64(screenheight - 320), 24, "Calculate realtime difficulty... 0/" + strconv.Itoa(beatmapLength)})
-		player.font.DrawAll(player.batch, loadwords)
-		player.batch.End()
-		win.SwapBuffers()
-	}
-	for k := 0; k < beatmapLength; k++ {
-		player.difficulties[k] = score.CalculateDiffbyNum(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, k+1, uint32(mods))
+	if settings.VSplayer.DiffInfoUI.ShowDiffInfo {
+		log.Println("开始计算实时难度")
+		t = time.Now()
+		// 计算mods
+		mods := 0
+		if settings.VSplayer.Mods.EnableDT {
+			mods += MOD_DT
+		}
+		if settings.VSplayer.Mods.EnableHR {
+			mods += MOD_HR
+		}
+		if settings.VSplayer.Mods.EnableHT {
+			mods += MOD_HT
+		}
+		if settings.VSplayer.Mods.EnableHD {
+			mods += MOD_HD
+		}
+		if settings.VSplayer.Mods.EnableEZ {
+			mods += MOD_EZ
+		}
+		beatmapLength := len(beatMap.HitObjects)
+		player.difficulties = make([]oppai.PP, beatmapLength)
 		if !settings.VSplayer.ReplayandCache.ReplayDebug {
 			player.batch.Begin()
-			loadwords = append(loadwords[:len(loadwords)-1], font.Word{14, float64(screenheight - 320), 24, "Calculate realtime difficulty... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(beatmapLength)})
+			loadwords = append(loadwords, font.Word{14, float64(screenheight - 320), 24, "Calculate realtime difficulty... 0/" + strconv.Itoa(beatmapLength)})
 			player.font.DrawAll(player.batch, loadwords)
 			player.batch.End()
 			win.SwapBuffers()
 		}
+		for k := 0; k < beatmapLength; k++ {
+			player.difficulties[k] = score.CalculateDiffbyNum(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, k+1, uint32(mods))
+			if !settings.VSplayer.ReplayandCache.ReplayDebug {
+				player.batch.Begin()
+				loadwords = append(loadwords[:len(loadwords)-1], font.Word{14, float64(screenheight - 320), 24, "Calculate realtime difficulty... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(beatmapLength)})
+				player.font.DrawAll(player.batch, loadwords)
+				player.batch.End()
+				win.SwapBuffers()
+			}
+		}
+		log.Println("计算实时难度完成，耗时", time.Now().Sub(t))
 	}
-	log.Println("计算实时难度完成，耗时", time.Now().Sub(t))
 
 	//endregion
 
@@ -800,6 +809,11 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 
 			player.progressMsF = musicPlayer.GetPosition()*1000 + float64(settings.Audio.Offset)
 			player.bMap.Update(int64(player.progressMsF))
+
+			if player.storyboard != nil {
+				player.storyboard.Update(int64(player.progressMsF))
+			}
+
 			if player.start && len(player.bMap.Queue) > 0 {
 				player.dimGlider.Update(player.progressMsF)
 				player.blurGlider.Update(player.progressMsF)
@@ -945,8 +959,6 @@ func (pl *Player) Draw(delta float64) {
 	bgAlpha := pl.dimGlider.GetValue()
 	blurVal := 0.0
 
-	//log.Println("draw", pl.lastTime / 1000000.0, len(pl.queue2), bgAlpha)
-
 	cameras := pl.camera.GenRotated(settings.DIVIDES, -2*math.Pi/float64(settings.DIVIDES))
 
 	breakcamera := pl.camera.GenRotatedX(2, math.Pi)[1]
@@ -982,15 +994,15 @@ func (pl *Player) Draw(delta float64) {
 			pl.batch.DrawUnit(*pl.Background)
 		}
 
-		//if pl.storyboard != nil {
-		//	pl.batch.SetScale(1, 1)
-		//	if !settings.Playfield.BlurEnable {
-		//		pl.batch.SetColor(bgAlpha, bgAlpha, bgAlpha, 1)
-		//	}
-		//	pl.batch.SetCamera(cameras[0])
-		//	pl.storyboard.Draw(pl.progressMs, pl.batch)
-		//	pl.batch.Flush()
-		//}
+		if pl.storyboard != nil {
+			pl.batch.SetScale(1, 1)
+			if !settings.Playfield.BlurEnable {
+				pl.batch.SetColor(bgAlpha, bgAlpha, bgAlpha, 1)
+			}
+			pl.batch.SetCamera(cameras[0])
+			pl.storyboard.Draw(pl.progressMs, pl.batch)
+			pl.batch.Flush()
+		}
 
 		if settings.Playfield.BlurEnable {
 			pl.batch.End()
@@ -1017,7 +1029,7 @@ func (pl *Player) Draw(delta float64) {
 	//	pl.batch.DrawTexture(*pl.Logo)
 	//}
 	//
-	//pl.batch.End()
+	pl.batch.End()
 
 	pl.counter += timMs
 

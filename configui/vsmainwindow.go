@@ -72,6 +72,7 @@ func (vsw VSPlayerMainWindow) SaveConfig() {
 
 	assign(&settings.Cursor.CursorSize, settings.Cursor.CursorSize, vsw.cursorSize)
 	assign(&settings.Graphics.Fullscreen, settings.Graphics.Fullscreen, vsw.fullScreen)
+	assign(&settings.Playfield.StoryboardEnabled, settings.Playfield.StoryboardEnabled, vsw.storyboardEnabled)
 
 	settings.Save()
 	log.Println("已保存设置")
@@ -145,4 +146,5 @@ type VSPlayerMainWindow struct {
 
 	cursorSize *walk.LineEdit
 	fullScreen *walk.CheckBox
+	storyboardEnabled *walk.CheckBox
 }

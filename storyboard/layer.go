@@ -1,9 +1,9 @@
 package storyboard
 
 import (
+	"danser/render"
 	"sort"
 	"sync"
-	"danser/render"
 )
 
 type StoryboardLayer struct {
@@ -11,7 +11,7 @@ type StoryboardLayer struct {
 	spriteProcessed []Object
 	drawArray       []Object
 	visibleObjects  int
-	allSprites		int
+	allSprites      int
 	mutex           *sync.Mutex
 }
 
@@ -69,7 +69,7 @@ func (layer *StoryboardLayer) Update(time int64) {
 	layer.mutex.Unlock()
 }
 
-func (layer *StoryboardLayer) GetLoad() (sum float64){
+func (layer *StoryboardLayer) GetLoad() (sum float64) {
 	for i := 0; i < layer.visibleObjects; i++ {
 		if layer.drawArray[i] != nil {
 			sum += layer.drawArray[i].GetLoad()
@@ -80,7 +80,6 @@ func (layer *StoryboardLayer) GetLoad() (sum float64){
 
 func (layer *StoryboardLayer) Draw(time int64, batch *render.SpriteBatch) {
 	layer.mutex.Lock()
-
 	for i := 0; i < layer.visibleObjects; i++ {
 		if layer.drawArray[i] != nil {
 			layer.drawArray[i].Draw(time, batch)

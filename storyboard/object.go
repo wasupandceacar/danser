@@ -2,8 +2,8 @@ package storyboard
 
 import (
 	"danser/bmath"
-	"github.com/go-gl/mathgl/mgl32"
 	"danser/render"
+	"github.com/go-gl/mathgl/mgl32"
 	"unicode"
 	"strings"
 	"math"
@@ -186,7 +186,7 @@ func (sprite *Sprite) Draw(time int64, batch *render.SpriteBatch) {
 	if alpha > 1.001 {
 		alpha -= math.Ceil(sprite.color.A) - 1
 	}
-	batch.DrawStObject(sprite.position, sprite.origin, sprite.scale.Abs(), sprite.flip, sprite.rotation, mgl32.Vec4{float32(sprite.color.R), float32(sprite.color.G), float32(sprite.color.B), float32(alpha)}, sprite.additive, *sprite.texture[sprite.currentFrame])
+	batch.DrawStObject(sprite.position, sprite.origin, sprite.scale.Abs(), sprite.flip, sprite.rotation, mgl32.Vec4{float32(sprite.color.R), float32(sprite.color.G), float32(sprite.color.B), float32(alpha)}, sprite.additive, *sprite.texture[sprite.currentFrame], true)
 }
 
 func (sprite *Sprite) GetPosition() bmath.Vector2d {
