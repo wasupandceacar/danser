@@ -79,7 +79,8 @@
 - [x]  [R U Still xxxx?](https://osu.ppy.sh/b/839947)
 - [x]  [Adrenaline](https://osu.ppy.sh/b/1236211)   
 - [x]  [とある小国のお姫様が](https://osu.ppy.sh/b/812161) 
-- [x]  [HELIX](https://osu.ppy.sh/b/462700?m=0)     
+- [x]  [HELIX](https://osu.ppy.sh/b/462700?m=0) 
+- [x]  [Euphoria](https://osu.ppy.sh/s/890438)    
 
 ## 有人FC HR 图 ##
 - [ ]  [***Ange du Blanc Pur***](https://osu.ppy.sh/s/564165)
@@ -121,7 +122,6 @@
 - [ ]  [老黄泉](https://osu.ppy.sh/s/461744)
 - [ ]  [黑皇帝](https://osu.ppy.sh/s/396221) 
 - [ ]  [大钱](https://osu.ppy.sh/s/293705)
-- [ ]  [Euphoria](https://osu.ppy.sh/s/890438)
 - [ ]  [17RPG](https://osu.ppy.sh/s/304888)
 - [ ]  [解构星](https://osu.ppy.sh/s/292083)
 - [ ]  [Smiling](https://osu.ppy.sh/s/450363)
