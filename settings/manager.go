@@ -17,6 +17,7 @@ func initDefaults() {
 			1,
 			false,
 			"",
+			"",
 		},
 		&playerinfoUI{
 			6,

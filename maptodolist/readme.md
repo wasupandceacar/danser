@@ -81,6 +81,7 @@
 - [x]  [とある小国のお姫様が](https://osu.ppy.sh/b/812161) 
 - [x]  [HELIX](https://osu.ppy.sh/b/462700?m=0) 
 - [x]  [Euphoria](https://osu.ppy.sh/s/890438)    
+- [x]  [Milk Crown on Sonnetica(Loved,9*难度)](https://osu.ppy.sh/s/327557) 
 
 ## 有人FC HR 图 ##
 - [ ]  [***Ange du Blanc Pur***](https://osu.ppy.sh/s/564165)
@@ -132,7 +133,6 @@
 - [ ]  [V0(Enon)](https://osu.ppy.sh/s/402837) 
 - [ ]  [doki-doki(Loved)](https://osu.ppy.sh/s/638414) 
 - [ ]  [阴蜂(阴蜂难度)](https://osu.ppy.sh/s/120515) 
-- [x]  [Milk Crown on Sonnetica(Loved,9*难度)](https://osu.ppy.sh/s/327557) 
 - [ ]  [Goodbye](https://osu.ppy.sh/b/1172819?m=0) 
 - [ ]  [True truly love](https://osu.ppy.sh/b/260839)
 - [ ]  [Yakubyougami](https://osu.ppy.sh/s/455419)

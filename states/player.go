@@ -158,6 +158,9 @@ type Player struct {
 	difficulties	[]oppai.PP
 	// 现在物件指针
 	objindex		int
+
+	// 指定色彩
+	specificColorMap map[int][3]float32
 }
 
 //endregion
@@ -349,11 +352,17 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 			result, totalresult := resultcache.ReadResult(rnum)
 			// 初始化acc、rank和pp
 			player.controller[k].SetAcc(DEFAULT_ACC)
-			if score.IsSilver(replay.ExtractReplay(replays[k]).Mods) {
+			r := replay.ExtractReplay(replays[k])
+			if score.IsSilver(r.Mods) {
 				player.controller[k].SetRank(*render.RankXH)
 			}else {
 				player.controller[k].SetRank(*render.RankX)
 			}
+			// 设置player名
+			player.controller[k].SetPlayername(r.Username)
+			// 判断mod
+			mods := r.Mods
+			player.controller[k].SetMods(int(mods))
 			player.controller[k].SetPP(DEFAULT_PP)
 			if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 				player.controller[k].SetUR(DEFAULT_UR)
@@ -403,6 +412,12 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 				}else {
 					player.controller[k].SetRank(*render.RankX)
 				}
+				r := replay.ExtractReplay(replays[k])
+				// 设置player名
+				player.controller[k].SetPlayername(r.Username)
+				// 判断mod
+				mods := r.Mods
+				player.controller[k].SetMods(int(mods))
 				player.controller[k].SetPP(DEFAULT_PP)
 				if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 					player.controller[k].SetUR(DEFAULT_UR)
@@ -451,6 +466,29 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	//player.controller[1].GetHitResult()[12].Result = hitjudge.HitMiss
 	//player.controller[2].GetHitResult()[12].Result = hitjudge.HitMiss
 	//player.controller[3].GetHitResult()[12].Result = hitjudge.HitMiss
+
+	// 指定色彩设置
+	player.specificColorMap = make(map[int][3]float32)
+	specifiedplcolors := strings.Split(settings.VSplayer.PlayerInfo.SpecifiedColor, "|")
+	for _, plcolors := range specifiedplcolors {
+		tmpplcolors := strings.Split(plcolors, ":")
+		specifiedplayer := tmpplcolors[0]
+		for k := 0; k < player.players; k++ {
+			if player.controller[k].GetPlayname() == specifiedplayer {
+				colors := strings.Split(tmpplcolors[1], ",")
+				r, _ := strconv.Atoi(colors[0])
+				g, _ := strconv.Atoi(colors[1])
+				b, _ := strconv.Atoi(colors[2])
+				player.specificColorMap[k] = [3]float32{
+					float32(r) / 255,
+					float32(g) / 255,
+					float32(b) / 255,
+				}
+				log.Println("player 名：" + specifiedplayer + "，指定 replay", k+1, "的颜色为", r, g, b)
+				break
+			}
+		}
+	}
 
 	if settings.VSplayer.ReplayandCache.ReplayDebug {
 		// 总体replay分析情况
@@ -731,13 +769,6 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 			// 获取replay信息
 			r := replay.ExtractReplay(replays[k])
 			index := 3
-
-			// 设置player名
-			player.controller[k].SetPlayername(r.Username)
-
-			// 判断mod
-			mods := r.Mods
-			player.controller[k].SetMods(int(mods))
 
 			// 开始时间
 			r1 := *r.ReplayData[1]
@@ -1083,6 +1114,14 @@ func (pl *Player) Draw(delta float64) {
 	}
 
 	colors1 := settings.Cursor.GetColors(pl.players + 1, settings.TAG, pl.Scl, pl.cursorGlider.GetValue())
+
+	// 指定颜色修改
+	for k, colors := range pl.specificColorMap {
+		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
+		colors1[colornum][0] = colors[0]
+		colors1[colornum][1] = colors[1]
+		colors1[colornum][2] = colors[2]
+	}
 
 	scale1 := pl.Scl
 	scale2 := pl.Scl

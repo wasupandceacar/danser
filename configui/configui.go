@@ -80,6 +80,18 @@ func UImain(noGUI bool) {
 											},
 										},
 									},
+									HSplitter{
+										Children: []Widget{
+											TextLabel{
+												Text: "指定色彩：",
+											},
+											LineEdit{
+												AssignTo: &vsw.specifiedColor,
+												Alignment: AlignHNearVNear,
+												Text: settings.VSplayer.PlayerInfo.SpecifiedColor,
+											},
+										},
+									},
 								},
 							},
 							GroupBox{

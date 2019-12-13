@@ -5,9 +5,10 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 50,
+			"Players": 1,
 			"SpecifiedPlayers": false,
-			"SpecifiedLine": "50"
+			"SpecifiedLine": "50",
+			"SpecifiedColor": "WhiteCat:255,255,255"
 		},
 		"PlayerInfoUI": {
 			"BaseSize": 6,
@@ -45,8 +46,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Genryuu Kaiko",
-			"Difficulty": "Higan Torrent"
+			"Title": "Tengaku",
+			"Difficulty": "Uncompressed Fury of a Raging Japanese God"
 		},
 		"Mods": {
 			"EnableDT": false,

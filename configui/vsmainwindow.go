@@ -10,6 +10,7 @@ func (vsw VSPlayerMainWindow) SaveConfig() {
 	assign(&settings.VSplayer.PlayerInfo.Players, settings.VSplayer.PlayerInfo.Players, vsw.players)
 	assign(&settings.VSplayer.PlayerInfo.SpecifiedPlayers, settings.VSplayer.PlayerInfo.SpecifiedPlayers, vsw.specifiedPlayers)
 	assign(&settings.VSplayer.PlayerInfo.SpecifiedLine, settings.VSplayer.PlayerInfo.SpecifiedLine, vsw.specifiedLine)
+	assign(&settings.VSplayer.PlayerInfo.SpecifiedColor, settings.VSplayer.PlayerInfo.SpecifiedColor, vsw.specifiedColor)
 
 	assign(&settings.VSplayer.PlayerInfoUI.BaseSize, settings.VSplayer.PlayerInfoUI.BaseSize, vsw.baseSize)
 	assign(&settings.VSplayer.PlayerInfoUI.BaseX, settings.VSplayer.PlayerInfoUI.BaseX, vsw.baseX)
@@ -84,6 +85,7 @@ type VSPlayerMainWindow struct {
 	players *walk.LineEdit
 	specifiedPlayers *walk.CheckBox
 	specifiedLine *walk.LineEdit
+	specifiedColor *walk.LineEdit
 
 	baseSize *walk.LineEdit
 	baseX *walk.LineEdit

@@ -17,6 +17,7 @@ type playerinfo struct {
 	Players				int
 	SpecifiedPlayers	bool
 	SpecifiedLine		string
+	SpecifiedColor		string
 }
 
 type playerinfoUI struct {
