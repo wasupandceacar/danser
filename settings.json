@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 1,
+			"Players": 5,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "50",
 			"SpecifiedColor": "WhiteCat:255,255,255"
@@ -46,8 +46,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Tengaku",
-			"Difficulty": "Uncompressed Fury of a Raging Japanese God"
+			"Title": "Deal with the devil",
+			"Difficulty": "Expert"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -68,7 +68,7 @@
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
 			"ReadResultCache": true,
-			"ReplayDebug": false
+			"ReplayDebug": true
 		},
 		"ErrorFix": {
 			"EnableErrorFix": false,

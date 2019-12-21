@@ -467,6 +467,16 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	//player.controller[2].GetHitResult()[12].Result = hitjudge.HitMiss
 	//player.controller[3].GetHitResult()[12].Result = hitjudge.HitMiss
 
+	if settings.VSplayer.ReplayandCache.ReplayDebug {
+		// 总体replay分析情况
+		log.Println("正确结果：", right, " 个")
+		log.Println("错误结果：", wrong, " 个")
+		log.Println("错误编号：", wrongIndex)
+		// 直接退出，不进行下面的渲染任务
+		log.Println("Debug Replay 结束，直接退出")
+		os.Exit(0)
+	}
+
 	// 指定色彩设置
 	player.specificColorMap = make(map[int][3]float32)
 	specifiedplcolors := strings.Split(settings.VSplayer.PlayerInfo.SpecifiedColor, "|")
@@ -488,16 +498,6 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 				break
 			}
 		}
-	}
-
-	if settings.VSplayer.ReplayandCache.ReplayDebug {
-		// 总体replay分析情况
-		log.Println("正确结果：", right, " 个")
-		log.Println("错误结果：", wrong, " 个")
-		log.Println("错误编号：", wrongIndex)
-		// 直接退出，不进行下面的渲染任务
-		log.Println("Debug Replay 结束，直接退出")
-		os.Exit(0)
 	}
 
 	// 初始化实时pp、ur参数数组
