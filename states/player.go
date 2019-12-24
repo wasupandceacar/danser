@@ -403,7 +403,12 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 			}
 			t1 := time.Now()
 			log.Println("解析第", rnum, "个replay")
-			result, totalresult, mods, allright := hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, replays[k], hitjudge.FilterError(rnum, errs))
+			result, totalresult, mods, allright, _ := hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, replays[k], hitjudge.FilterError(rnum, errs), NO_USE_CS_OFFSET)
+			// 如果因为滑条尾判定需要单独修正CS，重新计算
+			// 有问题，暂时不采用
+			//if cs_offset > 0{
+			//	result, totalresult, mods, allright, cs_offset = hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, replays[k], hitjudge.FilterError(rnum, errs), cs_offset)
+			//}
 			if !settings.VSplayer.ReplayandCache.ReplayDebug {
 				// 初始化acc、rank和pp
 				player.controller[k].SetAcc(DEFAULT_ACC)

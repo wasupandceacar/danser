@@ -51,10 +51,9 @@ const OD_MAX = 10.0
 const CS_HR_HENSE = 1.3
 const CS_EZ_HENSE = 0.5
 
-// CS判定误差
-const CS_JUDGE_OFFSET = 0.01
-
 const CS_MAX = 10.0
+
+const NO_USE_CS_OFFSET = -1.0
 
 // AR参数
 const AR_HR_HENSE = 1.4

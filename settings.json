@@ -5,9 +5,9 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 5,
-			"SpecifiedPlayers": false,
-			"SpecifiedLine": "50",
+			"Players": 7,
+			"SpecifiedPlayers": true,
+			"SpecifiedLine": "2",
 			"SpecifiedColor": "WhiteCat:255,255,255"
 		},
 		"PlayerInfoUI": {
@@ -46,8 +46,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Deal with the devil",
-			"Difficulty": "Expert"
+			"Title": "Kikoku Doukoku Jigokuraku",
+			"Difficulty": "Notch Hell"
 		},
 		"Mods": {
 			"EnableDT": false,

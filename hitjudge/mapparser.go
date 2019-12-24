@@ -13,6 +13,7 @@ import (
 	"log"
 	"math"
 	"os"
+	"sort"
 )
 
 var None = rplpa.KeyPressed{
@@ -21,6 +22,8 @@ var None = rplpa.KeyPressed{
 	Key1:       false,
 	Key2:       false,
 }
+
+var UseCSOffset = NO_USE_CS_OFFSET
 
 func ParseMapwithMods(filename string, isHR bool, isEZ bool) *beatmap.BeatMap{
 	file, err := os.Open(filename)
@@ -38,10 +41,16 @@ func ParseReplay(name string) *rplpa.Replay {
 	return replay.ExtractReplay(name)
 }
 
-func ParseHits(mapname string, replayname string, errors []Error) (result []ObjectResult, totalresult []TotalResult, mods uint32, allright bool) {
+func ParseHits(mapname string, replayname string, errors []Error, addCSoffset float64) (result []ObjectResult, totalresult []TotalResult, mods uint32, allright bool, CSoffset float64) {
 
 	//prof.ProfStart()
 	//defer prof.ProfEnd()
+
+	// 是否加入CS偏差
+	UseCSOffset = addCSoffset
+	if UseCSOffset > 0 {
+		log.Println("加入偏差，偏差为", addCSoffset)
+	}
 
 	// 加载replay
 	pr := ParseReplay(replayname)
@@ -95,12 +104,15 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 	// 全局键位占用数组
 	keysoccupied := []bool{false, false, false, false}
 
+	// CS判定偏差数组
+	CSerrors := []float64{}
+
 	// 依次处理HitObject
 	keyindex := 3
 	time := r[1].Time + r[2].Time
 	for k := 0; k < len(b.HitObjects); k++ {
-	//for k := 0; k < 182; k++ {
-		//log.Println("Object", k+1)
+	//for k := 0; k < 779; k++ {
+	//	log.Println("Object", k+1)
 		obj :=  b.HitObjects[k]
 		if obj != nil {
 			// 滑条
@@ -199,13 +211,14 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 					var isHit bool
 					if i >= earlytick {
 						//log.Println("Normal Check Tick hit", i+1, time, CS_scale * convert_CS)
-						newisHit, nextindex, nexttime, newkeysoccupied, newCSscale, newistailjudge, newistailhit, newkeys := isTickHit(o, keyindex, time, r, t.Time, t.Pos, convert_CS, CS_scale, keysoccupied, keys, o.GetBasicData().EndTime-o.TailJudgeOffset, o.TailJudgePoint, istailjudge, istailhit)
+						newisHit, nextindex, nexttime, newkeysoccupied, newCSscale, newistailjudge, newistailhit, newkeys, newCSerrors := isTickHit(o, keyindex, time, r, t.Time, t.Pos, convert_CS, CS_scale, keysoccupied, keys, o.GetBasicData().EndTime-o.TailJudgeOffset, o.TailJudgePoint, istailjudge, istailhit, CSerrors)
 						isHit = newisHit
 						keys = newkeys
 						istailjudge = newistailjudge
 						istailhit = newistailhit
 						CS_scale = newCSscale
 						copy(keysoccupied, newkeysoccupied)
+						copy(CSerrors, newCSerrors)
 						keyindex = nextindex
 						time = nexttime
 					}else {
@@ -250,7 +263,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 					var nextindex int
 					var nexttime int64
 
-					newisHit, newnextindex, newnexttime, newkeysoccupied, newCSscale, _, _, _ := isTickHit(o, keyindex, time, r, o.GetBasicData().EndTime-o.TailJudgeOffset, o.TailJudgePoint, convert_CS, CS_scale, keysoccupied, keys, 0, bmath.Vector2d{0, 0}, false, false)
+					newisHit, newnextindex, newnexttime, newkeysoccupied, newCSscale, _, _, _, newCSerrors := isTickHit(o, keyindex, time, r, o.GetBasicData().EndTime-o.TailJudgeOffset, o.TailJudgePoint, convert_CS, CS_scale, keysoccupied, keys, 0, bmath.Vector2d{0, 0}, false, false, CSerrors)
 					// 滑条尾在滑条头前判断
 					if tail {
 						//log.Println("Slider head judged later than tail another!!!")
@@ -269,6 +282,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 						nexttime = lasttime
 					}
 					copy(keysoccupied, newkeysoccupied)
+					CSerrors = newCSerrors
 					if isHit {
 						//log.Println("Slider tail hit", o.GetBasicData().EndTime-o.TailJudgeOffset, o.TailJudgePoint)
 						realhits += 1
@@ -429,6 +443,14 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 	log.Println("PP:", totalresult[len(totalresult)-1].PP.Total)
 	log.Println("UR:", totalresult[len(totalresult)-1].UR)
 
+	// CS修正
+	sort.Float64s(CSerrors)
+	CSoffset = NO_USE_CS_OFFSET
+	// 只在只有滑条尾判断出错时修正
+	if (int(pr.Count100)-count100) == (maxcombo-int(pr.MaxCombo)) {
+		CSoffset = CSerrors[int(pr.Count100)-count100-1]
+	}
+
 	if settings.VSplayer.ReplayandCache.ReplayDebug {
 		// 分析情况和replay记录情况对比检查
 		allright = true
@@ -453,7 +475,7 @@ func ParseHits(mapname string, replayname string, errors []Error) (result []Obje
 		}
 	}
 
-	return result, totalresult, mods, allright
+	return result, totalresult, mods, allright, CSoffset
 }
 
 // 定位Key放下的位置
@@ -633,7 +655,8 @@ func findNearestKey(start int, starttime int64, r []*rplpa.ReplayData, requirehi
 		hit := r[index]
 		//newkeysoccupied := checkBeforePress(hit, keysoccupied)
 		//ispress, nnewkeysoccupied, _ := isPressed(hit, newkeysoccupied)
-		//log.Println("Find move", hit.Time + time, requirehittime, isInCircle(hit, requirepos, CS), ispress, newkeysoccupied, nnewkeysoccupied, bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos), ODMiss, OD50, CS + 0.01, keysoccupied)
+		//tmpisincircle, _ := isInCircle(hit, requirepos, CS)
+		//log.Println("Find move", hit.Time + time, requirehittime, tmpisincircle, ispress, newkeysoccupied, nnewkeysoccupied, bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos), ODMiss, OD50, CS + 0.01, keysoccupied)
 		// 如果时间已经超过最后时间，直接返回
 		realhittime := hit.Time + time
 		if float64(realhittime) > float64(requirehittime) + OD50 {
@@ -649,7 +672,8 @@ func findNearestKey(start int, starttime int64, r []*rplpa.ReplayData, requirehi
 			return false, index, time, keysoccupied, NoKey
 		}
 		// 判断是否在圈内
-		if isInCircle(hit, requirepos, CS){
+		isincircle, _ := isInCircle(hit, requirepos, CS)
+		if isincircle {
 			// 如果在圈内，且按下按键
 			newkeysoccupied := checkBeforePress(hit, keysoccupied)
 			copy(keysoccupied, newkeysoccupied)
@@ -881,9 +905,15 @@ func getTickKeysOccupied(keysoccupied []bool, keys []Key) []bool {
 	return newkeysoccupied
 }
 
-func isInCircle(hit *rplpa.ReplayData, requirepos bmath.Vector2d, CS float64) bool {
-	// 加入少量误差
-	return bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos) <= CS + CS_JUDGE_OFFSET
+func isInCircle(hit *rplpa.ReplayData, requirepos bmath.Vector2d, CS float64) (judge bool, error float64) {
+	dist := bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos)
+	if UseCSOffset > 0 {
+		error = CS - UseCSOffset - dist
+	} else {
+		error = CS - dist
+	}
+	judge = (error >= 0)
+	return judge, error
 }
 
 // 是否超过object的最后时间点
@@ -925,13 +955,15 @@ func isHit300(realhittime int64, requirehittime int64, OD300 float64) bool {
 }
 
 // 判断tick是否被击中并按下
-func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.ReplayData, requirehittime int64, requirepos bmath.Vector2d, CS float64, initialCSscale float64, keysoccupied []bool, keys []Key, tailrequirehittime int64, tailrequirepos bmath.Vector2d, judgetail bool, hittail bool) (bool, int, int64, []bool, float64, bool, bool, []Key) {
+func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.ReplayData, requirehittime int64, requirepos bmath.Vector2d, CS float64, initialCSscale float64, keysoccupied []bool, keys []Key, tailrequirehittime int64, tailrequirepos bmath.Vector2d, judgetail bool, hittail bool, CSerrors []float64) (bool, int, int64, []bool, float64, bool, bool, []Key, []float64) {
 	index := start
 	time := starttime
 	// 初始的CS范围
 	CSscale := initialCSscale
 	istailjugde := judgetail
 	istailhit := hittail
+	newCSerrors := make([]float64, len(CSerrors))
+	copy(newCSerrors, CSerrors)
 	for {
 		//寻找正好的一点或者区间
 		hit := r[index]
@@ -956,8 +988,12 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 		if judgetail {
 			if realhittime == tailrequirehittime {
 				// 找到正好的一点
+				isincircle, cserror := isInCircle(hit, tailrequirepos, CS*CSscale)
+				if cserror >= 0 {
+					newCSerrors = append(newCSerrors, cserror)
+				}
 				//log.Println(" Tail Tick Judge Tap", tailrequirehittime, realhittime, bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), tailrequirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), tailrequirepos), CS*CSscale)
-				if isInCircle(hit, tailrequirepos, CS*CSscale) {
+				if isincircle {
 					// 在圈内
 					// tick判断不会改变占用情况
 					ispressed := isPressedTick(hit, keysoccupied, keys)
@@ -978,9 +1014,13 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 				// 3.开始和结束算出的中间点
 				// 暂时使用中间点
 				realhit := getTickRangeJudgePoint(tailrequirehittime, r[index], r[index+1], realhittime)
+				isincircle, cserror := isInCircle(realhit, tailrequirepos, CS*CSscale)
+				if cserror >= 0 {
+					newCSerrors = append(newCSerrors, cserror)
+				}
 				//realhit := r[index]
 				//log.Println("Forward Tail Tick Judge Range Find Require Point", realhit.KeyPressed, realhit, tailrequirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(realhit.MosueX), float64(realhit.MouseY)), tailrequirepos), CS*CSscale)
-				if isInCircle(realhit, tailrequirepos, CS*CSscale) {
+				if isincircle {
 					// 在圈内
 					// tick判断不会改变占用情况
 					// 寻找正确的按下放开位置
@@ -1006,18 +1046,22 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 
 		if realhittime == requirehittime {
 			// 找到正好的一点
+			isincircle, cserror := isInCircle(hit, requirepos, CS*CSscale)
+			if cserror >= 0 {
+				newCSerrors = append(newCSerrors, cserror)
+			}
 			//log.Println("Tick Judge Tap", requirehittime, realhittime, bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos), CS * CSscale)
-			if isInCircle(hit, requirepos, CS * CSscale) {
+			if isincircle {
 				// 在圈内
 				// tick判断不会改变占用情况
 				ispressed := isPressedTick(hit, keysoccupied, keys)
 				//log.Println("Tick Judge Tap Press", ispressed, hit.KeyPressed, keysoccupied)
 				if ispressed {
 					//按下，则击中成功
-					return true, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys
+					return true, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys, newCSerrors
 				}
 			}
-			return false, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys
+			return false, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys, newCSerrors
 		}else if realhittime < requirehittime && realhittime + r[index+1].Time > requirehittime{
 			// 找到正好的区间
 			//log.Println("Tick Judge Range", requirehittime, realhittime, realhittime + r[index+1].Time, hit, r[index+1])
@@ -1027,9 +1071,13 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 			// 3.开始和结束算出的中间点
 			// 暂时使用中间点
 			realhit := getTickRangeJudgePoint(requirehittime, r[index], r[index+1], realhittime)
+			isincircle, cserror := isInCircle(realhit, requirepos, CS*CSscale)
+			if cserror >= 0 {
+				newCSerrors = append(newCSerrors, cserror)
+			}
 			//realhit := r[index]
 			//log.Println("Forward Tick Judge Range Find Require Point", realhit.KeyPressed, realhit, requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(realhit.MosueX), float64(realhit.MouseY)), requirepos), CS * CSscale)
-			if isInCircle(realhit, requirepos, CS * CSscale) {
+			if isincircle {
 				// 在圈内
 				// tick判断不会改变占用情况
 				// 寻找正确的按下放开位置
@@ -1046,10 +1094,10 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 				//log.Println("Tick Judge Range Press", ispressed, presshit.KeyPressed, keysoccupied)
 				if ispressed {
 					//按下，则击中成功
-					return true, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys
+					return true, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys, newCSerrors
 				}
 			}
-			return false, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys
+			return false, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys, newCSerrors
 		}else if realhittime > requirehittime {
 			// 时间点已经超过需要的击中时间
 			// 1.已经无法击中
@@ -1061,18 +1109,22 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 				//log.Println("Forward Tick Judge")
 				if realhittime == requirehittime {
 					// 找到正好的一点
+					isincircle, cserror := isInCircle(hit, requirepos, CS*CSscale)
+					if cserror >= 0 {
+						newCSerrors = append(newCSerrors, cserror)
+					}
 					//log.Println("Forward Tick Judge Tap", requirehittime, realhittime, bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos), CS * CSscale)
-					if isInCircle(hit, requirepos, CS * CSscale) {
+					if isincircle {
 						// 在圈内
 						// tick判断不会改变占用情况
 						ispressed := isPressedTick(hit, keysoccupied, keys)
 						//log.Println("Forward Tick Judge Tap Press", ispressed, hit.KeyPressed, keysoccupied)
 						if ispressed {
 							//按下，则击中成功
-							return true, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys
+							return true, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys, newCSerrors
 						}
 					}
-					return false, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys
+					return false, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys, newCSerrors
 				}else if realhittime < requirehittime && realhittime + r[index+1].Time > requirehittime{
 					// 找到正好的区间
 					//log.Println("Forward Tick Judge Range", requirehittime, realhittime, realhittime + r[index+1].Time, r[index], r[index+1])
@@ -1082,9 +1134,13 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 					// 3.开始和结束算出的中间点
 					// 暂时使用中间点
 					realhit := getTickRangeJudgePoint(requirehittime, r[index], r[index+1], realhittime)
+					isincircle, cserror := isInCircle(realhit, requirepos, CS*CSscale)
+					if cserror >= 0 {
+						newCSerrors = append(newCSerrors, cserror)
+					}
 					//realhit := r[index]
 					//log.Println("Forward Tick Judge Range Find Require Point", realhit.KeyPressed, realhit, requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(realhit.MosueX), float64(realhit.MouseY)), requirepos), CS * CSscale)
-					if isInCircle(realhit, requirepos, CS * CSscale) {
+					if isincircle {
 						// 在圈内
 						// tick判断不会改变占用情况
 						// 寻找正确的按下放开位置
@@ -1100,16 +1156,16 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 						//log.Println("Forward Tick Judge Range Press", ispressed, presshit.KeyPressed, keysoccupied)
 						if ispressed {
 							//按下，则击中成功
-							return true, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys
+							return true, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys, newCSerrors
 						}
 					}
-					return false, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys
+					return false, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys, newCSerrors
 				}
 			}
 
 			// 无法击中
 			//log.Println("Too late to hit tick", realhittime, requirehittime)
-			return false, index, realhittime - r[index].Time, keysoccupied, CSscale, istailjugde, istailhit, keys
+			return false, index, realhittime - r[index].Time, keysoccupied, CSscale, istailjugde, istailhit, keys, newCSerrors
 		}
 		index++
 		time += hit.Time
@@ -1271,7 +1327,7 @@ func trueClick(click bool, key bool) bool {
 
 // 检查replay某一瞬间在不在sliderball中
 func checkInSliderBall(slider *objects.Slider, time int64, realpos bmath.Vector2d, scale float64, ispress bool) float64 {
-	if bmath.Vector2d.Dst(slider.GetPointAt(time), realpos) < scale + CS_JUDGE_OFFSET && ispress {
+	if bmath.Vector2d.Dst(slider.GetPointAt(time), realpos) < scale && ispress {
 		//log.Println("Hit in sliderball", time, slider.GetPointAt(time), realpos, bmath.Vector2d.Dst(slider.GetPointAt(time), realpos), scale + 0.01)
 		return TICK_JUDGE_SCALE
 	}else {

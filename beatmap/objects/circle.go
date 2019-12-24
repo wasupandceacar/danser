@@ -94,7 +94,7 @@ func (self *Circle) Draw(time int64, preempt float64, fadeIn float64, color mgl3
 		hiddenFadeInEnd := hiddenFadeInStart + preempt * FADE_IN_DURATION_MULTIPLIER
 
 		hiddenFadeOutStart := hiddenFadeInEnd
-		hiddenFadeOutEnd := hiddenFadeOutStart + preempt * FADE_IN_DURATION_MULTIPLIER
+		hiddenFadeOutEnd := hiddenFadeOutStart + preempt * FADE_OUT_DURATION_MULTIPLIER
 		if float64(time) < hiddenFadeInEnd && float64(time) >= hiddenFadeInStart {
 			alpha = Clamp(1.0 - (hiddenFadeInEnd - float64(time)) / (hiddenFadeInEnd - hiddenFadeInStart), 0.0, 1.0)
 		} else if float64(time) >= hiddenFadeOutStart {
