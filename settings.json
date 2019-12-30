@@ -5,8 +5,8 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 7,
-			"SpecifiedPlayers": true,
+			"Players": 50,
+			"SpecifiedPlayers": false,
 			"SpecifiedLine": "2",
 			"SpecifiedColor": "WhiteCat:255,255,255"
 		},
@@ -67,8 +67,8 @@
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
-			"ReadResultCache": true,
-			"ReplayDebug": true
+			"ReadResultCache": false,
+			"ReplayDebug": false
 		},
 		"ErrorFix": {
 			"EnableErrorFix": false,
@@ -76,7 +76,7 @@
 		},
 		"Skin": {
 			"EnableSkin": true,
-			"SkinDir": "skin\\idke\\",
+			"SkinDir": "skin\\gn\\",
 			"NumberOffset": 30
 		}
 	},

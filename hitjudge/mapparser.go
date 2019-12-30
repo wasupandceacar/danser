@@ -447,9 +447,9 @@ func ParseHits(mapname string, replayname string, errors []Error, addCSoffset fl
 	sort.Float64s(CSerrors)
 	CSoffset = NO_USE_CS_OFFSET
 	// 只在只有滑条尾判断出错时修正
-	if (int(pr.Count100)-count100) == (maxcombo-int(pr.MaxCombo)) {
-		CSoffset = CSerrors[int(pr.Count100)-count100-1]
-	}
+	//if (int(pr.Count100)-count100) == (maxcombo-int(pr.MaxCombo)) {
+	//	CSoffset = CSerrors[int(pr.Count100)-count100-1]
+	//}
 
 	if settings.VSplayer.ReplayandCache.ReplayDebug {
 		// 分析情况和replay记录情况对比检查

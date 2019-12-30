@@ -56,7 +56,7 @@
 - [ ]  [Kegare Naki Bara Juuji](https://osu.ppy.sh/s/448818)
 - [x]  [Kegare Naki Yume](https://osu.ppy.sh/s/386619)
 - [ ]  [Candle Master](https://osu.ppy.sh/s/357632)
-- [ ]  [地狱乐](https://osu.ppy.sh/s/437683) 
+- [x]  [地狱乐](https://osu.ppy.sh/s/437683) 
 - [x]  [红皮(Cry Thunder)](https://osu.ppy.sh/s/316050)
 - [ ]  [Youka to Yumeutsutsu](https://osu.ppy.sh/b/1164254)
 - [ ]  [Embraced by the Flame](https://osu.ppy.sh/b/894744)
@@ -82,6 +82,7 @@
 - [x]  [HELIX](https://osu.ppy.sh/b/462700?m=0) 
 - [x]  [Euphoria](https://osu.ppy.sh/s/890438)    
 - [x]  [Milk Crown on Sonnetica(Loved,9*难度)](https://osu.ppy.sh/s/327557) 
+- [ ]  [大钱](https://osu.ppy.sh/s/293705)
 
 ## 有人FC HR 图 ##
 - [ ]  [***Ange du Blanc Pur***](https://osu.ppy.sh/s/564165)
@@ -121,7 +122,6 @@
 ## 无人FC None 图 ##
 - [ ]  [老黄泉](https://osu.ppy.sh/s/461744)
 - [ ]  [黑皇帝](https://osu.ppy.sh/s/396221) 
-- [ ]  [大钱](https://osu.ppy.sh/s/293705)
 - [ ]  [17RPG](https://osu.ppy.sh/s/304888)
 - [ ]  [解构星](https://osu.ppy.sh/s/292083)
 - [ ]  [Smiling](https://osu.ppy.sh/s/450363)
