@@ -83,6 +83,7 @@
 - [x]  [Euphoria](https://osu.ppy.sh/s/890438)    
 - [x]  [Milk Crown on Sonnetica(Loved,9*难度)](https://osu.ppy.sh/s/327557) 
 - [ ]  [大钱](https://osu.ppy.sh/s/293705)
+- [ ]  [Graces of Heaven](https://osu.ppy.sh/beatmapsets/147910#osu/572525)
 
 ## 有人FC HR 图 ##
 - [ ]  [***Ange du Blanc Pur***](https://osu.ppy.sh/s/564165)
@@ -99,6 +100,7 @@
 - [ ]  [Packet Hero](https://osu.ppy.sh/b/880321?m=0) 
 - [x]  [泡沫少女](https://osu.ppy.sh/b/1583228?m=0) 
 - [ ]  [空气人](https://osu.ppy.sh/b/104229?m=0) 
+- [ ]  [Daisuki](https://osu.ppy.sh/beatmapsets/611004#osu/1289927)
 
 ## 有人FC DT 图 ##
 - [x]  [未来图](https://osu.ppy.sh/s/306591)
@@ -135,3 +137,4 @@
 - [ ]  [Goodbye](https://osu.ppy.sh/b/1172819?m=0) 
 - [ ]  [True truly love](https://osu.ppy.sh/b/260839)
 - [ ]  [Yakubyougami](https://osu.ppy.sh/s/455419)
+- [ ]  [新大气层](https://osu.ppy.sh/beatmapsets/855677#osu/1787848)
