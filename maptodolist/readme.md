@@ -101,6 +101,7 @@
 - [x]  [泡沫少女](https://osu.ppy.sh/b/1583228?m=0) 
 - [ ]  [空气人](https://osu.ppy.sh/b/104229?m=0) 
 - [ ]  [Daisuki](https://osu.ppy.sh/beatmapsets/611004#osu/1289927)
+- [ ]  [水飞沫](https://old.ppy.sh/b/378126?m=0)
 
 ## 有人FC DT 图 ##
 - [x]  [未来图](https://osu.ppy.sh/s/306591)
@@ -138,3 +139,7 @@
 - [ ]  [True truly love](https://osu.ppy.sh/b/260839)
 - [ ]  [Yakubyougami](https://osu.ppy.sh/s/455419)
 - [ ]  [新大气层](https://osu.ppy.sh/beatmapsets/855677#osu/1787848)
+- [x]  [十打](https://old.ppy.sh/b/663725?m=0)
+- [ ]  [傻月亮](https://old.ppy.sh/s/524026)
+- [ ]  [raining man](https://old.ppy.sh/s/977787)
+- [ ]  [Astar](https://old.ppy.sh/s/685822)

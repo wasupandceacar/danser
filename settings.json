@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 50,
+			"Players": 1,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "2",
 			"SpecifiedColor": "WhiteCat:255,255,255"
@@ -46,8 +46,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Kikoku Doukoku Jigokuraku",
-			"Difficulty": "Notch Hell"
+			"Title": "Transform (Original Mix)",
+			"Difficulty": "Aspire"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -60,8 +60,8 @@
 			"EnableKnockout": true,
 			"ShowTrueMiss": false,
 			"PlayerFadeTime": 1500,
-			"SameTimeOffset": 22,
-			"MissMult": 1
+			"SameTimeOffset": 12,
+			"MissMult": 0.8
 		},
 		"ReplayandCache": {
 			"ReplayDir": "replays\\",
@@ -76,7 +76,7 @@
 		},
 		"Skin": {
 			"EnableSkin": true,
-			"SkinDir": "skin\\gn\\",
+			"SkinDir": "skin\\rafis1\\",
 			"NumberOffset": 30
 		}
 	},
@@ -156,8 +156,8 @@
 		"SliderLOD": 30,
 		"SliderPathLOD": 50,
 		"SliderSnakeIn": true,
-		"SliderSnakeOut": true,
-		"SliderMerge": true,
+		"SliderSnakeOut": false,
+		"SliderMerge": false,
 		"DrawFollowPoints": true,
 		"WhiteFollowPoints": true,
 		"FollowPointColorOffset": 0,
@@ -193,7 +193,7 @@
 		"SpectrumInDim": 0,
 		"SpectrumDim": 1,
 		"SpectrumDimBreaks": 0,
-		"StoryboardEnabled": true,
+		"StoryboardEnabled": false,
 		"Scale": 1,
 		"FlashToTheBeat": true,
 		"UnblurToTheBeat": true,
