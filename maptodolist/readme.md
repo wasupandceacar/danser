@@ -82,8 +82,9 @@
 - [x]  [HELIX](https://osu.ppy.sh/b/462700?m=0) 
 - [x]  [Euphoria](https://osu.ppy.sh/s/890438)    
 - [x]  [Milk Crown on Sonnetica(Loved,9*难度)](https://osu.ppy.sh/s/327557) 
-- [ ]  [大钱](https://osu.ppy.sh/s/293705)
+- [x]  [大钱](https://osu.ppy.sh/s/293705)
 - [ ]  [Graces of Heaven](https://osu.ppy.sh/beatmapsets/147910#osu/572525)
+- [ ]  [Utopia?](https://osu.ppy.sh/beatmapsets/859575#osu/1796164)
 
 ## 有人FC HR 图 ##
 - [ ]  [***Ange du Blanc Pur***](https://osu.ppy.sh/s/564165)
@@ -102,6 +103,7 @@
 - [ ]  [空气人](https://osu.ppy.sh/b/104229?m=0) 
 - [ ]  [Daisuki](https://osu.ppy.sh/beatmapsets/611004#osu/1289927)
 - [ ]  [水飞沫](https://old.ppy.sh/b/378126?m=0)
+- [ ]  [Aspire v1](https://osu.ppy.sh/beatmapsets/484689#osu/1033882)
 
 ## 有人FC DT 图 ##
 - [x]  [未来图](https://osu.ppy.sh/s/306591)
