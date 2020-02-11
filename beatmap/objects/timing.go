@@ -85,11 +85,7 @@ func (tim *Timings) GetPoint(time int64) TimingPoint {
 }
 
 func (tim Timings) GetSliderTimeS(time int64, pixelLength float64) int64 {
-	res := int64(tim.GetPoint(time).Bpm * pixelLength / (100.0 * tim.SliderMult))
-	if res < 0 {
-		log.Println("E?", tim.GetPoint(time).Bpm, pixelLength, tim.SliderMult)
-	}
-	return res
+	return int64(tim.GetPoint(time).Bpm * pixelLength / (100.0 * tim.SliderMult))
 }
 
 func (tim Timings) GetSliderTime(pixelLength float64) int64 {
@@ -97,7 +93,7 @@ func (tim Timings) GetSliderTime(pixelLength float64) int64 {
 }
 
 func (tim Timings) GetSliderTimeP(point TimingPoint, pixelLength float64) int64 {
-	return int64(point.Bpm * pixelLength / (100.0 * tim.SliderMult))
+	return int64((point.Bpm * pixelLength / (100.0 * tim.SliderMult)))
 }
 
 func (tim *Timings) Reset() {

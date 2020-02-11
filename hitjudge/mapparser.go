@@ -111,8 +111,8 @@ func ParseHits(mapname string, replayname string, errors []Error, addCSoffset fl
 	keyindex := 3
 	time := r[1].Time + r[2].Time
 	for k := 0; k < len(b.HitObjects); k++ {
-	//for k := 0; k < 779; k++ {
-	//	log.Println("Object", k+1)
+	//for k := 0; k < 109; k++ {
+		//log.Println("Object", k+1)
 		obj :=  b.HitObjects[k]
 		if obj != nil {
 			// 滑条
@@ -130,7 +130,7 @@ func ParseHits(mapname string, replayname string, errors []Error, addCSoffset fl
 				//log.Println("Slider head find", r[keyindex].Time, time, o.GetBasicData().StartTime, o.GetBasicData().StartPos)
 
 				// 滑条头占有键位，但这个键位依然对这个滑条的ticks有效
-				isfind, nearestindex, lasttime, newkeysoccupied, key := findNearestKey(keyindex, time, r, o.GetBasicData().StartTime, o.GetBasicData().StartPos, ODMiss, OD50, convert_CS * CS_scale, true, float64(o.GetBasicData().StartTime), keysoccupied)
+				isfind, nearestindex, lasttime, newkeysoccupied, key := findNearestKey(b.Pauses, keyindex, time, r, o.GetBasicData().StartTime, o.GetBasicData().StartPos, ODMiss, OD50, convert_CS * CS_scale, true, float64(o.GetBasicData().StartTime), keysoccupied)
 				//log.Println("Slider hit on", key, r[nearestindex].Time, lasttime + r[nearestindex].Time)
 				// 后续还可能存在其他的只对滑条ticks有效的键位
 				keys := []Key{key}
@@ -340,7 +340,7 @@ func ParseHits(mapname string, replayname string, errors []Error, addCSoffset fl
 				keyhitresult := HitMiss
 				isBreak := true
 				// 占用key对note无用
-				isfind, nearestindex, lasttime, newkeysoccupied, _ := findNearestKey(keyindex, time, r, o.GetBasicData().StartTime, o.GetBasicData().StartPos, ODMiss, OD50, convert_CS, false, 0, keysoccupied)
+				isfind, nearestindex, lasttime, newkeysoccupied, _ := findNearestKey(b.Pauses, keyindex, time, r, o.GetBasicData().StartTime, o.GetBasicData().StartPos, ODMiss, OD50, convert_CS, false, 0, keysoccupied)
 				copy(keysoccupied, newkeysoccupied)
 				if isfind {
 					// 如果找到，判断hit结果，设置下一个index+1
@@ -648,7 +648,7 @@ func resetKeysOccupied(p1 rplpa.KeyPressed, p2 rplpa.KeyPressed, keysoccupied []
 }
 
 // 寻找最近的击中的Key
-func findNearestKey(start int, starttime int64, r []*rplpa.ReplayData, requirehittime int64, requirepos bmath.Vector2d, ODMiss float64, OD50 float64, CS float64, isNextTick bool, headtime float64, keysoccupied []bool) (bool, int, int64, []bool, Key) {
+func findNearestKey(pauses []objects.BaseObject, start int, starttime int64, r []*rplpa.ReplayData, requirehittime int64, requirepos bmath.Vector2d, ODMiss float64, OD50 float64, CS float64, isNextTick bool, headtime float64, keysoccupied []bool) (bool, int, int64, []bool, Key) {
 	index := start
 	time := starttime
 	for {
@@ -690,8 +690,14 @@ func findNearestKey(start int, starttime int64, r []*rplpa.ReplayData, requirehi
 				}else if isHitMiss(realhittime, requirehittime, ODMiss){
 					// 如果落在这个object的区域内，则找到Key，返回这个Key的时间点
 					// 这种情况，无论30010050miss都会占用键位
-					//log.Println("isHitMiss")
-					return true, index, time, newkeysoccupied, key
+					// 在休息段提前按下
+					if isNotInPauses(realhittime, requirehittime, pauses, OD50) {
+						return true, index, time, newkeysoccupied, key
+					}else {
+						// 跳过返回，但需要复制键位占用情况
+						//log.Println("Pauses Skip", realhittime)
+						copy(keysoccupied, newkeysoccupied)
+					}
 				}
 			}
 		}else {
@@ -970,9 +976,16 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 		realhittime := hit.Time + time
 		//log.Println("Tick Judge", hit, realhittime, starttime)
 
+		// 【猜测】滑条曲线顶点过多的情况下，会在滑条开头造成几毫秒的卡顿
+		//if slider.GetCurvePointsLen() >= 100 && realhittime - slider.GetBasicData().StartTime < 10 {
+		//	log.Println("Skip Tick Judge check", slider.GetCurvePointsLen(), realhittime - slider.GetBasicData().StartTime)
+		//}else {
+		//
+		//}
+
 		// 判断前，每次都要检查键位占用情况
 		// 为什么要这样做，见 https://github.com/ppy/osu/blob/f134b9c886edcd42eb1aa8a6e232789a017a61aa/osu.Game.Rulesets.Osu/Objects/Drawables/Pieces/SliderBall.cs#L153
-		newkeysoccupied, newkeys := resetKeysOccupied(*r[index-1].KeyPressed, *r[index].KeyPressed, keysoccupied,true, keys)
+		newkeysoccupied, newkeys := resetKeysOccupied(*r[index-1].KeyPressed, *r[index].KeyPressed, keysoccupied, true, keys)
 		keys = newkeys
 		//log.Println("Reset key occupied tick", *r[index-1].KeyPressed, *r[index].KeyPressed, keysoccupied, newkeysoccupied, keys, newkeys)
 		copy(keysoccupied, newkeysoccupied)
@@ -981,7 +994,7 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 		// 在滑条头真实时间开始后再检查
 		if realhittime >= slider.GetBasicData().StartTime {
 			//log.Println("Check if in sliderball", realhittime, bmath.Vector2d{float64(hit.MosueX), float64(hit.MouseY)}, CSscale)
-			CSscale = checkInSliderBall(slider, realhittime, bmath.Vector2d{float64(hit.MosueX), float64(hit.MouseY)}, CS * CSscale, isPressedTick(hit, keysoccupied, keys))
+			CSscale = checkInSliderBall(slider, realhittime, bmath.Vector2d{float64(hit.MosueX), float64(hit.MouseY)}, CS*CSscale, isPressedTick(hit, keysoccupied, keys))
 		}
 
 		// 存在滑条尾早于tick的情况，所以在判断tick时顺便判断滑条
@@ -1051,6 +1064,27 @@ func isTickHit(slider *objects.Slider, start int, starttime int64, r []*rplpa.Re
 				newCSerrors = append(newCSerrors, cserror)
 			}
 			//log.Println("Tick Judge Tap", requirehittime, realhittime, bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos), CS * CSscale)
+			// 【猜测】滑条曲线顶点太多造成的判定延迟
+			if slider.GetCurvePointsLen() >= 100 {
+				// 判断下一个时间点的坐标是否和这次一样，一样就可能是延迟判定
+				laghit := r[index+1]
+				if bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)) == bmath.NewVec2d(float64(laghit.MosueX), float64(laghit.MouseY)) {
+					laghittime := realhittime + laghit.Time
+					lagisincircle, _ := isInCircle(laghit, slider.GetPointAt(laghittime), CS*CSscale)
+					//log.Println("Tick Judge Tap Lag", laghittime, bmath.NewVec2d(float64(laghit.MosueX), float64(laghit.MouseY)), slider.GetPointAt(laghittime), bmath.Vector2d.Dst(bmath.NewVec2d(float64(laghit.MosueX), float64(laghit.MouseY)), slider.GetPointAt(laghittime)), CS * CSscale)
+					if lagisincircle {
+						// 在圈内
+						// tick判断不会改变占用情况
+						lagkeysoccupied, lagkeys := resetKeysOccupied(*r[index].KeyPressed, *r[index+1].KeyPressed, keysoccupied, true, keys)
+						lagispressed := isPressedTick(laghit, lagkeysoccupied, lagkeys)
+						//log.Println("Tick Judge Tap Lag Press", lagispressed, laghit.KeyPressed, lagkeysoccupied)
+						if lagispressed {
+							//按下，则击中成功
+							return true, index + 1, realhittime, keysoccupied, CSscale, istailjugde, istailhit, keys, newCSerrors
+						}
+					}
+				}
+			}
 			if isincircle {
 				// 在圈内
 				// tick判断不会改变占用情况
@@ -1407,5 +1441,18 @@ func checkSliderBallBeforeHit(index int, lasttime int64, r []*rplpa.ReplayData, 
 // 获取是否重复按下的键位状态数组
 func getSameTimePressKeyStatus(key bool, occupied bool) bool {
 	return (key && bmath.Xor(key, occupied))
+}
+
+// 判断时间点是否不在休息时段中
+func isNotInPauses(realhittime int64, requirehittime int64, pauses []objects.BaseObject, offset float64) bool {
+	// 休息段会提前一段时间结束并开始判定，这段时间暂时猜测为OD50
+	pauseoffset := offset
+	for _, pause := range pauses {
+		// 击打时间在休息段中，物件时间不在休息段中
+		if (realhittime >= pause.GetBasicData().StartTime && float64(realhittime) <= float64(pause.GetBasicData().EndTime) - pauseoffset) && (requirehittime < pause.GetBasicData().StartTime || requirehittime > pause.GetBasicData().EndTime) {
+			return false
+		}
+	}
+	return true
 }
 

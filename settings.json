@@ -5,10 +5,10 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 1,
+			"Players": 10,
 			"SpecifiedPlayers": false,
-			"SpecifiedLine": "2",
-			"SpecifiedColor": "WhiteCat:255,255,255"
+			"SpecifiedLine": "9",
+			"SpecifiedColor": "WhiteCat:255,255,255|YakumoYukari:0,0,0"
 		},
 		"PlayerInfoUI": {
 			"BaseSize": 6,
@@ -57,8 +57,8 @@
 			"EnableHD": false
 		},
 		"Knockout": {
-			"EnableKnockout": true,
-			"ShowTrueMiss": false,
+			"EnableKnockout": false,
+			"ShowTrueMiss": true,
 			"PlayerFadeTime": 1500,
 			"SameTimeOffset": 12,
 			"MissMult": 0.8
@@ -68,7 +68,7 @@
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
 			"ReadResultCache": false,
-			"ReplayDebug": false
+			"ReplayDebug": true
 		},
 		"ErrorFix": {
 			"EnableErrorFix": false,

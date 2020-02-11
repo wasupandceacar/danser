@@ -198,6 +198,10 @@ func (self Slider) GetBasicData() *basicData {
 	return self.objData
 }
 
+func (self Slider) GetCurvePointsLen() int {
+	return self.multiCurve.GetPointsLen()
+}
+
 func (self Slider) GetHalf() m2.Vector2d {
 	return self.multiCurve.PointAt(0.5).Add(self.objData.StackOffset)
 }

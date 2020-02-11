@@ -152,3 +152,7 @@ func (sa *SliderAlgo) GetLength() float64 {
 	}
 	return sa.length
 }
+
+func (sa *SliderAlgo) GetPointsLen() int {
+	return len(sa.curves)
+}
