@@ -128,7 +128,6 @@ func ParseHits(mapname string, replayname string, errors []Error, addCSoffset fl
 				CS_scale := CIRCLE_JUDGE_SCALE
 				// 寻找最近的Key
 				//log.Println("Slider head find", r[keyindex].Time, time, o.GetBasicData().StartTime, o.GetBasicData().StartPos)
-
 				// 滑条头占有键位，但这个键位依然对这个滑条的ticks有效
 				isfind, nearestindex, lasttime, newkeysoccupied, key := findNearestKey(b.Pauses, keyindex, time, r, o.GetBasicData().StartTime, o.GetBasicData().StartPos, ODMiss, OD50, convert_CS * CS_scale, true, float64(o.GetBasicData().StartTime), keysoccupied)
 				//log.Println("Slider hit on", key, r[nearestindex].Time, lasttime + r[nearestindex].Time)

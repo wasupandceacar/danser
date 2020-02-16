@@ -1671,13 +1671,34 @@ func (pl *Player) Draw(delta float64) {
 				for i := len(pl.processed) - 1; i >= 0; i-- {
 					if s, ok := pl.processed[i].(*objects.Slider); ok {
 						pl.sliderRenderer.SetScale(scale1)
-
 						s.DrawBody(pl.progressMs, pl.bMap.ARms, pl.bMap.FadeIn, colors1[pl.objectcolorIndex], colors1[pl.objectcolorIndex], pl.sliderRenderer)
 					}
 				}
 			}
 
 			pl.sliderRenderer.EndAndRender()
+		}else {
+			for j := 0; j < settings.DIVIDES; j++ {
+				pl.sliderRenderer.SetCamera(cameras[j])
+				ind := j - 1
+				if ind < 0 {
+					ind = settings.DIVIDES - 1
+				}
+
+				for i := len(pl.processed) - 1; i >= 0 && len(pl.processed) > 0; i-- {
+					if i < len(pl.processed) {
+						if !settings.Objects.SliderMerge {
+							if s, ok := pl.processed[i].(*objects.Slider); ok {
+								pl.batch.Flush()
+								pl.sliderRenderer.Begin()
+								pl.sliderRenderer.SetScale(scale1)
+								s.DrawBody(pl.progressMs, pl.bMap.ARms, pl.bMap.FadeIn, colors1[pl.objectcolorIndex], colors1[pl.objectcolorIndex], pl.sliderRenderer)
+								pl.sliderRenderer.EndAndRender()
+							}
+						}
+					}
+				}
+			}
 		}
 
 		pl.batch.Begin()
@@ -1691,9 +1712,6 @@ func (pl *Player) Draw(delta float64) {
 		pl.batch.SetScale(64*render.CS*scale1, 64*render.CS*scale1)
 
 		for j := 0; j < settings.DIVIDES; j++ {
-			if !settings.Objects.SliderMerge {
-				pl.sliderRenderer.SetCamera(cameras[j])
-			}
 			pl.batch.SetCamera(cameras[j])
 			ind := j - 1
 			if ind < 0 {
@@ -1702,15 +1720,6 @@ func (pl *Player) Draw(delta float64) {
 
 			for i := len(pl.processed) - 1; i >= 0 && len(pl.processed) > 0; i-- {
 				if i < len(pl.processed) {
-					if !settings.Objects.SliderMerge {
-						if s, ok := pl.processed[i].(*objects.Slider); ok {
-							pl.batch.Flush()
-							pl.sliderRenderer.Begin()
-							pl.sliderRenderer.SetScale(scale1)
-							s.DrawBody(pl.progressMs, pl.bMap.ARms, pl.bMap.FadeIn, colors1[pl.objectcolorIndex], colors1[pl.objectcolorIndex], pl.sliderRenderer)
-							pl.sliderRenderer.EndAndRender()
-						}
-					}
 					res := pl.processed[i].Draw(pl.progressMs, pl.bMap.ARms, pl.bMap.FadeIn, colors1[pl.objectcolorIndex], pl.batch)
 					if res {
 						pl.processed = append(pl.processed[:i], pl.processed[(i + 1):]...)

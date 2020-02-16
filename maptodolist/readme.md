@@ -52,7 +52,7 @@
 - [ ]  [阴蜂(阳蜂难度)](https://osu.ppy.sh/s/120515) 
 - [ ]  [Milk Crown on Sonnetica(Loved,101%难度)](https://osu.ppy.sh/s/327557) 
 - [ ]  [玻璃花(Loved)](https://osu.ppy.sh/s/394834) 
-- [ ]  [**Louder than steel(Loved)**](https://osu.ppy.sh/s/864869) 
+- [x]  [Louder than steel(Loved)](https://osu.ppy.sh/s/864869) 
 - [ ]  [Kegare Naki Bara Juuji](https://osu.ppy.sh/s/448818)
 - [x]  [Kegare Naki Yume](https://osu.ppy.sh/s/386619)
 - [ ]  [Candle Master](https://osu.ppy.sh/s/357632)
@@ -85,6 +85,7 @@
 - [x]  [大钱](https://osu.ppy.sh/s/293705)
 - [ ]  [Graces of Heaven](https://osu.ppy.sh/beatmapsets/147910#osu/572525)
 - [ ]  [Utopia?](https://osu.ppy.sh/beatmapsets/859575#osu/1796164)
+- [ ]  [Ontology](https://osu.ppy.sh/beatmapsets/1050313#osu/2195031)
 
 ## 有人FC HR 图 ##
 - [ ]  [***Ange du Blanc Pur***](https://osu.ppy.sh/s/564165)
@@ -103,7 +104,7 @@
 - [ ]  [空气人](https://osu.ppy.sh/b/104229?m=0) 
 - [ ]  [Daisuki](https://osu.ppy.sh/beatmapsets/611004#osu/1289927)
 - [ ]  [水飞沫](https://old.ppy.sh/b/378126?m=0)
-- [ ]  [Aspire v1](https://osu.ppy.sh/beatmapsets/484689#osu/1033882)
+- [x]  [Aspire v1](https://osu.ppy.sh/beatmapsets/484689#osu/1033882)
 
 ## 有人FC DT 图 ##
 - [x]  [未来图](https://osu.ppy.sh/s/306591)
