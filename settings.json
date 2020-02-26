@@ -6,8 +6,8 @@
 	"VSplayer": {
 		"PlayerInfo": {
 			"Players": 24,
-			"SpecifiedPlayers": false,
-			"SpecifiedLine": "9",
+			"SpecifiedPlayers": true,
+			"SpecifiedLine": "1",
 			"SpecifiedColor": "WhiteCat:255,255,255|YakumoYukari:0,0,0"
 		},
 		"PlayerInfoUI": {
@@ -46,8 +46,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Transform (Original Mix)",
-			"Difficulty": "Aspire"
+			"Title": "Lovely Girls Anthem -EuroBeatRemix-",
+			"Difficulty": "Normal"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -67,7 +67,7 @@
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
-			"ReadResultCache": true,
+			"ReadResultCache": false,
 			"ReplayDebug": false
 		},
 		"ErrorFix": {

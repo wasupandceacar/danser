@@ -66,7 +66,7 @@ func ParseHits(mapname string, replayname string, errors []Error, addCSoffset fl
 	ODMiss := b.ODMiss
 	convert_CS := float2unit(32 * (1 - 0.7 * (b.CircleSize - 5) / 5))
 
-	// 如果replay是HR，改变OD和CS，并上下翻转replay的Y坐标
+	// 如果replay是HR，改变OD和CS
 	if mods&MOD_HR > 0 {
 		newOD := math.Min(OD_HR_HENSE * b.OD, OD_MAX)
 		OD300 = beatmap.AdjustOD(OD_300_BASE - ( newOD * OD_300_MULT ) + OD_PRECISION_FIX)
@@ -111,8 +111,8 @@ func ParseHits(mapname string, replayname string, errors []Error, addCSoffset fl
 	keyindex := 3
 	time := r[1].Time + r[2].Time
 	for k := 0; k < len(b.HitObjects); k++ {
-	//for k := 0; k < 109; k++ {
-		//log.Println("Object", k+1)
+	//for k := 0; k < 1005; k++ {
+	//	log.Println("Object", k+1)
 		obj :=  b.HitObjects[k]
 		if obj != nil {
 			// 滑条

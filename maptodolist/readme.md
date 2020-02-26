@@ -86,9 +86,10 @@
 - [ ]  [Graces of Heaven](https://osu.ppy.sh/beatmapsets/147910#osu/572525)
 - [ ]  [Utopia?](https://osu.ppy.sh/beatmapsets/859575#osu/1796164)
 - [ ]  [Ontology](https://osu.ppy.sh/beatmapsets/1050313#osu/2195031)
+- [ ]  [Bad apple](https://osu.ppy.sh/beatmapsets/749552#osu/1578784)
 
 ## 有人FC HR 图 ##
-- [ ]  [***Ange du Blanc Pur***](https://osu.ppy.sh/s/564165)
+- [x]  [Ange du Blanc Pur](https://osu.ppy.sh/s/564165)
 - [x]  [蓝极光](https://osu.ppy.sh/s/292301)
 - [ ]  [**highscore**](https://osu.ppy.sh/s/332532)
 - [ ]  [新黄泉](https://osu.ppy.sh/s/575330)

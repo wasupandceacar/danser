@@ -22,6 +22,7 @@ import (
 	"danser/storyboard"
 	"danser/utils"
 	"fmt"
+	"github.com/Mempler/rplpa"
 	"github.com/flesnuk/oppai5"
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/go-gl/glfw/v3.2/glfw"
@@ -37,6 +38,14 @@ import (
 )
 
 var defaultpos = bmath.Vector2d{-1, -1}
+
+var nokey = rplpa.KeyPressed{
+	LeftClick:  false,
+	RightClick: false,
+	Key1:       false,
+	Key2:       false,
+	Smoke:      false,
+}
 
 type Player struct {
 	font           *font.Font
@@ -797,11 +806,6 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 				posY := rdata.MouseY
 				PressKey := *rdata.KeyPressed
 
-				// 如果offset=-12345，结束
-				if offset == REPLAY_END_TIME {
-					time.Sleep(1000 * time.Second)
-				}
-
 				if index == 3 {
 					offset += start
 				}
@@ -811,8 +815,22 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 				//真实的offset
 				true_offset := progressMsF - last
 
-				// 如果真实offset大于等于读到的offset，更新
-				if true_offset >= float64(offset) {
+				if offset == REPLAY_END_TIME {
+					// 如果offset=-12345，replay结束，设置成最后的光标位置
+					// 如果是HR且图整体未开HR，上下翻转
+					if !settings.VSplayer.Mods.EnableHR && player.controller[k].GetMods()&MOD_HR > 0 {
+						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(PLAYFIELD_HEIGHT - r.ReplayData[index-1].MouseY)))
+					}else {
+						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(r.ReplayData[index-1].MouseY)))
+					}
+
+					// 按键改为无
+					player.controller[k].SetPresskey(nokey)
+
+					// 修正last
+					last += float64(true_offset)
+				}else if true_offset >= float64(offset) {
+					// 如果真实offset大于等于读到的offset，更新
 					// 如果是HR且图整体未开HR，上下翻转
 					if !settings.VSplayer.Mods.EnableHR && player.controller[k].GetMods()&MOD_HR > 0 {
 						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(posX), float64(PLAYFIELD_HEIGHT - posY)))

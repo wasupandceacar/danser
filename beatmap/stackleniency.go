@@ -181,10 +181,10 @@ func calculateStackLeniencywithMods(b *BeatMap, isHR bool, isEZ bool) {
 
 	newAR := b.AR
 	if isHR {
-		newAR = math.Max(newAR * 1.4, 1.0)
+		newAR = math.Min(b.AR * AR_HR_HENSE, AR_MAX)
 	}
 	if isEZ {
-		newAR /= 2
+		newAR = math.Min(b.AR * AR_EZ_HENSE, AR_MAX)
 	}
 	preempt := difficultyRate(newAR, 1800, 1200, 450)
 	b.ARms = preempt
@@ -313,14 +313,6 @@ func calculateStackLeniencywithMods(b *BeatMap, isHR bool, isEZ bool) {
 	}
 
 	scale := (1.0 - 0.7*(b.CircleSize-5)/5) / 2
-
-	// 重新设置stack大小
-	if isHR {
-		scale = (1.0 - 0.7 * (math.Min(CS_HR_HENSE * b.CircleSize, CS_MAX) - 5) / 5) / 2
-	}
-	if isEZ {
-		scale = (1.0 - 0.7 * (math.Min(CS_EZ_HENSE * b.CircleSize, CS_MAX) - 5) / 5) / 2
-	}
 
 	for _, v := range hitObjects {
 		if !isSpinnerBreak(v) {
