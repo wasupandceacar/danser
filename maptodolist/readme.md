@@ -116,6 +116,7 @@
 - [ ]  [**樱之诗**](https://osu.ppy.sh/s/738656)
 - [ ]  [剑舞](https://osu.ppy.sh/s/745312) 
 - [ ]  [In A Night When Her Sorrow Resounds Around](https://osu.ppy.sh/s/901755)
+- [x]  [justadice](https://osu.ppy.sh/beatmapsets/983942#osu/2058788)
 
 ## 有人FC EZ 图 ##
 - [x]  [polygon](https://osu.ppy.sh/b/1227359)

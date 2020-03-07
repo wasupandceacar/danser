@@ -111,7 +111,7 @@ func ParseHits(mapname string, replayname string, errors []Error, addCSoffset fl
 	keyindex := 3
 	time := r[1].Time + r[2].Time
 	for k := 0; k < len(b.HitObjects); k++ {
-	//for k := 0; k < 1005; k++ {
+	//for k := 0; k < 216; k++ {
 	//	log.Println("Object", k+1)
 		obj :=  b.HitObjects[k]
 		if obj != nil {
@@ -911,11 +911,12 @@ func getTickKeysOccupied(keysoccupied []bool, keys []Key) []bool {
 }
 
 func isInCircle(hit *rplpa.ReplayData, requirepos bmath.Vector2d, CS float64) (judge bool, error float64) {
+	adjustCS := CS + 0.01
 	dist := bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos)
 	if UseCSOffset > 0 {
-		error = CS - UseCSOffset - dist
+		error = adjustCS - UseCSOffset - dist
 	} else {
-		error = CS - dist
+		error = adjustCS - dist
 	}
 	judge = (error >= 0)
 	return judge, error

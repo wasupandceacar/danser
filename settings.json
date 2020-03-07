@@ -5,9 +5,9 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 24,
-			"SpecifiedPlayers": true,
-			"SpecifiedLine": "1",
+			"Players": 50,
+			"SpecifiedPlayers": false,
+			"SpecifiedLine": "39",
 			"SpecifiedColor": "WhiteCat:255,255,255|YakumoYukari:0,0,0"
 		},
 		"PlayerInfoUI": {
@@ -46,8 +46,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Lovely Girls Anthem -EuroBeatRemix-",
-			"Difficulty": "Normal"
+			"Title": "JUSTadICE (TV Size)",
+			"Difficulty": "Extreme"
 		},
 		"Mods": {
 			"EnableDT": false,
