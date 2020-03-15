@@ -109,9 +109,9 @@ func ParseHits(mapname string, replayname string, errors []Error, addCSoffset fl
 
 	// 依次处理HitObject
 	keyindex := 3
-	time := r[1].Time + r[2].Time
+	time := r[0].Time + r[1].Time + r[2].Time
 	for k := 0; k < len(b.HitObjects); k++ {
-	//for k := 0; k < 216; k++ {
+	//for k := 0; k < 1; k++ {
 	//	log.Println("Object", k+1)
 		obj :=  b.HitObjects[k]
 		if obj != nil {
@@ -1228,7 +1228,7 @@ func judgeSlider(requirehits int, realhits int) HitResult {
 // 通过最后时间找第一个滑条头生效位置
 func findFirstAfterHead(headtime float64, r []*rplpa.ReplayData) (int, int64) {
 	index := 3
-	time := r[1].Time + r[2].Time
+	time := r[0].Time + r[1].Time + r[2].Time
 	for {
 		time += r[index].Time
 		if float64(time) > headtime {
@@ -1378,7 +1378,7 @@ func checkSliderBallBeforeHit(index int, lasttime int64, r []*rplpa.ReplayData, 
 	// 滑条开始时间
 	sliderstarttime := slider.GetBasicData().StartTime
 	i := 3
-	time := r[1].Time + r[2].Time
+	time := r[0].Time + r[1].Time + r[2].Time
 	CSscale := scale
 
 	// 暂时的变量

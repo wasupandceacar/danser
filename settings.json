@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 50,
+			"Players": 1,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "39",
 			"SpecifiedColor": "WhiteCat:255,255,255|YakumoYukari:0,0,0"
@@ -46,8 +46,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "JUSTadICE (TV Size)",
-			"Difficulty": "Extreme"
+			"Title": "rog-unlimitation",
+			"Difficulty": "AngelHoney"
 		},
 		"Mods": {
 			"EnableDT": false,
@@ -68,7 +68,7 @@
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
 			"ReadResultCache": false,
-			"ReplayDebug": false
+			"ReplayDebug": true
 		},
 		"ErrorFix": {
 			"EnableErrorFix": false,

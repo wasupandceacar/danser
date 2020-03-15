@@ -785,9 +785,10 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 			index := 3
 
 			// 开始时间
+			r0 := *r.ReplayData[0]
 			r1 := *r.ReplayData[1]
 			r2 := *r.ReplayData[2]
-			start := r1.Time + r2.Time
+			start := r0.Time + r1.Time + r2.Time
 
 			var last= musicPlayer.GetPosition()
 			for {
@@ -815,6 +816,8 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 				//真实的offset
 				true_offset := progressMsF - last
 
+				late_offset := 0.0
+
 				if offset == REPLAY_END_TIME {
 					// 如果offset=-12345，replay结束，设置成最后的光标位置
 					// 如果是HR且图整体未开HR，上下翻转
@@ -829,6 +832,8 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 
 					// 修正last
 					last += float64(true_offset)
+
+					late_offset = 0.0
 				}else if true_offset >= float64(offset) {
 					// 如果真实offset大于等于读到的offset，更新
 					// 如果是HR且图整体未开HR，上下翻转
@@ -843,7 +848,18 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 					// 修正last
 					last += float64(offset)
 
+					late_offset = 0.0
+
 					index++
+				}else if true_offset > 50 {
+					// 超过 50ms 未更新， 自动更新为上一个位置
+					if !settings.VSplayer.Mods.EnableHR && player.controller[k].GetMods()&MOD_HR > 0 {
+						player.controller[k].Update(int64(progressMsF), true_offset - late_offset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(PLAYFIELD_HEIGHT - r.ReplayData[index-1].MouseY)))
+					}else {
+						player.controller[k].Update(int64(progressMsF), true_offset - late_offset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(r.ReplayData[index-1].MouseY)))
+					}
+
+					late_offset = true_offset
 				}
 
 				time.Sleep(time.Millisecond)
