@@ -843,7 +843,9 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(posX), float64(posY)))
 					}
 
-					player.controller[k].SetPresskey(PressKey)
+					if offset != 0 {
+						player.controller[k].SetPresskey(PressKey)
+					}
 
 					// 修正last
 					last += float64(offset)
