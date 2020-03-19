@@ -65,6 +65,7 @@ type Controller interface {
 
 	AddMissInfo(misstime float64, missjudgetime int64, misspos bmath.Vector2d, rate int)
 	GetMissInfo() []missInfo
+	SetMissInfo(missInfo []missInfo)
 
 	IsInMiss(time int64) bool
 }
@@ -344,6 +345,10 @@ func (controller *ReplayController) AddMissInfo(misstime float64, missjudgetime 
 
 func (controller *ReplayController) GetMissInfo() []missInfo {
 	return controller.missinfo
+}
+
+func (controller *ReplayController) SetMissInfo(missInfo []missInfo) {
+	controller.missinfo = missInfo
 }
 
 // 检查是否已经录入

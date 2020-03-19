@@ -1342,14 +1342,14 @@ func (pl *Player) Draw(delta float64) {
 	var lastmissPos []float64
 
 	// miss颜色数组
-	var misscolors [][]mgl32.Vec4
+	var misscolors [][]float64
 	var misscolornums []int
 
 	if settings.VSplayer.Knockout.EnableKnockout {
 		lastmissPos = make([]float64, pl.players)
 	}else if settings.VSplayer.Knockout.ShowTrueMiss {
 		lastmissPos = make([]float64, pl.players)
-		misscolors = make([][]mgl32.Vec4, pl.players)
+		misscolors = make([][]float64, pl.players)
 		misscolornums = make([]int, pl.players)
 	}
 
@@ -1380,25 +1380,36 @@ func (pl *Player) Draw(delta float64) {
 			// 如果有新的miss，补充miss颜色数组
 			if misscolornums[k] < len(pl.controller[k].GetMissInfo()) {
 				for add:=0; add < len(pl.controller[k].GetMissInfo()) - misscolornums[k]; add++ {
-					misscolors[k] = append(misscolors[k], namecolor)
+					misscolors[k] = append(misscolors[k], 1.0)
 				}
-				misscolornums[k] = len(pl.controller[k].GetMissInfo())
+				misscolornums[k] = len(misscolors[k])
 			}
 			pl.batch.SetCamera(breakcamera)
+			// 最后一个不合法（超时）的missinfo的下标
+			var lastIllegalIndex = 0
 			// 遍历渲染所有miss
 			for m := 0; m < len(pl.controller[k].GetMissInfo()); m++ {
-				// 如果还需要显示真实miss
-				misscolors[k][m][3] = float32(math.Max(0.0, float64(misscolors[k][m][3])-(pl.progressMsF-pl.controller[k].GetMissInfo()[m].MissTime)/settings.VSplayer.Knockout.PlayerFadeTime))
+				// 跳过无需渲染的missinfo并记录最后一个不合法的missinfo的下标
+				if pl.progressMsF-pl.controller[k].GetMissInfo()[m].MissTime > settings.VSplayer.Knockout.PlayerFadeTime {
+					lastIllegalIndex = m
+					continue
+				}
+				// 计算新的Alpha通道值
+				misscolors[k][m] = math.Max(0.0, misscolors[k][m]-(pl.progressMsF-pl.controller[k].GetMissInfo()[m].MissTime)/settings.VSplayer.Knockout.PlayerFadeTime)
 				// 显示断连者名字
-				pl.batch.SetColor(float64(misscolors[k][m][0]), float64(misscolors[k][m][1]), float64(misscolors[k][m][2]), float64(misscolors[k][m][3]))
+				pl.batch.SetColor(float64(namecolor[0]), float64(namecolor[1]), float64(namecolor[2]), misscolors[k][m])
 				lastmissPos[k] = pl.font.DrawAndGetLastPosition(pl.batch, bmath.GetX(pl.controller[k].GetMissInfo()[m].MissPos), bmath.GetY(pl.controller[k].GetMissInfo()[m].MissPos), pl.missfontsize, pl.controller[k].GetPlayname())
 				// 显示miss
 				pl.batch.SetTranslation(bmath.NewVec2d(lastmissPos[k]+pl.missoffsetX, bmath.GetY(pl.controller[k].GetMissInfo()[m].MissPos)+pl.missoffsetY))
-				pl.batch.SetColor(1, 1, 1, float64(misscolors[k][m][3]))
+				pl.batch.SetColor(1, 1, 1, misscolors[k][m])
 				pl.batch.SetScale(2.75*pl.misssize, pl.misssize)
 				pl.batch.DrawUnit(*render.Hit0)
 			}
 			pl.batch.SetCamera(pl.scamera.GetProjectionView())
+			// 删除不合法的missinfo
+			pl.controller[k].SetMissInfo(pl.controller[k].GetMissInfo()[lastIllegalIndex:])
+			misscolors[k] = misscolors[k][lastIllegalIndex:]
+			misscolornums[k] = len(misscolors[k])
 		}
 		if !settings.VSplayer.PlayerInfoUI.ShowRealTimePP{
 			if len(pl.controller[k].GetHitResult()) > 0 {
