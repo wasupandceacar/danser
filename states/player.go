@@ -48,7 +48,7 @@ var nokey = rplpa.KeyPressed{
 }
 
 type Player struct {
-	font           *font.Font
+	font *font.Font
 	// 加粗字体
 	highlightfont  *font.Font
 	bMap           *beatmap.BeatMap
@@ -100,73 +100,73 @@ type Player struct {
 	mapFullName    string
 
 	// 偏移位置参数
-	fontsize		float64
-	highlightfontsize	float64
-	missfontsize	float64
-	misssize		float64
-	keysize 		float64
-	gapsize			float64
-	modoffset		float64
-	missoffsetX		float64
-	missoffsetY		float64
-	lineoffset		float64
-	hitoffset		float64
-	key1baseX		float64
-	key2baseX		float64
-	key3baseX		float64
-	key4baseX		float64
-	accbaseX		float64
-	rankbaseX		float64
-	ppurbaseX		float64
-	ppurrankbaseX	float64
-	playerbaseX		float64
-	keybaseY		float64
-	fontbaseY		float64
-	highlightfontbaseY	float64
-	rankbaseY		float64
-	hitbaseY		float64
+	fontsize           float64
+	highlightfontsize  float64
+	missfontsize       float64
+	misssize           float64
+	keysize            float64
+	gapsize            float64
+	modoffset          float64
+	missoffsetX        float64
+	missoffsetY        float64
+	lineoffset         float64
+	hitoffset          float64
+	key1baseX          float64
+	key2baseX          float64
+	key3baseX          float64
+	key4baseX          float64
+	accbaseX           float64
+	rankbaseX          float64
+	ppurbaseX          float64
+	ppurrankbaseX      float64
+	playerbaseX        float64
+	keybaseY           float64
+	fontbaseY          float64
+	highlightfontbaseY float64
+	rankbaseY          float64
+	hitbaseY           float64
 
-	recordbaseX		float64
-	recordbaseY		float64
-	recordbasesize	float64
-	recordtimeoffsetY	float64
+	recordbaseX       float64
+	recordbaseY       float64
+	recordbasesize    float64
+	recordtimeoffsetY float64
 
-	diffbaseX		float64
-	diffbaseY		float64
-	diffbasesize	float64
-	diffoffsetY		float64
+	diffbaseX    float64
+	diffbaseY    float64
+	diffbasesize float64
+	diffoffsetY  float64
 
 	// 色彩参数
-	objectcolorIndex	int
+	objectcolorIndex int
 
 	// 偏移参数
-	lastDishowPos	bmath.Vector2d
-	SameRate		int
-	lastMissPos	bmath.Vector2d
-	SameMissRate	int
+	lastDishowPos bmath.Vector2d
+	SameRate      int
+	lastMissPos   bmath.Vector2d
+	SameMissRate  int
 
 	// player人数
-	players			int
+	players int
 
 	// 实时pp显示参数数组
-	lastb4PP		[]float64
-	lastPP			[]float64
-	lastPPTime		[]int64
+	lastb4PP   []float64
+	lastPP     []float64
+	lastPPTime []int64
 
 	// 实时ur显示参数数组
-	lastb4UR		[]float64
-	lastUR			[]float64
-	lastURTime		[]int64
+	lastb4UR   []float64
+	lastUR     []float64
+	lastURTime []int64
 
 	// 退出所有协程的flag
-	exitGoFlag		bool
+	exitGoFlag bool
 	// 退出处理event协程
-	exitPollFlag	bool
+	exitPollFlag bool
 
 	// 实时难度数组
-	difficulties	[]oppai.PP
+	difficulties []oppai.PP
 	// 现在物件指针
-	objindex		int
+	objindex int
 
 	// 指定色彩
 	specificColorMap map[int][3]float32
@@ -184,7 +184,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 
 	go func() {
 		for win != nil && !win.ShouldClose() {
-			if player.exitGoFlag || player.exitPollFlag{
+			if player.exitGoFlag || player.exitPollFlag {
 				return
 			}
 			glfw.PollEvents()
@@ -285,14 +285,14 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 
 		player.camera = bmath.NewCamera()
 		player.camera.SetViewport(int(settings.Graphics.GetWidth()), int(settings.Graphics.GetHeight()), true)
-		player.camera.SetOrigin(bmath.NewVec2d(PLAYFIELD_WIDTH / 2, PLAYFIELD_HEIGHT / 2))
+		player.camera.SetOrigin(bmath.NewVec2d(PLAYFIELD_WIDTH/2, PLAYFIELD_HEIGHT/2))
 		player.camera.SetScale(bmath.NewVec2d(scl, scl))
 		player.camera.Update()
 
 		render.Camera = player.camera
 
 		player.bMap.Reset()
-	}else {
+	} else {
 		log.Println("开始Debug Replay")
 	}
 
@@ -311,7 +311,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 		}
 		log.Println("本次已指定特定的player")
 		player.players = len(specifiedplayers)
-	}else {
+	} else {
 		player.players = settings.VSplayer.PlayerInfo.Players
 	}
 
@@ -342,7 +342,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	// 错误的replay编号
 	wrongIndex := []int{}
 
-	if settings.VSplayer.ReplayandCache.ReadResultCache && !settings.VSplayer.ReplayandCache.ReplayDebug{
+	if settings.VSplayer.ReplayandCache.ReadResultCache && !settings.VSplayer.ReplayandCache.ReplayDebug {
 		log.Println("本次选择读取缓存replay结果")
 		player.batch.Begin()
 		loadwords = append(loadwords, font.Word{14, float64(screenheight - 240), 24, "Read replay result cache... 0/" + strconv.Itoa(player.players)})
@@ -353,8 +353,8 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 			var rnum int
 			if settings.VSplayer.PlayerInfo.SpecifiedPlayers {
 				rnum = tmpplindex[k]
-			}else {
-				rnum = k+1
+			} else {
+				rnum = k + 1
 			}
 			t1 := time.Now()
 			log.Println("读取第", rnum, "个replay缓存")
@@ -364,7 +364,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 			r := replay.ExtractReplay(replays[k])
 			if score.IsSilver(r.Mods) {
 				player.controller[k].SetRank(*render.RankXH)
-			}else {
+			} else {
 				player.controller[k].SetRank(*render.RankX)
 			}
 			// 设置player名
@@ -387,7 +387,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 			player.batch.End()
 			win.SwapBuffers()
 		}
-	}else {
+	} else {
 		log.Println("本次选择解析replay")
 		if !settings.VSplayer.ReplayandCache.ReplayDebug {
 			player.batch.Begin()
@@ -400,15 +400,15 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 		if settings.VSplayer.ErrorFix.EnableErrorFix {
 			log.Println("本次选择进行replay解析纠错")
 			errs = hitjudge.ReadError()
-		}else {
+		} else {
 			errs = []hitjudge.Error{}
 		}
 		for k := 0; k < player.players; k++ {
 			var rnum int
 			if settings.VSplayer.PlayerInfo.SpecifiedPlayers {
 				rnum = tmpplindex[k]
-			}else {
-				rnum = k+1
+			} else {
+				rnum = k + 1
 			}
 			t1 := time.Now()
 			log.Println("解析第", rnum, "个replay")
@@ -423,7 +423,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 				player.controller[k].SetAcc(DEFAULT_ACC)
 				if score.IsSilver(mods) {
 					player.controller[k].SetRank(*render.RankXH)
-				}else {
+				} else {
 					player.controller[k].SetRank(*render.RankX)
 				}
 				r := replay.ExtractReplay(replays[k])
@@ -440,17 +440,17 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 				player.controller[k].SetIsShow(true)
 				player.controller[k].SetHitResult(result)
 				player.controller[k].SetTotalResult(totalresult)
-			}else {
+			} else {
 				// 记录出错情况
 				if allright {
 					right += 1
-				}else {
+				} else {
 					wrong += 1
 					wrongIndex = append(wrongIndex, rnum)
 				}
 			}
 			// 保存结果缓存
-			if settings.VSplayer.ReplayandCache.SaveResultCache && !settings.VSplayer.ReplayandCache.ReplayDebug{
+			if settings.VSplayer.ReplayandCache.SaveResultCache && !settings.VSplayer.ReplayandCache.ReplayDebug {
 				resultcache.SaveResult(result, totalresult, rnum)
 				log.Println("已保存第", rnum, "个replay的结果缓存")
 			}
@@ -508,7 +508,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 					float32(g) / 255,
 					float32(b) / 255,
 				}
-				log.Println("player 名：" + specifiedplayer + "，指定 replay", k+1, "的颜色为", r, g, b)
+				log.Println("player 名："+specifiedplayer+"，指定 replay", k+1, "的颜色为", r, g, b)
 				break
 			}
 		}
@@ -616,50 +616,50 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 
 	player.fontsize = 1.75 * settings.VSplayer.PlayerInfoUI.BaseSize
 	if settings.VSplayer.PlayerInfoUI.Rank1Highlight {
-		player.highlightfontsize =  settings.VSplayer.PlayerInfoUI.HighlightMult * player.fontsize
+		player.highlightfontsize = settings.VSplayer.PlayerInfoUI.HighlightMult * player.fontsize
 	}
 	player.missfontsize = settings.VSplayer.Knockout.MissMult * player.fontsize
 	player.misssize = 1.5 * settings.VSplayer.Knockout.MissMult * settings.VSplayer.PlayerInfoUI.BaseSize
 	player.keysize = 1.25 * settings.VSplayer.PlayerInfoUI.BaseSize
 	player.gapsize = settings.VSplayer.PlayerInfoUI.LineGapMult * settings.VSplayer.PlayerInfoUI.BaseSize
-	player.modoffset =  settings.VSplayer.PlayerInfoUI.BaseSize
-	player.missoffsetX =  2 * settings.VSplayer.Knockout.MissMult * settings.VSplayer.PlayerInfoUI.BaseSize
-	player.missoffsetY =  0.6 * settings.VSplayer.Knockout.MissMult * settings.VSplayer.PlayerInfoUI.BaseSize
+	player.modoffset = settings.VSplayer.PlayerInfoUI.BaseSize
+	player.missoffsetX = 2 * settings.VSplayer.Knockout.MissMult * settings.VSplayer.PlayerInfoUI.BaseSize
+	player.missoffsetY = 0.6 * settings.VSplayer.Knockout.MissMult * settings.VSplayer.PlayerInfoUI.BaseSize
 	player.lineoffset = 2.25 * settings.VSplayer.PlayerInfoUI.BaseSize
 	player.hitoffset = 1.75 * settings.VSplayer.PlayerInfoUI.BaseSize
 	player.key1baseX = settings.VSplayer.PlayerInfoUI.BaseX
-	player.key2baseX = player.key1baseX + 2 * player.keysize
-	player.key3baseX = player.key2baseX + 2 * player.keysize
-	player.key4baseX = player.key3baseX + 2 * player.keysize
+	player.key2baseX = player.key1baseX + 2*player.keysize
+	player.key3baseX = player.key2baseX + 2*player.keysize
+	player.key4baseX = player.key3baseX + 2*player.keysize
 	if settings.VSplayer.PlayerInfoUI.ShowMouse1 {
 		if settings.VSplayer.PlayerInfoUI.ShowMouse2 {
-			player.accbaseX = player.key4baseX + 2 * settings.VSplayer.PlayerInfoUI.BaseSize
-		}else {
-			player.accbaseX = player.key3baseX + 2 * settings.VSplayer.PlayerInfoUI.BaseSize
+			player.accbaseX = player.key4baseX + 2*settings.VSplayer.PlayerInfoUI.BaseSize
+		} else {
+			player.accbaseX = player.key3baseX + 2*settings.VSplayer.PlayerInfoUI.BaseSize
 		}
-	}else {
-		player.accbaseX = player.key2baseX + 2 * settings.VSplayer.PlayerInfoUI.BaseSize
+	} else {
+		player.accbaseX = player.key2baseX + 2*settings.VSplayer.PlayerInfoUI.BaseSize
 	}
 	if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
-		player.rankbaseX = player.accbaseX + 2.625 * settings.VSplayer.PlayerInfoUI.BaseSize
-		player.ppurbaseX = player.accbaseX + 8.375 * settings.VSplayer.PlayerInfoUI.BaseSize
-	}else {
-		player.rankbaseX = player.accbaseX + 8.375 * settings.VSplayer.PlayerInfoUI.BaseSize
-		player.ppurbaseX = player.rankbaseX + 1.625 * settings.VSplayer.PlayerInfoUI.BaseSize
+		player.rankbaseX = player.accbaseX + 2.625*settings.VSplayer.PlayerInfoUI.BaseSize
+		player.ppurbaseX = player.accbaseX + 8.375*settings.VSplayer.PlayerInfoUI.BaseSize
+	} else {
+		player.rankbaseX = player.accbaseX + 8.375*settings.VSplayer.PlayerInfoUI.BaseSize
+		player.ppurbaseX = player.rankbaseX + 1.625*settings.VSplayer.PlayerInfoUI.BaseSize
 	}
 	if settings.VSplayer.PlayerInfoUI.ShowPPAndURRank {
-		player.ppurrankbaseX = player.ppurbaseX + 9.125 * settings.VSplayer.PlayerInfoUI.BaseSize
-		player.playerbaseX = player.ppurrankbaseX + 4.5 * settings.VSplayer.PlayerInfoUI.BaseSize
-	}else {
-		player.playerbaseX = player.ppurbaseX + 9 * settings.VSplayer.PlayerInfoUI.BaseSize
+		player.ppurrankbaseX = player.ppurbaseX + 9.125*settings.VSplayer.PlayerInfoUI.BaseSize
+		player.playerbaseX = player.ppurrankbaseX + 4.5*settings.VSplayer.PlayerInfoUI.BaseSize
+	} else {
+		player.playerbaseX = player.ppurbaseX + 9*settings.VSplayer.PlayerInfoUI.BaseSize
 	}
 	player.keybaseY = settings.VSplayer.PlayerInfoUI.BaseY
-	player.fontbaseY = settings.VSplayer.PlayerInfoUI.BaseY - 0.75 * settings.VSplayer.PlayerInfoUI.BaseSize
+	player.fontbaseY = settings.VSplayer.PlayerInfoUI.BaseY - 0.75*settings.VSplayer.PlayerInfoUI.BaseSize
 	if settings.VSplayer.PlayerInfoUI.Rank1Highlight {
-		player.highlightfontbaseY = player.fontbaseY - (settings.VSplayer.PlayerInfoUI.HighlightMult - 1) * player.fontsize / 2
+		player.highlightfontbaseY = player.fontbaseY - (settings.VSplayer.PlayerInfoUI.HighlightMult-1)*player.fontsize/2
 	}
-	player.rankbaseY = settings.VSplayer.PlayerInfoUI.BaseY - 0.25 * settings.VSplayer.PlayerInfoUI.BaseSize
-	player.hitbaseY = settings.VSplayer.PlayerInfoUI.BaseY - 0.1 * settings.VSplayer.PlayerInfoUI.BaseSize
+	player.rankbaseY = settings.VSplayer.PlayerInfoUI.BaseY - 0.25*settings.VSplayer.PlayerInfoUI.BaseSize
+	player.hitbaseY = settings.VSplayer.PlayerInfoUI.BaseY - 0.1*settings.VSplayer.PlayerInfoUI.BaseSize
 
 	player.recordbaseX = settings.VSplayer.RecordInfoUI.RecordBaseX
 	player.recordbaseY = settings.VSplayer.RecordInfoUI.RecordBaseY
@@ -674,9 +674,9 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	}
 
 	// 超过色彩上限使用最后一个（未使用）的颜色来渲染object
-	if settings.VSplayer.PlayerFieldUI.CursorColorNum > player.players + 1 {
+	if settings.VSplayer.PlayerFieldUI.CursorColorNum > player.players+1 {
 		player.objectcolorIndex = player.players
-	}else {
+	} else {
 		player.objectcolorIndex = settings.VSplayer.PlayerFieldUI.CursorColorNum - 1
 	}
 
@@ -790,7 +790,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 			r2 := *r.ReplayData[2]
 			start := r0.Time + r1.Time + r2.Time
 
-			var last= musicPlayer.GetPosition()
+			var last = musicPlayer.GetPosition()
 			for {
 				if player.exitGoFlag {
 					return
@@ -822,8 +822,8 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 					// 如果offset=-12345，replay结束，设置成最后的光标位置
 					// 如果是HR且图整体未开HR，上下翻转
 					if !settings.VSplayer.Mods.EnableHR && player.controller[k].GetMods()&MOD_HR > 0 {
-						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(PLAYFIELD_HEIGHT - r.ReplayData[index-1].MouseY)))
-					}else {
+						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(PLAYFIELD_HEIGHT-r.ReplayData[index-1].MouseY)))
+					} else {
 						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(r.ReplayData[index-1].MouseY)))
 					}
 
@@ -834,12 +834,12 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 					last += float64(true_offset)
 
 					late_offset = 0.0
-				}else if true_offset >= float64(offset) {
+				} else if true_offset >= float64(offset) {
 					// 如果真实offset大于等于读到的offset，更新
 					// 如果是HR且图整体未开HR，上下翻转
 					if !settings.VSplayer.Mods.EnableHR && player.controller[k].GetMods()&MOD_HR > 0 {
-						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(posX), float64(PLAYFIELD_HEIGHT - posY)))
-					}else {
+						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(posX), float64(PLAYFIELD_HEIGHT-posY)))
+					} else {
 						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(posX), float64(posY)))
 					}
 
@@ -851,12 +851,12 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 					late_offset = 0.0
 
 					index++
-				}else if true_offset > 50 {
+				} else if true_offset > 50 {
 					// 超过 50ms 未更新， 自动更新为上一个位置
 					if !settings.VSplayer.Mods.EnableHR && player.controller[k].GetMods()&MOD_HR > 0 {
-						player.controller[k].Update(int64(progressMsF), true_offset - late_offset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(PLAYFIELD_HEIGHT - r.ReplayData[index-1].MouseY)))
-					}else {
-						player.controller[k].Update(int64(progressMsF), true_offset - late_offset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(r.ReplayData[index-1].MouseY)))
+						player.controller[k].Update(int64(progressMsF), true_offset-late_offset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(PLAYFIELD_HEIGHT-r.ReplayData[index-1].MouseY)))
+					} else {
+						player.controller[k].Update(int64(progressMsF), true_offset-late_offset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(r.ReplayData[index-1].MouseY)))
 					}
 
 					late_offset = true_offset
@@ -1152,7 +1152,7 @@ func (pl *Player) Draw(delta float64) {
 		}
 	}
 
-	colors1 := settings.Cursor.GetColors(pl.players + 1, settings.TAG, pl.Scl, pl.cursorGlider.GetValue())
+	colors1 := settings.Cursor.GetColors(pl.players+1, settings.TAG, pl.Scl, pl.cursorGlider.GetValue())
 
 	// 指定颜色修改
 	for k, colors := range pl.specificColorMap {
@@ -1191,8 +1191,8 @@ func (pl *Player) Draw(delta float64) {
 	pl.batch.Begin()
 	pl.batch.SetCamera(pl.scamera.GetProjectionView())
 	pl.batch.SetColor(1, 1, 1, settings.VSplayer.RecordInfoUI.RecordAlpha)
-	pl.font.Draw(pl.batch, pl.recordbaseX, pl.recordbaseY, pl.recordbasesize, "Recorded by " + settings.VSplayer.RecordInfoUI.Recorder)
-	pl.font.Draw(pl.batch, pl.recordbaseX, pl.recordbaseY - pl.recordtimeoffsetY, pl.recordbasesize, "Recorded on " + settings.VSplayer.RecordInfoUI.RecordTime)
+	pl.font.Draw(pl.batch, pl.recordbaseX, pl.recordbaseY, pl.recordbasesize, "Recorded by "+settings.VSplayer.RecordInfoUI.Recorder)
+	pl.font.Draw(pl.batch, pl.recordbaseX, pl.recordbaseY-pl.recordtimeoffsetY, pl.recordbasesize, "Recorded on "+settings.VSplayer.RecordInfoUI.RecordTime)
 	pl.batch.End()
 
 	//endregion
@@ -1209,11 +1209,11 @@ func (pl *Player) Draw(delta float64) {
 		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
 		namecolor := colors1[colornum]
 		if settings.VSplayer.Knockout.EnableKnockout && (!pl.controller[k].GetIsShow()) {
-			namecolor[3] = float32(math.Max(0.0, float64(namecolor[3]) - (pl.progressMsF - pl.controller[k].GetDishowTime()) / settings.VSplayer.Knockout.PlayerFadeTime))
+			namecolor[3] = float32(math.Max(0.0, float64(namecolor[3])-(pl.progressMsF-pl.controller[k].GetDishowTime())/settings.VSplayer.Knockout.PlayerFadeTime))
 		}
 		playerkey := pl.controller[k].GetPresskey()
 		// 通用渲染项
-		keyY := pl.keybaseY - pl.lineoffset * float64(linecount) - gapY
+		keyY := pl.keybaseY - pl.lineoffset*float64(linecount) - gapY
 		// 如果显示UR，排成两行，按键下移半行
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			keyY -= pl.lineoffset / 2
@@ -1279,55 +1279,55 @@ func (pl *Player) Draw(delta float64) {
 		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
 		namecolor := colors1[colornum]
 		if settings.VSplayer.Knockout.EnableKnockout && (!pl.controller[k].GetIsShow()) {
-			namecolor[3] = float32(math.Max(0.0, float64(namecolor[3]) - (pl.progressMsF - pl.controller[k].GetDishowTime()) / settings.VSplayer.Knockout.PlayerFadeTime))
+			namecolor[3] = float32(math.Max(0.0, float64(namecolor[3])-(pl.progressMsF-pl.controller[k].GetDishowTime())/settings.VSplayer.Knockout.PlayerFadeTime))
 		}
 		// 渲染player名
 		pl.batch.SetColor(float64(namecolor[0]), float64(namecolor[1]), float64(namecolor[2]), float64(namecolor[3]))
-		fontY := pl.fontbaseY - pl.lineoffset * float64(linecount)
+		fontY := pl.fontbaseY - pl.lineoffset*float64(linecount)
 		// 下移半行
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			fontY -= pl.lineoffset / 2
 		}
-		lastPos[k] = pl.font.DrawAndGetLastPosition(pl.batch, pl.playerbaseX, fontY - gapY, pl.fontsize, pl.controller[k].GetPlayname())
+		lastPos[k] = pl.font.DrawAndGetLastPosition(pl.batch, pl.playerbaseX, fontY-gapY, pl.fontsize, pl.controller[k].GetPlayname())
 		// 渲染mod
 		mods := "+"
-		if (pl.controller[k].GetMods()&MOD_NF > 0){
+		if pl.controller[k].GetMods()&MOD_NF > 0 {
 			mods += "NF"
 		}
-		if (pl.controller[k].GetMods()&MOD_EZ > 0){
+		if pl.controller[k].GetMods()&MOD_EZ > 0 {
 			mods += "EZ"
 		}
-		if (pl.controller[k].GetMods()&MOD_TD > 0){
+		if pl.controller[k].GetMods()&MOD_TD > 0 {
 			mods += "TD"
 		}
-		if (pl.controller[k].GetMods()&MOD_HD > 0){
+		if pl.controller[k].GetMods()&MOD_HD > 0 {
 			mods += "HD"
 		}
-		if (pl.controller[k].GetMods()&MOD_HR > 0){
+		if pl.controller[k].GetMods()&MOD_HR > 0 {
 			mods += "HR"
 		}
-		if (pl.controller[k].GetMods()&MOD_PF > 0){
+		if pl.controller[k].GetMods()&MOD_PF > 0 {
 			mods += "PF"
-		}else if (pl.controller[k].GetMods()&MOD_SD > 0){
+		} else if pl.controller[k].GetMods()&MOD_SD > 0 {
 			mods += "SD"
 		}
-		if (pl.controller[k].GetMods()&MOD_NC > 0){
+		if pl.controller[k].GetMods()&MOD_NC > 0 {
 			mods += "NC"
-		}else if (pl.controller[k].GetMods()&MOD_DT > 0){
+		} else if pl.controller[k].GetMods()&MOD_DT > 0 {
 			mods += "DT"
 		}
-		if (pl.controller[k].GetMods()&MOD_HT > 0){
+		if pl.controller[k].GetMods()&MOD_HT > 0 {
 			mods += "HT"
 		}
-		if (pl.controller[k].GetMods()&MOD_FL > 0){
+		if pl.controller[k].GetMods()&MOD_FL > 0 {
 			mods += "FL"
 		}
-		if (pl.controller[k].GetMods()&MOD_SO > 0){
+		if pl.controller[k].GetMods()&MOD_SO > 0 {
 			mods += "SO"
 		}
 		if mods != "+" {
 			pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
-			lastPos[k] = pl.font.DrawAndGetLastPosition(pl.batch, lastPos[k] + pl.modoffset, fontY - gapY, pl.fontsize, mods)
+			lastPos[k] = pl.font.DrawAndGetLastPosition(pl.batch, lastPos[k]+pl.modoffset, fontY-gapY, pl.fontsize, mods)
 		}
 	}
 	pl.batch.End()
@@ -1340,14 +1340,14 @@ func (pl *Player) Draw(delta float64) {
 	var lastmissPos []float64
 
 	// miss颜色数组
-	var misscolors [][]mgl32.Vec4
+	var misscolors [][]float64
 	var misscolornums []int
 
 	if settings.VSplayer.Knockout.EnableKnockout {
 		lastmissPos = make([]float64, pl.players)
-	}else if settings.VSplayer.Knockout.ShowTrueMiss {
+	} else if settings.VSplayer.Knockout.ShowTrueMiss {
 		lastmissPos = make([]float64, pl.players)
-		misscolors = make([][]mgl32.Vec4, pl.players)
+		misscolors = make([][]float64, pl.players)
 		misscolornums = make([]int, pl.players)
 	}
 
@@ -1364,47 +1364,58 @@ func (pl *Player) Draw(delta float64) {
 		// 如果设置不显示，开始降低透明度
 		if settings.VSplayer.Knockout.EnableKnockout && (!pl.controller[k].GetIsShow()) {
 			pl.batch.SetCamera(breakcamera)
-			namecolor[3] = float32(math.Max(0.0, float64(namecolor[3]) - (pl.progressMsF - pl.controller[k].GetDishowTime()) / settings.VSplayer.Knockout.PlayerFadeTime))
+			namecolor[3] = float32(math.Max(0.0, float64(namecolor[3])-(pl.progressMsF-pl.controller[k].GetDishowTime())/settings.VSplayer.Knockout.PlayerFadeTime))
 			// 显示断连者名字
 			pl.batch.SetColor(float64(namecolor[0]), float64(namecolor[1]), float64(namecolor[2]), float64(namecolor[3]))
 			lastmissPos[k] = pl.font.DrawAndGetLastPosition(pl.batch, bmath.GetX(pl.controller[k].GetDishowPos()), bmath.GetY(pl.controller[k].GetDishowPos()), pl.missfontsize, pl.controller[k].GetPlayname())
 			// 显示miss
-			pl.batch.SetTranslation(bmath.NewVec2d(lastmissPos[k] + pl.missoffsetX, bmath.GetY(pl.controller[k].GetDishowPos()) + pl.missoffsetY))
+			pl.batch.SetTranslation(bmath.NewVec2d(lastmissPos[k]+pl.missoffsetX, bmath.GetY(pl.controller[k].GetDishowPos())+pl.missoffsetY))
 			pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
-			pl.batch.SetScale(2.75 * pl.misssize, pl.misssize)
+			pl.batch.SetScale(2.75*pl.misssize, pl.misssize)
 			pl.batch.DrawUnit(*render.Hit0)
 			pl.batch.SetCamera(pl.scamera.GetProjectionView())
-		}else if settings.VSplayer.Knockout.ShowTrueMiss {
+		} else if settings.VSplayer.Knockout.ShowTrueMiss {
 			// 如果有新的miss，补充miss颜色数组
 			if misscolornums[k] < len(pl.controller[k].GetMissInfo()) {
-				for add:=0; add < len(pl.controller[k].GetMissInfo()) - misscolornums[k]; add++ {
-					misscolors[k] = append(misscolors[k], namecolor)
+				for add := 0; add < len(pl.controller[k].GetMissInfo())-misscolornums[k]; add++ {
+					misscolors[k] = append(misscolors[k], 1.0)
 				}
-				misscolornums[k] = len(pl.controller[k].GetMissInfo())
+				misscolornums[k] = len(misscolors)
 			}
 			pl.batch.SetCamera(breakcamera)
-			// 遍历渲染所有miss
+			// 最后一个不合法（超出时间）的miss的下标
+			var lastIllegalIndex = 0
+			// 遍历渲染miss
 			for m := 0; m < len(pl.controller[k].GetMissInfo()); m++ {
-				// 如果还需要显示真实miss
-				misscolors[k][m][3] = float32(math.Max(0.0, float64(misscolors[k][m][3])-(pl.progressMsF-pl.controller[k].GetMissInfo()[m].MissTime)/settings.VSplayer.Knockout.PlayerFadeTime))
-				// 显示断连者名字
-				pl.batch.SetColor(float64(misscolors[k][m][0]), float64(misscolors[k][m][1]), float64(misscolors[k][m][2]), float64(misscolors[k][m][3]))
+				// 时间不对跳过绘制并更新last_illegal_m
+				if pl.progressMsF-pl.controller[k].GetMissInfo()[m].MissTime > settings.VSplayer.Knockout.PlayerFadeTime {
+					lastIllegalIndex = m
+					continue
+				}
+				// 计算新的Alpha通道值
+				misscolors[k][m] = math.Max(0.0, misscolors[k][m]-(pl.progressMsF-pl.controller[k].GetMissInfo()[m].MissTime)/settings.VSplayer.Knockout.PlayerFadeTime)
+				// 设置断连者名字及颜色
+				pl.batch.SetColor(float64(namecolor[0]), float64(namecolor[1]), float64(namecolor[2]), misscolors[k][m])
 				lastmissPos[k] = pl.font.DrawAndGetLastPosition(pl.batch, bmath.GetX(pl.controller[k].GetMissInfo()[m].MissPos), bmath.GetY(pl.controller[k].GetMissInfo()[m].MissPos), pl.missfontsize, pl.controller[k].GetPlayname())
 				// 显示miss
 				pl.batch.SetTranslation(bmath.NewVec2d(lastmissPos[k]+pl.missoffsetX, bmath.GetY(pl.controller[k].GetMissInfo()[m].MissPos)+pl.missoffsetY))
-				pl.batch.SetColor(1, 1, 1, float64(misscolors[k][m][3]))
+				pl.batch.SetColor(1, 1, 1, misscolors[k][m])
 				pl.batch.SetScale(2.75*pl.misssize, pl.misssize)
 				pl.batch.DrawUnit(*render.Hit0)
 			}
 			pl.batch.SetCamera(pl.scamera.GetProjectionView())
+			//直接切掉前面不合法的miss
+			pl.controller[k].SetMissInfo(pl.controller[k].GetMissInfo()[lastIllegalIndex:])
+			misscolors[k] = misscolors[k][lastIllegalIndex:]
+			misscolornums[k] = len(misscolors[k])
 		}
-		if !settings.VSplayer.PlayerInfoUI.ShowRealTimePP{
+		if !settings.VSplayer.PlayerInfoUI.ShowRealTimePP {
 			if len(pl.controller[k].GetHitResult()) > 0 {
 				pl.controller[k].SetPP(pl.controller[k].GetTotalResult()[0].PP.Total)
-			}else {
+			} else {
 				pl.controller[k].SetPP(pl.lastPP[k])
 			}
-		}else {
+		} else {
 			// 显示每帧实时pp变化
 			if len(pl.controller[k].GetHitResult()) > 0 {
 				pl.controller[k].SetPP(score.CalculateRealtimeValue(
@@ -1413,16 +1424,16 @@ func (pl *Player) Draw(delta float64) {
 					pl.lastPPTime[k],
 					pl.controller[k].GetHitResult()[0].JudgeTime,
 					pl.progressMsF))
-			}else {
+			} else {
 				pl.controller[k].SetPP(score.CalculateRealtimeValue(
 					pl.lastb4PP[k],
 					pl.lastPP[k],
 					pl.lastPPTime[k],
-					pl.lastPPTime[k] + int64(settings.VSplayer.PlayerInfoUI.RealTimePPGap),
+					pl.lastPPTime[k]+int64(settings.VSplayer.PlayerInfoUI.RealTimePPGap),
 					pl.progressMsF))
 			}
 		}
-		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR{
+		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			// 显示每帧实时ur变化
 			if len(pl.controller[k].GetHitResult()) > 0 {
 				pl.controller[k].SetUR(score.CalculateRealtimeValue(
@@ -1431,12 +1442,12 @@ func (pl *Player) Draw(delta float64) {
 					pl.lastURTime[k],
 					pl.controller[k].GetHitResult()[0].JudgeTime,
 					pl.progressMsF))
-			}else {
+			} else {
 				pl.controller[k].SetUR(score.CalculateRealtimeValue(
 					pl.lastb4UR[k],
 					pl.lastUR[k],
 					pl.lastURTime[k],
-					pl.lastURTime[k] + int64(settings.VSplayer.PlayerInfoUI.RealTimePPGap),
+					pl.lastURTime[k]+int64(settings.VSplayer.PlayerInfoUI.RealTimePPGap),
 					pl.progressMsF))
 			}
 		}
@@ -1472,10 +1483,10 @@ func (pl *Player) Draw(delta float64) {
 						}
 						if pl.lastDishowPos == defaultpos {
 							pl.lastDishowPos = trueJudgePos
-						}else {
+						} else {
 							if pl.lastDishowPos == trueJudgePos {
 								pl.SameRate += 1
-							}else {
+							} else {
 								pl.SameRate = 0
 							}
 							pl.lastDishowPos = trueJudgePos
@@ -1494,10 +1505,10 @@ func (pl *Player) Draw(delta float64) {
 						}
 						if pl.lastMissPos == defaultpos {
 							pl.lastMissPos = trueJudgePos
-						}else {
+						} else {
 							if pl.lastMissPos == trueJudgePos {
 								pl.SameMissRate += 1
-							}else {
+							} else {
 								pl.SameMissRate = 0
 							}
 							pl.lastMissPos = trueJudgePos
@@ -1505,16 +1516,16 @@ func (pl *Player) Draw(delta float64) {
 						pl.controller[k].AddMissInfo(pl.progressMsF, pl.controller[k].GetHitResult()[0].JudgeTime, trueJudgePos, pl.SameMissRate)
 					}
 				}
-				judgeY := pl.hitbaseY - pl.lineoffset * float64(linecount)
+				judgeY := pl.hitbaseY - pl.lineoffset*float64(linecount)
 				// 下移半行
 				if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 					judgeY -= pl.lineoffset / 2
 				}
-				pl.batch.SetTranslation(bmath.NewVec2d(lastPos[k] + pl.hitoffset, judgeY - gapY))
-				pl.batch.SetScale(2.75 * settings.VSplayer.PlayerInfoUI.BaseSize, settings.VSplayer.PlayerInfoUI.BaseSize)
+				pl.batch.SetTranslation(bmath.NewVec2d(lastPos[k]+pl.hitoffset, judgeY-gapY))
+				pl.batch.SetScale(2.75*settings.VSplayer.PlayerInfoUI.BaseSize, settings.VSplayer.PlayerInfoUI.BaseSize)
 				pl.batch.DrawUnit(judge)
 				// 渲染时间结束，弹出
-				if pl.progressMs > pl.controller[k].GetHitResult()[0].JudgeTime + settings.VSplayer.PlayerFieldUI.HitFadeTime {
+				if pl.progressMs > pl.controller[k].GetHitResult()[0].JudgeTime+settings.VSplayer.PlayerFieldUI.HitFadeTime {
 					// 设置acc、rank和pp
 					pl.controller[k].SetAcc(pl.controller[k].GetTotalResult()[0].Acc)
 					switch pl.controller[k].GetTotalResult()[0].Rank {
@@ -1561,24 +1572,24 @@ func (pl *Player) Draw(delta float64) {
 		}
 		// 渲染acc
 		pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
-		pl.font.Draw(pl.batch, pl.accbaseX, pl.fontbaseY - pl.lineoffset * float64(linecount) - gapY, pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetAcc()) + "%")
+		pl.font.Draw(pl.batch, pl.accbaseX, pl.fontbaseY-pl.lineoffset*float64(linecount)-gapY, pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetAcc())+"%")
 		// 渲染rank
-		rankY := pl.rankbaseY - pl.lineoffset * float64(linecount)
+		rankY := pl.rankbaseY - pl.lineoffset*float64(linecount)
 		// 下移一行
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			rankY -= pl.lineoffset
 		}
-		pl.batch.SetTranslation(bmath.NewVec2d(pl.rankbaseX, rankY - gapY))
+		pl.batch.SetTranslation(bmath.NewVec2d(pl.rankbaseX, rankY-gapY))
 		pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
 		pl.batch.SetScale(settings.VSplayer.PlayerInfoUI.BaseSize, settings.VSplayer.PlayerInfoUI.BaseSize)
 		pl.batch.DrawUnitC(pl.controller[k].GetRank())
 		// 渲染pp
 		pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
-		pl.font.Draw(pl.batch, pl.ppurbaseX, pl.fontbaseY - pl.lineoffset * float64(linecount) - gapY, pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetPP()) + " pp")
+		pl.font.Draw(pl.batch, pl.ppurbaseX, pl.fontbaseY-pl.lineoffset*float64(linecount)-gapY, pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetPP())+" pp")
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			// 渲染ur
 			pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
-			pl.font.Draw(pl.batch, pl.ppurbaseX, pl.fontbaseY - pl.lineoffset * float64(linecount + 1) - gapY, pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetUR()) + " ur")
+			pl.font.Draw(pl.batch, pl.ppurbaseX, pl.fontbaseY-pl.lineoffset*float64(linecount+1)-gapY, pl.fontsize, fmt.Sprintf("%.2f", pl.controller[k].GetUR())+" ur")
 		}
 	}
 	pl.batch.End()
@@ -1620,23 +1631,22 @@ func (pl *Player) Draw(delta float64) {
 			// 渲染pp排名
 			pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
 			if settings.VSplayer.PlayerInfoUI.Rank1Highlight && (pprank[k] == 1) {
-				pl.highlightfont.Draw(pl.batch, pl.ppurrankbaseX, pl.highlightfontbaseY-pl.lineoffset*float64(linecount) - gapY, pl.highlightfontsize, "#"+strconv.Itoa(pprank[k]))
-			}else {
-				pl.font.Draw(pl.batch, pl.ppurrankbaseX, pl.fontbaseY - pl.lineoffset * float64(linecount) - gapY, pl.fontsize, "#" + strconv.Itoa(pprank[k]))
+				pl.highlightfont.Draw(pl.batch, pl.ppurrankbaseX, pl.highlightfontbaseY-pl.lineoffset*float64(linecount)-gapY, pl.highlightfontsize, "#"+strconv.Itoa(pprank[k]))
+			} else {
+				pl.font.Draw(pl.batch, pl.ppurrankbaseX, pl.fontbaseY-pl.lineoffset*float64(linecount)-gapY, pl.fontsize, "#"+strconv.Itoa(pprank[k]))
 			}
 			if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 				// 渲染ur排名
 				pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
 				if settings.VSplayer.PlayerInfoUI.Rank1Highlight && (urrank[k] == 1) {
-					pl.highlightfont.Draw(pl.batch, pl.ppurrankbaseX, pl.highlightfontbaseY-pl.lineoffset*float64(linecount+1) - gapY, pl.highlightfontsize, "#"+strconv.Itoa(urrank[k]))
-				}else {
-					pl.font.Draw(pl.batch, pl.ppurrankbaseX, pl.fontbaseY-pl.lineoffset*float64(linecount+1) - gapY, pl.fontsize, "#"+strconv.Itoa(urrank[k]))
+					pl.highlightfont.Draw(pl.batch, pl.ppurrankbaseX, pl.highlightfontbaseY-pl.lineoffset*float64(linecount+1)-gapY, pl.highlightfontsize, "#"+strconv.Itoa(urrank[k]))
+				} else {
+					pl.font.Draw(pl.batch, pl.ppurrankbaseX, pl.fontbaseY-pl.lineoffset*float64(linecount+1)-gapY, pl.fontsize, "#"+strconv.Itoa(urrank[k]))
 				}
 			}
 		}
 		pl.batch.End()
 	}
-
 
 	//endregion
 
@@ -1711,7 +1721,7 @@ func (pl *Player) Draw(delta float64) {
 			}
 
 			pl.sliderRenderer.EndAndRender()
-		}else {
+		} else {
 			for j := 0; j < settings.DIVIDES; j++ {
 				pl.sliderRenderer.SetCamera(cameras[j])
 				ind := j - 1
@@ -1756,7 +1766,7 @@ func (pl *Player) Draw(delta float64) {
 				if i < len(pl.processed) {
 					res := pl.processed[i].Draw(pl.progressMs, pl.bMap.ARms, pl.bMap.FadeIn, colors1[pl.objectcolorIndex], pl.batch)
 					if res {
-						pl.processed = append(pl.processed[:i], pl.processed[(i + 1):]...)
+						pl.processed = append(pl.processed[:i], pl.processed[(i+1):]...)
 						i++
 					}
 				}
