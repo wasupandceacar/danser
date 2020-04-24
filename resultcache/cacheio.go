@@ -4,24 +4,26 @@ import (
 	"danser/hitjudge"
 	"danser/settings"
 	"encoding/json"
+	"github.com/Mempler/rplpa"
 	"io/ioutil"
-	"strconv"
 )
 
-func SaveResult(oresult []hitjudge.ObjectResult, tresult []hitjudge.TotalResult, num int) {
-	oerr := ioutil.WriteFile(settings.VSplayer.ReplayandCache.CacheDir+getFileNum(num)+".ocache", []byte(getObjectCache(oresult)), 0666)
+func SaveResult(oresult []hitjudge.ObjectResult, tresult []hitjudge.TotalResult, replay *rplpa.Replay) {
+	filename := settings.VSplayer.ReplayandCache.CacheDir + replay.BeatmapMD5
+	oerr := ioutil.WriteFile(filename+".ooc", []byte(getObjectCache(oresult)), 0666)
 	if oerr != nil {
 		panic(oerr)
 	}
-	terr := ioutil.WriteFile(settings.VSplayer.ReplayandCache.CacheDir+getFileNum(num)+".tcache", []byte(getTotalCache(tresult)), 0666)
+	terr := ioutil.WriteFile(filename+".otc", []byte(getTotalCache(tresult)), 0666)
 	if terr != nil {
 		panic(terr)
 	}
 }
 
-func ReadResult(num int) ([]hitjudge.ObjectResult, []hitjudge.TotalResult) {
-	oread, _ := ioutil.ReadFile(settings.VSplayer.ReplayandCache.CacheDir+getFileNum(num)+".ocache")
-	tread, _ := ioutil.ReadFile(settings.VSplayer.ReplayandCache.CacheDir+getFileNum(num)+".tcache")
+func ReadResult(replay *rplpa.Replay) ([]hitjudge.ObjectResult, []hitjudge.TotalResult) {
+	filename := settings.VSplayer.ReplayandCache.CacheDir + replay.BeatmapMD5
+	oread, _ := ioutil.ReadFile(filename + ".ooc")
+	tread, _ := ioutil.ReadFile(filename + ".otc")
 	return setObjectCache(oread), setTotalCache(tread)
 }
 
@@ -56,14 +58,3 @@ func setTotalCache(r []byte) []hitjudge.TotalResult {
 	}
 	return tresult
 }
-
-func getFileNum(num int) string {
-	if num < 10 {
-		return "0"+strconv.Itoa(num)
-	}else{
-		return strconv.Itoa(num)
-	}
-}
-
-
-
