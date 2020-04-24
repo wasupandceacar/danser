@@ -5,9 +5,9 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 1,
+			"Players": 15,
 			"SpecifiedPlayers": false,
-			"SpecifiedLine": "39",
+			"SpecifiedLine": "6",
 			"SpecifiedColor": "WhiteCat:255,255,255|YakumoYukari:0,0,0"
 		},
 		"PlayerInfoUI": {
@@ -46,8 +46,8 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "rog-unlimitation",
-			"Difficulty": "AngelHoney"
+			"Title": "Kurikaeshi Hitotsubu",
+			"Difficulty": "Hitotsubu"
 		},
 		"Mods": {
 			"EnableDT": false,

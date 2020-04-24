@@ -656,6 +656,13 @@ func findNearestKey(pauses []objects.BaseObject, start int, starttime int64, r [
 		//ispress, nnewkeysoccupied, _ := isPressed(hit, newkeysoccupied)
 		//tmpisincircle, _ := isInCircle(hit, requirepos, CS)
 		//log.Println("Find move", hit.Time + time, requirehittime, tmpisincircle, ispress, newkeysoccupied, nnewkeysoccupied, bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos, bmath.Vector2d.Dst(bmath.NewVec2d(float64(hit.MosueX), float64(hit.MouseY)), requirepos), ODMiss, OD50, CS + 0.01, keysoccupied)
+
+		// 如果已经搜索到replay结尾，返回搜索的开头？
+		if hit.Time == REPLAY_END_TIME {
+			//log.Println("Search reach replay end!", start, starttime)
+			return false, start, starttime, keysoccupied, NoKey
+		}
+
 		// 如果时间已经超过最后时间，直接返回
 		realhittime := hit.Time + time
 		if float64(realhittime) > float64(requirehittime) + OD50 {
@@ -721,7 +728,7 @@ func findNearestKey(pauses []objects.BaseObject, start int, starttime int64, r [
 					return false, index, time, newkeysoccupied, NoKey
 				}else {
 					// 如果最后时间前按下，没效果，此键位失去对下一个非tick的object（note、滑条头）的效果，寻找下一个按键放下的地方
-					//log.Println("Tap out is no use!")
+					//log.Println("Tap out is no use!", index, realhittime)
 					index, time, keysoccupied = findRelease(index, realhittime, r, newkeysoccupied, false)
 					time -= r[index].Time
 					// （tick、滑条尾）如果这个时间大于最后时间，则用最后时间重新定位tick生效位置
