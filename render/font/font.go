@@ -150,7 +150,7 @@ func (font *Font) DrawAndGetLastPosition(renderer *render.SpriteBatch, x, y floa
 	scale := size / font.initialSize
 
 	for i, c := range text {
-		if c-font.min < 0 || c-font.min >= font.max || int(c) > 127 {
+		if c-font.min < 0 || c-font.min > font.max || int(c) > 127 {
 			log.Println("Warning! A non-ASCII or unprintable character is presented in text! Skipping")
 			continue
 		}
