@@ -5,7 +5,6 @@ import (
 	"danser/beatmap/objects"
 	"danser/bmath"
 	. "danser/osuconst"
-	"danser/replay"
 	"danser/score"
 	"danser/settings"
 	"github.com/Mempler/rplpa"
@@ -37,12 +36,7 @@ func ParseMapWithMods(filename string, isHR bool, isEZ bool) *beatmap.BeatMap {
 	}
 }
 
-func ParseReplay(name string) *rplpa.Replay {
-	return replay.ExtractReplay(name)
-}
-
-func ParseHits(mapname string, replayname string, errors []Error, addCSoffset float64) (result []ObjectResult, totalresult []TotalResult, replay *rplpa.Replay, allright bool, CSoffset float64) {
-
+func ParseHits(mapname string, pr *rplpa.Replay, errors []Error, addCSoffset float64) (objectResults []ObjectResult, totalResults []TotalResult, allRight bool, CSoffset float64) {
 	//prof.ProfStart()
 	//defer prof.ProfEnd()
 
@@ -53,9 +47,7 @@ func ParseHits(mapname string, replayname string, errors []Error, addCSoffset fl
 	}
 
 	// 加载replay
-	pr := ParseReplay(replayname)
 	r := pr.ReplayData
-
 	mods := pr.Mods
 
 	// 根据replay的mods加载map
@@ -331,7 +323,7 @@ func ParseHits(mapname string, replayname string, errors []Error, addCSoffset fl
 				} else {
 					//log.Println("Slider no breaks")
 				}
-				result = append(result, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().JudgeTime, sliderhitresult, isBreak})
+				objectResults = append(objectResults, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().JudgeTime, sliderhitresult, isBreak})
 			}
 			// note
 			if o, ok := obj.(*objects.Circle); ok {
@@ -392,7 +384,7 @@ func ParseHits(mapname string, replayname string, errors []Error, addCSoffset fl
 					isBreak = false
 				}
 				maxcombo = int(math.Max(float64(maxcombo), float64(nowcombo)))
-				result = append(result, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().JudgeTime, keyhitresult, isBreak})
+				objectResults = append(objectResults, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().JudgeTime, keyhitresult, isBreak})
 			}
 			// 转盘
 			if o, ok := obj.(*objects.Spinner); ok {
@@ -401,14 +393,14 @@ func ParseHits(mapname string, replayname string, errors []Error, addCSoffset fl
 				nowcombo += 1
 				totalhits = append(totalhits, 300)
 				maxcombo = int(math.Max(float64(maxcombo), float64(nowcombo)))
-				result = append(result, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().JudgeTime, Hit300, false})
+				objectResults = append(objectResults, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().JudgeTime, Hit300, false})
 			}
 		}
 		// 判定修正
 		err := shouldfixError(k+1, errors)
 		if err != nil {
 			// 进行修正
-			result, count300, count100, count50, countMiss, maxcombo, nowcombo, totalhits = fixError(*err, result, count300, count100, count50, countMiss, maxcombo, nowcombo, totalhits)
+			objectResults, count300, count100, count50, countMiss, maxcombo, nowcombo, totalhits = fixError(*err, objectResults, count300, count100, count50, countMiss, maxcombo, nowcombo, totalhits)
 		}
 		ur := calculateUnstableRate(hiterrors)
 		if math.IsNaN(ur) {
@@ -426,7 +418,7 @@ func ParseHits(mapname string, replayname string, errors []Error, addCSoffset fl
 			ur}
 		//tmptotalresult.PP = calculatePP(mapname, tmptotalresult)
 		tmptotalresult.PP = calculatePPbyNum(mapname, tmptotalresult, k+1)
-		totalresult = append(totalresult, tmptotalresult)
+		totalResults = append(totalResults, tmptotalresult)
 		//log.Println("result", tmptotalresult)
 		//log.Println("Now Max Combo:", maxcombo)
 		//log.Println("Acc:", score.CalculateAccuracy(totalhits))
@@ -438,9 +430,9 @@ func ParseHits(mapname string, replayname string, errors []Error, addCSoffset fl
 	log.Println("Count 50:", count50)
 	log.Println("Count Miss:", countMiss)
 	log.Println("Max Combo:", maxcombo)
-	log.Println("Acc:", totalresult[len(totalresult)-1].Acc)
-	log.Println("PP:", totalresult[len(totalresult)-1].PP.Total)
-	log.Println("UR:", totalresult[len(totalresult)-1].UR)
+	log.Println("Acc:", totalResults[len(totalResults)-1].Acc)
+	log.Println("PP:", totalResults[len(totalResults)-1].PP.Total)
+	log.Println("UR:", totalResults[len(totalResults)-1].UR)
 
 	// CS修正
 	sort.Float64s(CSerrors)
@@ -452,10 +444,10 @@ func ParseHits(mapname string, replayname string, errors []Error, addCSoffset fl
 
 	if settings.VSplayer.ReplayandCache.ReplayDebug {
 		// 分析情况和replay记录情况对比检查
-		allright = true
+		allRight = true
 		// 检查各个判定个数
 		if !checkHits(count300, count100, count50, countMiss, pr.Count300, pr.Count100, pr.Count50, pr.CountMiss) {
-			allright = false
+			allRight = false
 			log.Println("判定存在误差！")
 			log.Println("300 true:", count300, "replay:", pr.Count300, "error:", count300-int(pr.Count300))
 			log.Println("100 true:", count100, "replay:", pr.Count100, "error:", count100-int(pr.Count100))
@@ -464,17 +456,17 @@ func ParseHits(mapname string, replayname string, errors []Error, addCSoffset fl
 		}
 		// 检查最大连击数
 		if maxcombo != int(pr.MaxCombo) {
-			allright = false
+			allRight = false
 			log.Println("最大连击数存在误差！")
 			log.Println("Max combo true:", maxcombo, "replay:", pr.MaxCombo, "error:", maxcombo-int(pr.MaxCombo))
 		}
 		// 总体情况
-		if allright {
+		if allRight {
 			log.Println("检查结果完全一致！")
 		}
 	}
 
-	return result, totalresult, pr, allright, CSoffset
+	return objectResults, totalResults, allRight, CSoffset
 }
 
 // 定位Key放下的位置

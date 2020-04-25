@@ -146,7 +146,7 @@ type Player struct {
 	SameMissRate  int
 
 	// player人数
-	players int
+	playerCount int
 
 	// 实时pp显示参数数组
 	lastb4PP   []float64
@@ -308,14 +308,14 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 			tmpplindex = append(tmpplindex, pl)
 		}
 		log.Println("本次已指定特定的player")
-		player.players = len(specifiedplayers)
+		player.playerCount = len(specifiedplayers)
 	} else {
-		player.players = settings.VSplayer.PlayerInfo.Players
+		player.playerCount = settings.VSplayer.PlayerInfo.Players
 	}
 
 	if !settings.VSplayer.ReplayandCache.ReplayDebug {
-		player.controller = make([]dance.Controller, player.players)
-		for k := 0; k < player.players; k++ {
+		player.controller = make([]dance.Controller, player.playerCount)
+		for k := 0; k < player.playerCount; k++ {
 			player.controller[k] = dance.NewReplayController()
 			player.controller[k].SetBeatMap(player.bMap)
 			player.controller[k].InitCursors()
@@ -340,126 +340,163 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	// 错误的replay编号
 	var wrongIndex []int
 
-	if settings.VSplayer.ReplayandCache.ReadResultCache && !settings.VSplayer.ReplayandCache.ReplayDebug {
-		log.Println("本次选择读取缓存replay结果")
-		player.batch.Begin()
-		loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: "Read replay result cache... 0/" + strconv.Itoa(player.players)})
-		player.font.DrawAll(player.batch, loadwords)
-		player.batch.End()
-		win.SwapBuffers()
-		for k := 0; k < player.players; k++ {
-			var rnum int
-			if settings.VSplayer.PlayerInfo.SpecifiedPlayers {
-				rnum = tmpplindex[k]
+	//TODO: Setting up error correction system
+	var errs []hitjudge.Error
+	if settings.VSplayer.ErrorFix.EnableErrorFix {
+		log.Println("本次选择进行replay解析纠错")
+		errs = hitjudge.ReadError()
+	} else {
+		errs = []hitjudge.Error{}
+	}
+
+	//TODO: Setting up specific player system
+	if settings.VSplayer.ReplayandCache.UseCacheSystem {
+		log.Println("Enabled Cache System")
+		for i := 0; i < player.playerCount; i++ {
+			rep := replay.ExtractReplay(replays[i])
+			if resultcache.IsCacheExists(rep) {
+				log.Printf("Reading %v's analyze cache %v.ooc/otc (%v/%v)...\n", rep.Username, rep.ReplayMD5, i+1, player.playerCount)
+				player.batch.Begin()
+				loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: fmt.Sprintf("Reading %v's analyze cache %v.ooc/otc (%v/%v)...", rep.Username, rep.ReplayMD5, i+1, player.playerCount)})
+				player.font.DrawAll(player.batch, loadwords)
+				player.batch.End()
+				win.SwapBuffers()
+				//------------------------------------
+				t1 := time.Now()
+				objectResult, totalResult := resultcache.GetResult(rep)
+				configurePlayer(player, i, rep, objectResult, totalResult)
+				//------------------------------------
+				log.Printf("Finished reading %v analyze cache %v.ooc/otc (%v/%v), elapsed time: %v, total elapsed time: %v \n", rep.Username, rep.ReplayMD5, i+1, player.playerCount, time.Now().Sub(t1), time.Now().Sub(t))
+				loadwords = loadwords[:len(loadwords)-1]
 			} else {
-				rnum = k + 1
+				log.Printf("Analyzing %v's replay (%v/%v)...\n", rep.Username, i+1, player.playerCount)
+				player.batch.Begin()
+				loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: fmt.Sprintf("Analyzing %v's replay (%v/%v)...", rep.Username, i+1, player.playerCount)})
+				player.font.DrawAll(player.batch, loadwords)
+				player.batch.End()
+				win.SwapBuffers()
+				//------------------------------------
+				t1 := time.Now()
+				objectResult, totalResult, _, _ := hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, rep, errs, NO_USE_CS_OFFSET)
+				configurePlayer(player, i, rep, objectResult, totalResult)
+				resultcache.CacheResult(objectResult, totalResult, rep)
+				//------------------------------------
+				log.Printf("Finished analyzing %v's replay (%v/%v), elapsed time: %v, total elapsed time: %v\n", rep.Username, i+1, player.playerCount, time.Now().Sub(t1), time.Now().Sub(t))
+				loadwords = loadwords[:len(loadwords)-1]
 			}
-			t1 := time.Now()
-			log.Println("读取第", rnum, "个replay缓存")
-			r := replay.ExtractReplay(replays[k])
-			result, totalresult := resultcache.ReadResult(r)
-			// 初始化acc、rank和pp
-			player.controller[k].SetAcc(DEFAULT_ACC)
-			if score.IsSilver(r.Mods) {
-				player.controller[k].SetRank(*render.RankXH)
-			} else {
-				player.controller[k].SetRank(*render.RankX)
-			}
-			// 设置player名
-			player.controller[k].SetPlayername(r.Username)
-			// 判断mod
-			mods := r.Mods
-			player.controller[k].SetMods(mods)
-			player.controller[k].SetPP(DEFAULT_PP)
-			if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
-				player.controller[k].SetUR(DEFAULT_UR)
-			}
-			// 设置初始显示
-			player.controller[k].SetIsShow(true)
-			player.controller[k].SetHitResult(result)
-			player.controller[k].SetTotalResult(totalresult)
-			log.Println("读取第", rnum, "个replay缓存完成，耗时", time.Now().Sub(t1), "，总耗时", time.Now().Sub(t))
-			player.batch.Begin()
-			loadwords = append(loadwords[:len(loadwords)-1], font.Word{X: 14, Size: 24, Text: "Read replay result cache... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(player.players)})
-			player.font.DrawAll(player.batch, loadwords)
-			player.batch.End()
-			win.SwapBuffers()
 		}
 	} else {
-		log.Println("本次选择解析replay")
-		if !settings.VSplayer.ReplayandCache.ReplayDebug {
+		log.Println("Forced to analyze replays")
+		for i := 0; i < player.playerCount; i++ {
+			rep := replay.ExtractReplay(replays[i])
+			log.Printf("Analyzing %v's replay (%v/%v)...\n", rep.Username, i+1, player.playerCount)
 			player.batch.Begin()
-			loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: "Analyze replay... 0/" + strconv.Itoa(player.players)})
+			loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: fmt.Sprintf("Analyzing %v's replay (%v/%v)...", rep.Username, i+1, player.playerCount)})
 			player.font.DrawAll(player.batch, loadwords)
 			player.batch.End()
 			win.SwapBuffers()
-		}
-		var errs []hitjudge.Error
-		if settings.VSplayer.ErrorFix.EnableErrorFix {
-			log.Println("本次选择进行replay解析纠错")
-			errs = hitjudge.ReadError()
-		} else {
-			errs = []hitjudge.Error{}
-		}
-		for k := 0; k < player.players; k++ {
-			var rnum int
-			if settings.VSplayer.PlayerInfo.SpecifiedPlayers {
-				rnum = tmpplindex[k]
-			} else {
-				rnum = k + 1
-			}
+			//------------------------------------
 			t1 := time.Now()
-			log.Println("解析第", rnum, "个replay")
-			result, totalresult, r, allright, _ := hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, replays[k], hitjudge.FilterError(rnum, errs), NO_USE_CS_OFFSET)
-			// 如果因为滑条尾判定需要单独修正CS，重新计算
-			// 有问题，暂时不采用
-			//if cs_offset > 0{
-			//	result, totalresult, mods, allright, cs_offset = hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, replays[k], hitjudge.FilterError(rnum, errs), cs_offset)
-			//}
-			if !settings.VSplayer.ReplayandCache.ReplayDebug {
-				// 初始化acc、rank和pp
-				player.controller[k].SetAcc(DEFAULT_ACC)
-				if score.IsSilver(r.Mods) {
-					player.controller[k].SetRank(*render.RankXH)
+			objectResult, totalResult, _, _ := hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, rep, errs, NO_USE_CS_OFFSET)
+			configurePlayer(player, i, rep, objectResult, totalResult)
+			//------------------------------------
+			log.Printf("Finished analyzing %v's replay (%v/%v), elapsed time: %v, total elapsed time: %v \n", rep.Username, i+1, player.playerCount, time.Now().Sub(t1), time.Now().Sub(t))
+			loadwords = loadwords[:len(loadwords)-1]
+		}
+	}
+
+	player.batch.Begin()
+	loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: "Analyze completed."})
+	player.font.DrawAll(player.batch, loadwords)
+	player.batch.End()
+	win.SwapBuffers()
+
+	//TODO: Delete old codes
+	/*
+		// Old Parsing Codes
+		if settings.VSplayer.ReplayandCache.ReadResultCache && !settings.VSplayer.ReplayandCache.ReplayDebug {
+			log.Println("本次选择读取缓存replay结果")
+			player.batch.Begin()
+			loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: "Read replay result cache... 0/" + strconv.Itoa(player.playerCount)})
+			player.font.DrawAll(player.batch, loadwords)
+			player.batch.End()
+			win.SwapBuffers()
+			for k := 0; k < player.playerCount; k++ {
+				var rnum int
+				if settings.VSplayer.PlayerInfo.SpecifiedPlayers {
+					rnum = tmpplindex[k]
 				} else {
-					player.controller[k].SetRank(*render.RankX)
+					rnum = k + 1
 				}
-				// 设置player名
-				player.controller[k].SetPlayername(r.Username)
-				// 判断mod
-				player.controller[k].SetMods(r.Mods)
-				player.controller[k].SetPP(DEFAULT_PP)
-				if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
-					player.controller[k].SetUR(DEFAULT_UR)
-				}
-				// 设置初始显示
-				player.controller[k].SetIsShow(true)
-				player.controller[k].SetHitResult(result)
-				player.controller[k].SetTotalResult(totalresult)
-			} else {
-				// 记录出错情况
-				if allright {
-					right += 1
-				} else {
-					wrong += 1
-					wrongIndex = append(wrongIndex, rnum)
-				}
-			}
-			// 保存结果缓存
-			if settings.VSplayer.ReplayandCache.SaveResultCache && !settings.VSplayer.ReplayandCache.ReplayDebug {
-				resultcache.SaveResult(result, totalresult, r)
-				log.Println("已保存第", rnum, "个replay的结果缓存到"+r.ReplayMD5+".ooc/otc")
-			}
-			log.Println("解析第", rnum, "个replay完成，耗时", time.Now().Sub(t1), "，总耗时", time.Now().Sub(t))
-			if !settings.VSplayer.ReplayandCache.ReplayDebug {
+				t1 := time.Now()
+				log.Println("读取第", rnum, "个replay缓存")
+				currentReplay := replay.ExtractReplay(replays[k])
+				result, totalResult := resultcache.ReadResult(currentReplay)
+				configurePlayer(player, k, currentReplay, result, totalResult)
+				log.Println("读取第", rnum, "个replay缓存完成，耗时", time.Now().Sub(t1), "，总耗时", time.Now().Sub(t))
 				player.batch.Begin()
-				loadwords = append(loadwords[:len(loadwords)-1], font.Word{X: 14, Size: 24, Text: "Analyze replay... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(player.players)})
+				loadwords = append(loadwords[:len(loadwords)-1], font.Word{X: 14, Size: 24, Text: "Read replay result cache... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(player.playerCount)})
 				player.font.DrawAll(player.batch, loadwords)
 				player.batch.End()
 				win.SwapBuffers()
 			}
-		}
-	}
+		} else {
+			log.Println("本次选择解析replay")
+			if !settings.VSplayer.ReplayandCache.ReplayDebug {
+				player.batch.Begin()
+				loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: "Analyze replay... 0/" + strconv.Itoa(player.playerCount)})
+				player.font.DrawAll(player.batch, loadwords)
+				player.batch.End()
+				win.SwapBuffers()
+			}
+			var errs []hitjudge.Error
+			if settings.VSplayer.ErrorFix.EnableErrorFix {
+				log.Println("本次选择进行replay解析纠错")
+				errs = hitjudge.ReadError()
+			} else {
+				errs = []hitjudge.Error{}
+			}
+			for k := 0; k < player.playerCount; k++ {
+				var rnum int
+				if settings.VSplayer.PlayerInfo.SpecifiedPlayers {
+					rnum = tmpplindex[k]
+				} else {
+					rnum = k + 1
+				}
+				t1 := time.Now()
+				log.Println("解析第", rnum, "个replay")
+				result, totalResult, currentReplay, allRight, _ := hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, replays[k], hitjudge.FilterError(rnum, errs), NO_USE_CS_OFFSET)
+				// 如果因为滑条尾判定需要单独修正CS，重新计算
+				// 有问题，暂时不采用
+				//if cs_offset > 0{
+				//	result, totalResult, mods, allRight, cs_offset = hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, replays[k], hitjudge.FilterError(rnum, errs), cs_offset)
+				//}
+				if !settings.VSplayer.ReplayandCache.ReplayDebug {
+					configurePlayer(player, k, currentReplay, result, totalResult)
+				} else {
+					// 记录出错情况
+					if allRight {
+						right += 1
+					} else {
+						wrong += 1
+						wrongIndex = append(wrongIndex, rnum)
+					}
+				}
+				// 保存结果缓存
+				if settings.VSplayer.ReplayandCache.UseCacheSystem && !settings.VSplayer.ReplayandCache.ReplayDebug {
+					resultcache.SaveResult(result, totalResult, currentReplay)
+					log.Println("已保存第", rnum, "个replay的结果缓存到"+currentReplay.ReplayMD5+".ooc/otc")
+				}
+				log.Println("解析第", rnum, "个replay完成，耗时", time.Now().Sub(t1), "，总耗时", time.Now().Sub(t))
+				if !settings.VSplayer.ReplayandCache.ReplayDebug {
+					player.batch.Begin()
+					loadwords = append(loadwords[:len(loadwords)-1], font.Word{X: 14, Size: 24, Text: "Analyze replay... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(player.playerCount)})
+					player.font.DrawAll(player.batch, loadwords)
+					player.batch.End()
+					win.SwapBuffers()
+				}
+			}
+		}*/
 
 	// DEBUG
 	//player.controller[1].GetHitResult()[4].IsBreak = true
@@ -493,7 +530,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	for _, plcolors := range specifiedplcolors {
 		tmpplcolors := strings.Split(plcolors, ":")
 		specifiedplayer := tmpplcolors[0]
-		for k := 0; k < player.players; k++ {
+		for k := 0; k < player.playerCount; k++ {
 			if player.controller[k].GetPlayname() == specifiedplayer {
 				colors := strings.Split(tmpplcolors[1], ",")
 				r, _ := strconv.Atoi(colors[0])
@@ -512,22 +549,22 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 
 	// 初始化实时pp、ur参数数组
 	if settings.VSplayer.PlayerInfoUI.ShowRealTimePP {
-		for k := 0; k < player.players; k++ {
-			player.lastPPTime = make([]int64, player.players)
+		for k := 0; k < player.playerCount; k++ {
+			player.lastPPTime = make([]int64, player.playerCount)
 			player.lastPPTime[k] = player.controller[k].GetHitResult()[0].JudgeTime
 		}
 	}
-	for k := 0; k < player.players; k++ {
-		player.lastb4PP = make([]float64, player.players)
-		player.lastPP = make([]float64, player.players)
+	for k := 0; k < player.playerCount; k++ {
+		player.lastb4PP = make([]float64, player.playerCount)
+		player.lastPP = make([]float64, player.playerCount)
 		player.lastb4PP[k] = player.controller[k].GetTotalResult()[0].PP.Total
 		player.lastPP[k] = player.controller[k].GetTotalResult()[0].PP.Total
 	}
 	if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
-		for k := 0; k < player.players; k++ {
-			player.lastb4UR = make([]float64, player.players)
-			player.lastUR = make([]float64, player.players)
-			player.lastURTime = make([]int64, player.players)
+		for k := 0; k < player.playerCount; k++ {
+			player.lastb4UR = make([]float64, player.playerCount)
+			player.lastUR = make([]float64, player.playerCount)
+			player.lastURTime = make([]int64, player.playerCount)
 			player.lastb4UR[k] = player.controller[k].GetTotalResult()[0].UR
 			player.lastUR[k] = player.controller[k].GetTotalResult()[0].UR
 			player.lastURTime[k] = player.controller[k].GetHitResult()[0].JudgeTime
@@ -670,8 +707,8 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	}
 
 	// 超过色彩上限使用最后一个（未使用）的颜色来渲染object
-	if settings.VSplayer.PlayerFieldUI.CursorColorNum > player.players+1 {
-		player.objectcolorIndex = player.players
+	if settings.VSplayer.PlayerFieldUI.CursorColorNum > player.playerCount+1 {
+		player.objectcolorIndex = player.playerCount
 	} else {
 		player.objectcolorIndex = settings.VSplayer.PlayerFieldUI.CursorColorNum - 1
 	}
@@ -774,7 +811,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 
 	//region 重写更新时间和坐标函数
 
-	for k := 0; k < player.players; k++ {
+	for k := 0; k < player.playerCount; k++ {
 		go func(k int) {
 			// 获取replay信息
 			r := replay.ExtractReplay(replays[k])
@@ -948,6 +985,28 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	return player
 
 	//endregion
+}
+
+func configurePlayer(player *Player, k int, r *rplpa.Replay, result []hitjudge.ObjectResult, totalresult []hitjudge.TotalResult) {
+	// 初始化acc、rank和pp
+	player.controller[k].SetAcc(DEFAULT_ACC)
+	if score.IsSilver(r.Mods) {
+		player.controller[k].SetRank(*render.RankXH)
+	} else {
+		player.controller[k].SetRank(*render.RankX)
+	}
+	// 设置player名
+	player.controller[k].SetPlayername(r.Username)
+	// 判断mod
+	player.controller[k].SetMods(r.Mods)
+	player.controller[k].SetPP(DEFAULT_PP)
+	if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
+		player.controller[k].SetUR(DEFAULT_UR)
+	}
+	// 设置初始显示
+	player.controller[k].SetIsShow(true)
+	player.controller[k].SetHitResult(result)
+	player.controller[k].SetTotalResult(totalresult)
 }
 
 func (pl *Player) Show() {
@@ -1150,11 +1209,11 @@ func (pl *Player) Draw(_ float64) {
 		}
 	}
 
-	colors1 := settings.Cursor.GetColors(pl.players+1, settings.TAG, pl.Scl, pl.cursorGlider.GetValue())
+	colors1 := settings.Cursor.GetColors(pl.playerCount+1, settings.TAG, pl.Scl, pl.cursorGlider.GetValue())
 
 	// 指定颜色修改
 	for k, colors := range pl.specificColorMap {
-		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
+		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.playerCount
 		colors1[colornum][0] = colors[0]
 		colors1[colornum][1] = colors[1]
 		colors1[colornum][2] = colors[2]
@@ -1198,13 +1257,13 @@ func (pl *Player) Draw(_ float64) {
 	//region 渲染按键
 	pl.batch.Begin()
 	pl.batch.SetCamera(pl.scamera.GetProjectionView())
-	for k := 0; k < pl.players; k++ {
+	for k := 0; k < pl.playerCount; k++ {
 		linecount := k
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			linecount *= 2
 		}
 		gapY := pl.gapsize * float64(k)
-		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
+		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.playerCount
 		namecolor := colors1[colornum]
 		if settings.VSplayer.Knockout.EnableKnockout && (!pl.controller[k].GetIsShow()) {
 			namecolor[3] = float32(math.Max(0.0, float64(namecolor[3])-(pl.progressMsF-pl.controller[k].GetDishowTime())/settings.VSplayer.Knockout.PlayerFadeTime))
@@ -1263,18 +1322,18 @@ func (pl *Player) Draw(_ float64) {
 
 	// 文字的公用X轴
 	var lastPos []float64
-	lastPos = make([]float64, pl.players)
+	lastPos = make([]float64, pl.playerCount)
 	// 渲染player名
 	pl.batch.Begin()
 	pl.batch.SetCamera(pl.scamera.GetProjectionView())
-	for k := 0; k < pl.players; k++ {
+	for k := 0; k < pl.playerCount; k++ {
 		linecount := k
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			linecount *= 2
 		}
 		gapY := pl.gapsize * float64(k)
 		pl.batch.SetAdditive(true)
-		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
+		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.playerCount
 		namecolor := colors1[colornum]
 		if settings.VSplayer.Knockout.EnableKnockout && (!pl.controller[k].GetIsShow()) {
 			namecolor[3] = float32(math.Max(0.0, float64(namecolor[3])-(pl.progressMsF-pl.controller[k].GetDishowTime())/settings.VSplayer.Knockout.PlayerFadeTime))
@@ -1342,22 +1401,22 @@ func (pl *Player) Draw(_ float64) {
 	var misscolornums []int
 
 	if settings.VSplayer.Knockout.EnableKnockout {
-		lastmissPos = make([]float64, pl.players)
+		lastmissPos = make([]float64, pl.playerCount)
 	} else if settings.VSplayer.Knockout.ShowTrueMiss {
-		lastmissPos = make([]float64, pl.players)
-		misscolors = make([][]float64, pl.players)
-		misscolornums = make([]int, pl.players)
+		lastmissPos = make([]float64, pl.playerCount)
+		misscolors = make([][]float64, pl.playerCount)
+		misscolornums = make([]int, pl.playerCount)
 	}
 
 	pl.batch.Begin()
 	pl.batch.SetCamera(pl.scamera.GetProjectionView())
-	for k := 0; k < pl.players; k++ {
+	for k := 0; k < pl.playerCount; k++ {
 		linecount := k
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 			linecount *= 2
 		}
 		gapY := pl.gapsize * float64(k)
-		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
+		colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.playerCount
 		namecolor := colors1[colornum]
 		// 如果设置不显示，开始降低透明度
 		if settings.VSplayer.Knockout.EnableKnockout && (!pl.controller[k].GetIsShow()) {
@@ -1604,27 +1663,27 @@ func (pl *Player) Draw(_ float64) {
 		var urs []float64
 		var pprank []int
 		var urrank []int
-		pps = make([]float64, pl.players)
-		for k := 0; k < pl.players; k++ {
+		pps = make([]float64, pl.playerCount)
+		for k := 0; k < pl.playerCount; k++ {
 			pps[k] = pl.controller[k].GetPP()
 		}
 		pprank = utils.SortRankHighToLow(pps)
 		if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
-			urs = make([]float64, pl.players)
-			for k := 0; k < pl.players; k++ {
+			urs = make([]float64, pl.playerCount)
+			for k := 0; k < pl.playerCount; k++ {
 				urs[k] = pl.controller[k].GetUR()
 			}
 			urrank = utils.SortRankLowToHigh(urs)
 		}
 		pl.batch.Begin()
 		pl.batch.SetCamera(pl.scamera.GetProjectionView())
-		for k := 0; k < pl.players; k++ {
+		for k := 0; k < pl.playerCount; k++ {
 			linecount := k
 			if settings.VSplayer.PlayerInfoUI.ShowRealTimeUR {
 				linecount *= 2
 			}
 			gapY := pl.gapsize * float64(k)
-			colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
+			colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.playerCount
 			namecolor := colors1[colornum]
 			// 渲染pp排名
 			pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
@@ -1833,7 +1892,7 @@ func (pl *Player) Draw(_ float64) {
 
 	//region 多个光标渲染
 
-	for k := 0; k < pl.players; k++ {
+	for k := 0; k < pl.playerCount; k++ {
 		if !(settings.VSplayer.Knockout.EnableKnockout && (!pl.controller[k].GetIsShow())) {
 			for _, g := range pl.controller[k].GetCursors() {
 				g.UpdateRenderer()
@@ -1849,7 +1908,7 @@ func (pl *Player) Draw(_ float64) {
 					if ind < 0 {
 						ind = settings.DIVIDES*len(pl.controller[k].GetCursors()) - 1
 					}
-					colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.players
+					colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.playerCount
 					g.DrawM(scale2, pl.batch, colors1[colornum], colors1[ind])
 				}
 			}

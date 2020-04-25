@@ -32,8 +32,8 @@ func UImain(noGUI bool) {
 	MainWindow{
 		AssignTo: &vsw.MainWindow,
 		Title:    "osu vs player " + VERSION + " by " + OWNER,
-		Size: Size{600, 400},
-		Layout:  VBox{},
+		Size:     Size{600, 400},
+		Layout:   VBox{},
 		Children: []Widget{
 			HSplitter{
 				Children: []Widget{
@@ -41,7 +41,7 @@ func UImain(noGUI bool) {
 						Layout: VBox{MarginsZero: true},
 						Children: []Widget{
 							GroupBox{
-								Title: "玩家设置",
+								Title:  "玩家设置",
 								Layout: VBox{},
 								Children: []Widget{
 									HSplitter{
@@ -50,9 +50,9 @@ func UImain(noGUI bool) {
 												Text: "玩家数：",
 											},
 											LineEdit{
-												AssignTo: &vsw.players,
+												AssignTo:  &vsw.players,
 												Alignment: AlignHNearVNear,
-												Text: strconv.Itoa(settings.VSplayer.PlayerInfo.Players),
+												Text:      strconv.Itoa(settings.VSplayer.PlayerInfo.Players),
 											},
 										},
 									},
@@ -62,9 +62,9 @@ func UImain(noGUI bool) {
 												Text: "指定玩家：",
 											},
 											CheckBox{
-												AssignTo: &vsw.specifiedPlayers,
+												AssignTo:  &vsw.specifiedPlayers,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.PlayerInfo.SpecifiedPlayers,
+												Checked:   settings.VSplayer.PlayerInfo.SpecifiedPlayers,
 											},
 										},
 									},
@@ -74,9 +74,9 @@ func UImain(noGUI bool) {
 												Text: "指定序列：",
 											},
 											LineEdit{
-												AssignTo: &vsw.specifiedLine,
+												AssignTo:  &vsw.specifiedLine,
 												Alignment: AlignHNearVNear,
-												Text: settings.VSplayer.PlayerInfo.SpecifiedLine,
+												Text:      settings.VSplayer.PlayerInfo.SpecifiedLine,
 											},
 										},
 									},
@@ -86,16 +86,16 @@ func UImain(noGUI bool) {
 												Text: "指定色彩：",
 											},
 											LineEdit{
-												AssignTo: &vsw.specifiedColor,
+												AssignTo:  &vsw.specifiedColor,
 												Alignment: AlignHNearVNear,
-												Text: settings.VSplayer.PlayerInfo.SpecifiedColor,
+												Text:      settings.VSplayer.PlayerInfo.SpecifiedColor,
 											},
 										},
 									},
 								},
 							},
 							GroupBox{
-								Title: "玩家信息区设置",
+								Title:  "玩家信息区设置",
 								Layout: VBox{},
 								Children: []Widget{
 									HSplitter{
@@ -104,9 +104,9 @@ func UImain(noGUI bool) {
 												Text: "基准大小：",
 											},
 											LineEdit{
-												AssignTo: &vsw.baseSize,
+												AssignTo:  &vsw.baseSize,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.BaseSize),
+												Text:      fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.BaseSize),
 											},
 										},
 									},
@@ -116,9 +116,9 @@ func UImain(noGUI bool) {
 												Text: "基准X：",
 											},
 											LineEdit{
-												AssignTo: &vsw.baseX,
+												AssignTo:  &vsw.baseX,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.BaseX),
+												Text:      fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.BaseX),
 											},
 										},
 									},
@@ -128,9 +128,9 @@ func UImain(noGUI bool) {
 												Text: "基准Y：",
 											},
 											LineEdit{
-												AssignTo: &vsw.baseY,
+												AssignTo:  &vsw.baseY,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.BaseY),
+												Text:      fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.BaseY),
 											},
 										},
 									},
@@ -140,9 +140,9 @@ func UImain(noGUI bool) {
 												Text: "显示M1：",
 											},
 											CheckBox{
-												AssignTo: &vsw.showMouse1,
+												AssignTo:  &vsw.showMouse1,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.PlayerInfoUI.ShowMouse1,
+												Checked:   settings.VSplayer.PlayerInfoUI.ShowMouse1,
 											},
 										},
 									},
@@ -152,9 +152,9 @@ func UImain(noGUI bool) {
 												Text: "显示M2：",
 											},
 											CheckBox{
-												AssignTo: &vsw.showMouse2,
+												AssignTo:  &vsw.showMouse2,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.PlayerInfoUI.ShowMouse2,
+												Checked:   settings.VSplayer.PlayerInfoUI.ShowMouse2,
 											},
 										},
 									},
@@ -164,9 +164,9 @@ func UImain(noGUI bool) {
 												Text: "显示实时pp：",
 											},
 											CheckBox{
-												AssignTo: &vsw.showRealTimePP,
+												AssignTo:  &vsw.showRealTimePP,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.PlayerInfoUI.ShowRealTimePP,
+												Checked:   settings.VSplayer.PlayerInfoUI.ShowRealTimePP,
 											},
 										},
 									},
@@ -176,9 +176,9 @@ func UImain(noGUI bool) {
 												Text: "最大变化时间：",
 											},
 											LineEdit{
-												AssignTo: &vsw.realTimePPGap,
+												AssignTo:  &vsw.realTimePPGap,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.RealTimePPGap),
+												Text:      fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.RealTimePPGap),
 											},
 										},
 									},
@@ -188,9 +188,9 @@ func UImain(noGUI bool) {
 												Text: "显示实时ur：",
 											},
 											CheckBox{
-												AssignTo: &vsw.showRealTimeUR,
+												AssignTo:  &vsw.showRealTimeUR,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.PlayerInfoUI.ShowRealTimeUR,
+												Checked:   settings.VSplayer.PlayerInfoUI.ShowRealTimeUR,
 											},
 										},
 									},
@@ -200,9 +200,9 @@ func UImain(noGUI bool) {
 												Text: "显示数据排名：",
 											},
 											CheckBox{
-												AssignTo: &vsw.showPPAndURRank,
+												AssignTo:  &vsw.showPPAndURRank,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.PlayerInfoUI.ShowPPAndURRank,
+												Checked:   settings.VSplayer.PlayerInfoUI.ShowPPAndURRank,
 											},
 										},
 									},
@@ -212,9 +212,9 @@ func UImain(noGUI bool) {
 												Text: "强调第一：",
 											},
 											CheckBox{
-												AssignTo: &vsw.rank1Highlight,
+												AssignTo:  &vsw.rank1Highlight,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.PlayerInfoUI.Rank1Highlight,
+												Checked:   settings.VSplayer.PlayerInfoUI.Rank1Highlight,
 											},
 										},
 									},
@@ -224,9 +224,9 @@ func UImain(noGUI bool) {
 												Text: "强调放大倍数：",
 											},
 											LineEdit{
-												AssignTo: &vsw.highlightMult,
+												AssignTo:  &vsw.highlightMult,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.HighlightMult),
+												Text:      fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.HighlightMult),
 											},
 										},
 									},
@@ -236,16 +236,16 @@ func UImain(noGUI bool) {
 												Text: "行间距倍数：",
 											},
 											LineEdit{
-												AssignTo: &vsw.lineGapMult,
+												AssignTo:  &vsw.lineGapMult,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.LineGapMult),
+												Text:      fmt.Sprintf("%g", settings.VSplayer.PlayerInfoUI.LineGapMult),
 											},
 										},
 									},
 								},
 							},
 							GroupBox{
-								Title: "难度信息设置",
+								Title:  "难度信息设置",
 								Layout: VBox{},
 								Children: []Widget{
 									HSplitter{
@@ -254,9 +254,9 @@ func UImain(noGUI bool) {
 												Text: "显示难度：",
 											},
 											CheckBox{
-												AssignTo: &vsw.showDiffInfo,
+												AssignTo:  &vsw.showDiffInfo,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.DiffInfoUI.ShowDiffInfo,
+												Checked:   settings.VSplayer.DiffInfoUI.ShowDiffInfo,
 											},
 										},
 									},
@@ -266,9 +266,9 @@ func UImain(noGUI bool) {
 												Text: "难度基准X：",
 											},
 											LineEdit{
-												AssignTo: &vsw.diffBaseX,
+												AssignTo:  &vsw.diffBaseX,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.VSplayer.DiffInfoUI.DiffBaseX),
+												Text:      fmt.Sprintf("%g", settings.VSplayer.DiffInfoUI.DiffBaseX),
 											},
 										},
 									},
@@ -278,9 +278,9 @@ func UImain(noGUI bool) {
 												Text: "难度基准Y：",
 											},
 											LineEdit{
-												AssignTo: &vsw.diffBaseY,
+												AssignTo:  &vsw.diffBaseY,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.VSplayer.DiffInfoUI.DiffBaseY),
+												Text:      fmt.Sprintf("%g", settings.VSplayer.DiffInfoUI.DiffBaseY),
 											},
 										},
 									},
@@ -290,9 +290,9 @@ func UImain(noGUI bool) {
 												Text: "难度基准大小：",
 											},
 											LineEdit{
-												AssignTo: &vsw.diffBaseSize,
+												AssignTo:  &vsw.diffBaseSize,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.VSplayer.DiffInfoUI.DiffBaseSize),
+												Text:      fmt.Sprintf("%g", settings.VSplayer.DiffInfoUI.DiffBaseSize),
 											},
 										},
 									},
@@ -302,9 +302,9 @@ func UImain(noGUI bool) {
 												Text: "难度透明度：",
 											},
 											LineEdit{
-												AssignTo: &vsw.diffAlpha,
+												AssignTo:  &vsw.diffAlpha,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.VSplayer.DiffInfoUI.DiffAlpha),
+												Text:      fmt.Sprintf("%g", settings.VSplayer.DiffInfoUI.DiffAlpha),
 											},
 										},
 									},
@@ -317,7 +317,7 @@ func UImain(noGUI bool) {
 						Layout: VBox{MarginsZero: true},
 						Children: []Widget{
 							GroupBox{
-								Title: "录制信息设置",
+								Title:  "录制信息设置",
 								Layout: VBox{},
 								Children: []Widget{
 									HSplitter{
@@ -326,9 +326,9 @@ func UImain(noGUI bool) {
 												Text: "录制人：",
 											},
 											LineEdit{
-												AssignTo: &vsw.recorder,
+												AssignTo:  &vsw.recorder,
 												Alignment: AlignHNearVNear,
-												Text: settings.VSplayer.RecordInfoUI.Recorder,
+												Text:      settings.VSplayer.RecordInfoUI.Recorder,
 											},
 										},
 									},
@@ -338,9 +338,9 @@ func UImain(noGUI bool) {
 												Text: "录制时间：",
 											},
 											LineEdit{
-												AssignTo: &vsw.recordTime,
+												AssignTo:  &vsw.recordTime,
 												Alignment: AlignHNearVNear,
-												Text: settings.VSplayer.RecordInfoUI.RecordTime,
+												Text:      settings.VSplayer.RecordInfoUI.RecordTime,
 											},
 										},
 									},
@@ -350,9 +350,9 @@ func UImain(noGUI bool) {
 												Text: "录制基准X：",
 											},
 											LineEdit{
-												AssignTo: &vsw.recordBaseX,
+												AssignTo:  &vsw.recordBaseX,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.VSplayer.RecordInfoUI.RecordBaseX),
+												Text:      fmt.Sprintf("%g", settings.VSplayer.RecordInfoUI.RecordBaseX),
 											},
 										},
 									},
@@ -362,9 +362,9 @@ func UImain(noGUI bool) {
 												Text: "录制基准Y：",
 											},
 											LineEdit{
-												AssignTo: &vsw.recordBaseY,
+												AssignTo:  &vsw.recordBaseY,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.VSplayer.RecordInfoUI.RecordBaseY),
+												Text:      fmt.Sprintf("%g", settings.VSplayer.RecordInfoUI.RecordBaseY),
 											},
 										},
 									},
@@ -374,9 +374,9 @@ func UImain(noGUI bool) {
 												Text: "录制基准大小：",
 											},
 											LineEdit{
-												AssignTo: &vsw.recordBaseSize,
+												AssignTo:  &vsw.recordBaseSize,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.VSplayer.RecordInfoUI.RecordBaseSize),
+												Text:      fmt.Sprintf("%g", settings.VSplayer.RecordInfoUI.RecordBaseSize),
 											},
 										},
 									},
@@ -386,16 +386,16 @@ func UImain(noGUI bool) {
 												Text: "录制透明度：",
 											},
 											LineEdit{
-												AssignTo: &vsw.recordAlpha,
+												AssignTo:  &vsw.recordAlpha,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.VSplayer.RecordInfoUI.RecordAlpha),
+												Text:      fmt.Sprintf("%g", settings.VSplayer.RecordInfoUI.RecordAlpha),
 											},
 										},
 									},
 								},
 							},
 							GroupBox{
-								Title: "游玩区域设置",
+								Title:  "游玩区域设置",
 								Layout: VBox{},
 								Children: []Widget{
 									HSplitter{
@@ -404,9 +404,9 @@ func UImain(noGUI bool) {
 												Text: "击打响应时间：",
 											},
 											LineEdit{
-												AssignTo: &vsw.hitFadeTime,
+												AssignTo:  &vsw.hitFadeTime,
 												Alignment: AlignHNearVNear,
-												Text: strconv.Itoa(int(settings.VSplayer.PlayerFieldUI.HitFadeTime)),
+												Text:      strconv.Itoa(int(settings.VSplayer.PlayerFieldUI.HitFadeTime)),
 											},
 										},
 									},
@@ -416,9 +416,9 @@ func UImain(noGUI bool) {
 												Text: "光标颜色索引：",
 											},
 											LineEdit{
-												AssignTo: &vsw.cursorColorNum,
+												AssignTo:  &vsw.cursorColorNum,
 												Alignment: AlignHNearVNear,
-												Text: strconv.Itoa(settings.VSplayer.PlayerFieldUI.CursorColorNum),
+												Text:      strconv.Itoa(settings.VSplayer.PlayerFieldUI.CursorColorNum),
 											},
 										},
 									},
@@ -428,9 +428,9 @@ func UImain(noGUI bool) {
 												Text: "光标颜色间隔：",
 											},
 											LineEdit{
-												AssignTo: &vsw.cursorColorSkipNum,
+												AssignTo:  &vsw.cursorColorSkipNum,
 												Alignment: AlignHNearVNear,
-												Text: strconv.Itoa(settings.VSplayer.PlayerFieldUI.CursorColorSkipNum),
+												Text:      strconv.Itoa(settings.VSplayer.PlayerFieldUI.CursorColorSkipNum),
 											},
 										},
 									},
@@ -440,16 +440,16 @@ func UImain(noGUI bool) {
 												Text: "显示note数字：",
 											},
 											CheckBox{
-												AssignTo: &vsw.showHitCircleNumber,
+												AssignTo:  &vsw.showHitCircleNumber,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.PlayerFieldUI.ShowHitCircleNumber,
+												Checked:   settings.VSplayer.PlayerFieldUI.ShowHitCircleNumber,
 											},
 										},
 									},
 								},
 							},
 							GroupBox{
-								Title: "地图设置",
+								Title:  "地图设置",
 								Layout: VBox{},
 								Children: []Widget{
 									HSplitter{
@@ -458,9 +458,9 @@ func UImain(noGUI bool) {
 												Text: "地图名：",
 											},
 											LineEdit{
-												AssignTo: &vsw.title,
+												AssignTo:  &vsw.title,
 												Alignment: AlignHNearVNear,
-												Text: settings.VSplayer.MapInfo.Title,
+												Text:      settings.VSplayer.MapInfo.Title,
 											},
 										},
 									},
@@ -470,16 +470,16 @@ func UImain(noGUI bool) {
 												Text: "难度名：",
 											},
 											LineEdit{
-												AssignTo: &vsw.difficulty,
+												AssignTo:  &vsw.difficulty,
 												Alignment: AlignHNearVNear,
-												Text: settings.VSplayer.MapInfo.Difficulty,
+												Text:      settings.VSplayer.MapInfo.Difficulty,
 											},
 										},
 									},
 								},
 							},
 							GroupBox{
-								Title: "Mod设置",
+								Title:  "Mod设置",
 								Layout: VBox{},
 								Children: []Widget{
 									HSplitter{
@@ -488,9 +488,9 @@ func UImain(noGUI bool) {
 												Text: "开启DT：",
 											},
 											CheckBox{
-												AssignTo: &vsw.enableDT,
+												AssignTo:  &vsw.enableDT,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.Mods.EnableDT,
+												Checked:   settings.VSplayer.Mods.EnableDT,
 											},
 										},
 									},
@@ -500,9 +500,9 @@ func UImain(noGUI bool) {
 												Text: "开启HT：",
 											},
 											CheckBox{
-												AssignTo: &vsw.enableHT,
+												AssignTo:  &vsw.enableHT,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.Mods.EnableHT,
+												Checked:   settings.VSplayer.Mods.EnableHT,
 											},
 										},
 									},
@@ -512,9 +512,9 @@ func UImain(noGUI bool) {
 												Text: "开启EZ：",
 											},
 											CheckBox{
-												AssignTo: &vsw.enableEZ,
+												AssignTo:  &vsw.enableEZ,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.Mods.EnableEZ,
+												Checked:   settings.VSplayer.Mods.EnableEZ,
 											},
 										},
 									},
@@ -524,9 +524,9 @@ func UImain(noGUI bool) {
 												Text: "开启HR：",
 											},
 											CheckBox{
-												AssignTo: &vsw.enableHR,
+												AssignTo:  &vsw.enableHR,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.Mods.EnableHR,
+												Checked:   settings.VSplayer.Mods.EnableHR,
 											},
 										},
 									},
@@ -536,9 +536,9 @@ func UImain(noGUI bool) {
 												Text: "开启HD：",
 											},
 											CheckBox{
-												AssignTo: &vsw.enableHD,
+												AssignTo:  &vsw.enableHD,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.Mods.EnableHD,
+												Checked:   settings.VSplayer.Mods.EnableHD,
 											},
 										},
 									},
@@ -551,7 +551,7 @@ func UImain(noGUI bool) {
 						Layout: VBox{MarginsZero: true},
 						Children: []Widget{
 							GroupBox{
-								Title: "淘汰模式设置",
+								Title:  "淘汰模式设置",
 								Layout: VBox{},
 								Children: []Widget{
 									HSplitter{
@@ -560,9 +560,9 @@ func UImain(noGUI bool) {
 												Text: "淘汰模式：",
 											},
 											CheckBox{
-												AssignTo: &vsw.enableKnockout,
+												AssignTo:  &vsw.enableKnockout,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.Knockout.EnableKnockout,
+												Checked:   settings.VSplayer.Knockout.EnableKnockout,
 											},
 										},
 									},
@@ -572,9 +572,9 @@ func UImain(noGUI bool) {
 												Text: "显示真实miss：",
 											},
 											CheckBox{
-												AssignTo: &vsw.showTrueMiss,
+												AssignTo:  &vsw.showTrueMiss,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.Knockout.ShowTrueMiss,
+												Checked:   settings.VSplayer.Knockout.ShowTrueMiss,
 											},
 										},
 									},
@@ -584,9 +584,9 @@ func UImain(noGUI bool) {
 												Text: "miss消失时间：",
 											},
 											LineEdit{
-												AssignTo: &vsw.playerFadeTime,
+												AssignTo:  &vsw.playerFadeTime,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.VSplayer.Knockout.PlayerFadeTime),
+												Text:      fmt.Sprintf("%g", settings.VSplayer.Knockout.PlayerFadeTime),
 											},
 										},
 									},
@@ -596,9 +596,9 @@ func UImain(noGUI bool) {
 												Text: "同位偏移：",
 											},
 											LineEdit{
-												AssignTo: &vsw.sameTimeOffset,
+												AssignTo:  &vsw.sameTimeOffset,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.VSplayer.Knockout.SameTimeOffset),
+												Text:      fmt.Sprintf("%g", settings.VSplayer.Knockout.SameTimeOffset),
 											},
 										},
 									},
@@ -608,16 +608,16 @@ func UImain(noGUI bool) {
 												Text: "miss大小倍数：",
 											},
 											LineEdit{
-												AssignTo: &vsw.missMult,
+												AssignTo:  &vsw.missMult,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.VSplayer.Knockout.MissMult),
+												Text:      fmt.Sprintf("%g", settings.VSplayer.Knockout.MissMult),
 											},
 										},
 									},
 								},
 							},
 							GroupBox{
-								Title: "replay和cache设置",
+								Title:  "replay和cache设置",
 								Layout: VBox{},
 								Children: []Widget{
 									HSplitter{
@@ -626,9 +626,9 @@ func UImain(noGUI bool) {
 												Text: "replay目录：",
 											},
 											LineEdit{
-												AssignTo: &vsw.replayDir,
+												AssignTo:  &vsw.replayDir,
 												Alignment: AlignHNearVNear,
-												Text: settings.VSplayer.ReplayandCache.ReplayDir,
+												Text:      settings.VSplayer.ReplayandCache.ReplayDir,
 											},
 										},
 									},
@@ -638,33 +638,21 @@ func UImain(noGUI bool) {
 												Text: "cache目录：",
 											},
 											LineEdit{
-												AssignTo: &vsw.cacheDir,
+												AssignTo:  &vsw.cacheDir,
 												Alignment: AlignHNearVNear,
-												Text: settings.VSplayer.ReplayandCache.CacheDir,
+												Text:      settings.VSplayer.ReplayandCache.CacheDir,
 											},
 										},
 									},
 									HSplitter{
 										Children: []Widget{
 											TextLabel{
-												Text: "保存cache：",
+												Text: "开启Cache：",
 											},
 											CheckBox{
-												AssignTo: &vsw.saveResultCache,
+												AssignTo:  &vsw.useCacheSystem,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.ReplayandCache.SaveResultCache,
-											},
-										},
-									},
-									HSplitter{
-										Children: []Widget{
-											TextLabel{
-												Text: "读取cache：",
-											},
-											CheckBox{
-												AssignTo: &vsw.readResultCache,
-												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.ReplayandCache.ReadResultCache,
+												Checked:   settings.VSplayer.ReplayandCache.UseCacheSystem,
 											},
 										},
 									},
@@ -674,16 +662,16 @@ func UImain(noGUI bool) {
 												Text: "Debug：",
 											},
 											CheckBox{
-												AssignTo: &vsw.replayDebug,
+												AssignTo:  &vsw.replayDebug,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.ReplayandCache.ReplayDebug,
+												Checked:   settings.VSplayer.ReplayandCache.ReplayDebug,
 											},
 										},
 									},
 								},
 							},
 							GroupBox{
-								Title: "错误修正设置",
+								Title:  "错误修正设置",
 								Layout: VBox{},
 								Children: []Widget{
 									HSplitter{
@@ -692,9 +680,9 @@ func UImain(noGUI bool) {
 												Text: "错误修正：",
 											},
 											CheckBox{
-												AssignTo: &vsw.enableErrorFix,
+												AssignTo:  &vsw.enableErrorFix,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.ErrorFix.EnableErrorFix,
+												Checked:   settings.VSplayer.ErrorFix.EnableErrorFix,
 											},
 										},
 									},
@@ -704,16 +692,16 @@ func UImain(noGUI bool) {
 												Text: "修正文件：",
 											},
 											LineEdit{
-												AssignTo: &vsw.errorFixFile,
+												AssignTo:  &vsw.errorFixFile,
 												Alignment: AlignHNearVNear,
-												Text: settings.VSplayer.ErrorFix.ErrorFixFile,
+												Text:      settings.VSplayer.ErrorFix.ErrorFixFile,
 											},
 										},
 									},
 								},
 							},
 							GroupBox{
-								Title: "皮肤设置",
+								Title:  "皮肤设置",
 								Layout: VBox{},
 								Children: []Widget{
 									HSplitter{
@@ -722,9 +710,9 @@ func UImain(noGUI bool) {
 												Text: "自定义皮肤：",
 											},
 											CheckBox{
-												AssignTo: &vsw.enableSkin,
+												AssignTo:  &vsw.enableSkin,
 												Alignment: AlignHNearVNear,
-												Checked: settings.VSplayer.Skin.EnableSkin,
+												Checked:   settings.VSplayer.Skin.EnableSkin,
 											},
 										},
 									},
@@ -734,9 +722,9 @@ func UImain(noGUI bool) {
 												Text: "皮肤目录：",
 											},
 											LineEdit{
-												AssignTo: &vsw.skinDir,
+												AssignTo:  &vsw.skinDir,
 												Alignment: AlignHNearVNear,
-												Text: settings.VSplayer.Skin.SkinDir,
+												Text:      settings.VSplayer.Skin.SkinDir,
 											},
 										},
 									},
@@ -746,16 +734,16 @@ func UImain(noGUI bool) {
 												Text: "数字间隔偏移：",
 											},
 											LineEdit{
-												AssignTo: &vsw.numberOffset,
+												AssignTo:  &vsw.numberOffset,
 												Alignment: AlignHNearVNear,
-												Text: strconv.Itoa(int(settings.VSplayer.Skin.NumberOffset)),
+												Text:      strconv.Itoa(int(settings.VSplayer.Skin.NumberOffset)),
 											},
 										},
 									},
 								},
 							},
 							GroupBox{
-								Title: "其他原生设置",
+								Title:  "其他原生设置",
 								Layout: VBox{},
 								Children: []Widget{
 									HSplitter{
@@ -764,9 +752,9 @@ func UImain(noGUI bool) {
 												Text: "光标大小：",
 											},
 											LineEdit{
-												AssignTo: &vsw.cursorSize,
+												AssignTo:  &vsw.cursorSize,
 												Alignment: AlignHNearVNear,
-												Text: fmt.Sprintf("%g", settings.Cursor.CursorSize),
+												Text:      fmt.Sprintf("%g", settings.Cursor.CursorSize),
 											},
 										},
 									},
@@ -776,9 +764,9 @@ func UImain(noGUI bool) {
 												Text: "全屏：",
 											},
 											CheckBox{
-												AssignTo: &vsw.fullScreen,
+												AssignTo:  &vsw.fullScreen,
 												Alignment: AlignHNearVNear,
-												Checked: settings.Graphics.Fullscreen,
+												Checked:   settings.Graphics.Fullscreen,
 											},
 										},
 									},
@@ -788,9 +776,9 @@ func UImain(noGUI bool) {
 												Text: "开启sb：",
 											},
 											CheckBox{
-												AssignTo: &vsw.storyboardEnabled,
+												AssignTo:  &vsw.storyboardEnabled,
 												Alignment: AlignHNearVNear,
-												Checked: settings.Playfield.StoryboardEnabled,
+												Checked:   settings.Playfield.StoryboardEnabled,
 											},
 										},
 									},
@@ -802,14 +790,14 @@ func UImain(noGUI bool) {
 				},
 			},
 			PushButton{
-				Text: "保存设置",
+				Text:      "保存设置",
 				Alignment: AlignHCenterVFar,
 				OnClicked: func() {
 					vsw.SaveConfig()
 				},
 			},
 			PushButton{
-				Text: "保存并开始",
+				Text:      "保存并开始",
 				Alignment: AlignHCenterVFar,
 				OnClicked: func() {
 					vsw.SaveConfig()

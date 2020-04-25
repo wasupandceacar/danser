@@ -101,7 +101,7 @@ func LoadFont(reader io.Reader, loc uint) *Font {
 		fg, bg := image.White, image.Transparent
 		rect := image.Rect(0, 0, int(gw), int(gh))
 		rgba := image.NewNRGBA(rect)
-		draw.Draw(rgba, rgba.Bounds(), bg, image.ZP, draw.Src)
+		draw.Draw(rgba, rgba.Bounds(), bg, image.Point{}, draw.Src)
 
 		context.SetClip(rect)
 		context.SetDst(rgba)
@@ -147,6 +147,10 @@ func (font *Font) Draw(renderer *render.SpriteBatch, x, y float64, size float64,
 	scale := size / font.initialSize
 
 	for i, c := range text {
+		if c-font.min < 0 {
+			log.Println("Warning! A unprintable character is presented in text! Skipping")
+			continue
+		}
 		char := font.glyphs[c-font.min]
 		if char == nil {
 			continue

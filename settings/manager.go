@@ -1,9 +1,9 @@
 package settings
 
 import (
-	"strconv"
-	"os"
 	"encoding/json"
+	"os"
+	"strconv"
 )
 
 var fileStorage *fileformat
@@ -76,7 +76,6 @@ func initDefaults() {
 			"replays\\",
 			"cache\\",
 			true,
-			false,
 			false,
 		},
 		&errorfix{

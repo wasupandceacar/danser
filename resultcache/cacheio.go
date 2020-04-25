@@ -6,9 +6,10 @@ import (
 	"encoding/json"
 	"github.com/Mempler/rplpa"
 	"io/ioutil"
+	"os"
 )
 
-func SaveResult(oresult []hitjudge.ObjectResult, tresult []hitjudge.TotalResult, replay *rplpa.Replay) {
+func CacheResult(oresult []hitjudge.ObjectResult, tresult []hitjudge.TotalResult, replay *rplpa.Replay) {
 	filename := settings.VSplayer.ReplayandCache.CacheDir + replay.ReplayMD5
 	oerr := ioutil.WriteFile(filename+".ooc", []byte(marshalObjectResult(oresult)), 0666)
 	if oerr != nil {
@@ -20,11 +21,18 @@ func SaveResult(oresult []hitjudge.ObjectResult, tresult []hitjudge.TotalResult,
 	}
 }
 
-func ReadResult(replay *rplpa.Replay) ([]hitjudge.ObjectResult, []hitjudge.TotalResult) {
+func GetResult(replay *rplpa.Replay) ([]hitjudge.ObjectResult, []hitjudge.TotalResult) {
 	filename := settings.VSplayer.ReplayandCache.CacheDir + replay.ReplayMD5
 	oread, _ := ioutil.ReadFile(filename + ".ooc")
 	tread, _ := ioutil.ReadFile(filename + ".otc")
 	return unmarshalObjectResult(oread), unmarshalTotalResult(tread)
+}
+
+func IsCacheExists(replay *rplpa.Replay) bool {
+	filename := settings.VSplayer.ReplayandCache.CacheDir + replay.ReplayMD5
+	_, err1 := os.Stat(filename + ".ooc")
+	_, err2 := os.Stat(filename + ".otc")
+	return !os.IsNotExist(err1) && !os.IsNotExist(err2)
 }
 
 func marshalObjectResult(oresult []hitjudge.ObjectResult) string {
