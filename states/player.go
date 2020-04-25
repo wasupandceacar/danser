@@ -349,6 +349,20 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 		errs = []hitjudge.Error{}
 	}
 
+	//Information: How to calculate ReplayIndex
+	/*
+	var rnum int
+	if settings.VSplayer.PlayerInfo.SpecifiedPlayers {
+		rnum = tmpplindex[k]
+	} else {
+		rnum = k + 1
+	}
+
+	then
+
+	hitjudge.FilterError(rnum, errs)
+	*/
+
 	//TODO: Setting up specific player system
 	if settings.VSplayer.ReplayandCache.UseCacheSystem {
 		log.Println("Enabled Cache System")
@@ -411,109 +425,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	player.batch.End()
 	win.SwapBuffers()
 
-	//TODO: Delete old codes
-	/*
-		// Old Parsing Codes
-		if settings.VSplayer.ReplayandCache.ReadResultCache && !settings.VSplayer.ReplayandCache.ReplayDebug {
-			log.Println("本次选择读取缓存replay结果")
-			player.batch.Begin()
-			loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: "Read replay result cache... 0/" + strconv.Itoa(player.playerCount)})
-			player.font.DrawAll(player.batch, loadwords)
-			player.batch.End()
-			win.SwapBuffers()
-			for k := 0; k < player.playerCount; k++ {
-				var rnum int
-				if settings.VSplayer.PlayerInfo.SpecifiedPlayers {
-					rnum = tmpplindex[k]
-				} else {
-					rnum = k + 1
-				}
-				t1 := time.Now()
-				log.Println("读取第", rnum, "个replay缓存")
-				currentReplay := replay.ExtractReplay(replays[k])
-				result, totalResult := resultcache.ReadResult(currentReplay)
-				configurePlayer(player, k, currentReplay, result, totalResult)
-				log.Println("读取第", rnum, "个replay缓存完成，耗时", time.Now().Sub(t1), "，总耗时", time.Now().Sub(t))
-				player.batch.Begin()
-				loadwords = append(loadwords[:len(loadwords)-1], font.Word{X: 14, Size: 24, Text: "Read replay result cache... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(player.playerCount)})
-				player.font.DrawAll(player.batch, loadwords)
-				player.batch.End()
-				win.SwapBuffers()
-			}
-		} else {
-			log.Println("本次选择解析replay")
-			if !settings.VSplayer.ReplayandCache.ReplayDebug {
-				player.batch.Begin()
-				loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: "Analyze replay... 0/" + strconv.Itoa(player.playerCount)})
-				player.font.DrawAll(player.batch, loadwords)
-				player.batch.End()
-				win.SwapBuffers()
-			}
-			var errs []hitjudge.Error
-			if settings.VSplayer.ErrorFix.EnableErrorFix {
-				log.Println("本次选择进行replay解析纠错")
-				errs = hitjudge.ReadError()
-			} else {
-				errs = []hitjudge.Error{}
-			}
-			for k := 0; k < player.playerCount; k++ {
-				var rnum int
-				if settings.VSplayer.PlayerInfo.SpecifiedPlayers {
-					rnum = tmpplindex[k]
-				} else {
-					rnum = k + 1
-				}
-				t1 := time.Now()
-				log.Println("解析第", rnum, "个replay")
-				result, totalResult, currentReplay, allRight, _ := hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, replays[k], hitjudge.FilterError(rnum, errs), NO_USE_CS_OFFSET)
-				// 如果因为滑条尾判定需要单独修正CS，重新计算
-				// 有问题，暂时不采用
-				//if cs_offset > 0{
-				//	result, totalResult, mods, allRight, cs_offset = hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, replays[k], hitjudge.FilterError(rnum, errs), cs_offset)
-				//}
-				if !settings.VSplayer.ReplayandCache.ReplayDebug {
-					configurePlayer(player, k, currentReplay, result, totalResult)
-				} else {
-					// 记录出错情况
-					if allRight {
-						right += 1
-					} else {
-						wrong += 1
-						wrongIndex = append(wrongIndex, rnum)
-					}
-				}
-				// 保存结果缓存
-				if settings.VSplayer.ReplayandCache.UseCacheSystem && !settings.VSplayer.ReplayandCache.ReplayDebug {
-					resultcache.SaveResult(result, totalResult, currentReplay)
-					log.Println("已保存第", rnum, "个replay的结果缓存到"+currentReplay.ReplayMD5+".ooc/otc")
-				}
-				log.Println("解析第", rnum, "个replay完成，耗时", time.Now().Sub(t1), "，总耗时", time.Now().Sub(t))
-				if !settings.VSplayer.ReplayandCache.ReplayDebug {
-					player.batch.Begin()
-					loadwords = append(loadwords[:len(loadwords)-1], font.Word{X: 14, Size: 24, Text: "Analyze replay... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(player.playerCount)})
-					player.font.DrawAll(player.batch, loadwords)
-					player.batch.End()
-					win.SwapBuffers()
-				}
-			}
-		}*/
-
-	// DEBUG
-	//player.controller[1].GetHitResult()[4].IsBreak = true
-	//player.controller[2].GetHitResult()[4].IsBreak = true
-	//player.controller[3].GetHitResult()[4].IsBreak = true
-
-	// DEBUG
-	//player.controller[1].GetHitResult()[4].Result = hitjudge.HitMiss
-	//player.controller[2].GetHitResult()[4].Result = hitjudge.HitMiss
-	//player.controller[3].GetHitResult()[4].Result = hitjudge.HitMiss
-	//player.controller[1].GetHitResult()[7].Result = hitjudge.HitMiss
-	//player.controller[2].GetHitResult()[7].Result = hitjudge.HitMiss
-	//player.controller[3].GetHitResult()[7].Result = hitjudge.HitMiss
-	//player.controller[1].GetHitResult()[12].Result = hitjudge.HitMiss
-	//player.controller[2].GetHitResult()[12].Result = hitjudge.HitMiss
-	//player.controller[3].GetHitResult()[12].Result = hitjudge.HitMiss
-
+	//TODO: Replay debug system
 	if settings.VSplayer.ReplayandCache.ReplayDebug {
 		// 总体replay分析情况
 		log.Println("正确结果：", right, " 个")
