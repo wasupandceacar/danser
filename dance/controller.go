@@ -33,8 +33,8 @@ type Controller interface {
 	SetPresskey(presskey rplpa.KeyPressed)
 	GetPresskey() rplpa.KeyPressed
 
-	SetMods(mods int)
-	GetMods() int
+	SetMods(mods uint32)
+	GetMods() uint32
 
 	SetHitResult(result []hitjudge.ObjectResult)
 	GetHitResult() []hitjudge.ObjectResult
@@ -150,37 +150,33 @@ func SetMover(name string) {
 //	return controller.cursors
 //}
 
-
-
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // 重写replay的controller
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 type ReplayController struct {
-	bMap       *beatmap.BeatMap
-	cursors    []*render.Cursor
-	schedulers []schedulers.Scheduler
+	bMap        *beatmap.BeatMap
+	cursors     []*render.Cursor
+	schedulers  []schedulers.Scheduler
 	playername  string
 	presskey    rplpa.KeyPressed
-	mods		int
+	mods        uint32
 	hitresult   []hitjudge.ObjectResult
 	totalresult []hitjudge.TotalResult
-	acc  		float64
-	rank 		texture.TextureRegion
-	isShow		bool
-	dishowtime	float64
-	dishowpos	bmath.Vector2d
-	missinfo	[]missInfo
-	pp			float64
-	ur			float64
+	acc         float64
+	rank        texture.TextureRegion
+	isShow      bool
+	dishowtime  float64
+	dishowpos   bmath.Vector2d
+	missinfo    []missInfo
+	pp          float64
+	ur          float64
 }
 
 type missInfo struct {
-	MissTime	float64
-	MissJudgeTime	int64
-	MissPos		bmath.Vector2d
+	MissTime      float64
+	MissJudgeTime int64
+	MissPos       bmath.Vector2d
 }
 
 func NewReplayController() Controller {
@@ -233,6 +229,7 @@ func (controller *ReplayController) Update(time int64, delta float64, position b
 		controller.cursors[i].Update(delta)
 	}
 }
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func (controller *ReplayController) GetCursors() []*render.Cursor {
@@ -255,11 +252,11 @@ func (controller *ReplayController) GetPresskey() rplpa.KeyPressed {
 	return controller.presskey
 }
 
-func (controller *ReplayController) SetMods(mods int) {
+func (controller *ReplayController) SetMods(mods uint32) {
 	controller.mods = mods
 }
 
-func (controller *ReplayController) GetMods() int {
+func (controller *ReplayController) GetMods() uint32 {
 	return controller.mods
 }
 
@@ -267,7 +264,7 @@ func (controller *ReplayController) SetHitResult(result []hitjudge.ObjectResult)
 	controller.hitresult = result
 }
 
-func (controller *ReplayController) GetHitResult() []hitjudge.ObjectResult{
+func (controller *ReplayController) GetHitResult() []hitjudge.ObjectResult {
 	return controller.hitresult
 }
 
@@ -275,7 +272,7 @@ func (controller *ReplayController) SetTotalResult(result []hitjudge.TotalResult
 	controller.totalresult = result
 }
 
-func (controller *ReplayController) GetTotalResult() []hitjudge.TotalResult{
+func (controller *ReplayController) GetTotalResult() []hitjudge.TotalResult {
 	return controller.totalresult
 }
 
@@ -283,7 +280,7 @@ func (controller *ReplayController) SetAcc(result float64) {
 	controller.acc = result
 }
 
-func (controller *ReplayController) GetAcc() float64{
+func (controller *ReplayController) GetAcc() float64 {
 	return controller.acc
 }
 
@@ -291,7 +288,7 @@ func (controller *ReplayController) SetPP(result float64) {
 	controller.pp = result
 }
 
-func (controller *ReplayController) GetPP() float64{
+func (controller *ReplayController) GetPP() float64 {
 	return controller.pp
 }
 
@@ -299,7 +296,7 @@ func (controller *ReplayController) SetUR(result float64) {
 	controller.ur = result
 }
 
-func (controller *ReplayController) GetUR() float64{
+func (controller *ReplayController) GetUR() float64 {
 	return controller.ur
 }
 
@@ -307,7 +304,7 @@ func (controller *ReplayController) SetRank(result texture.TextureRegion) {
 	controller.rank = result
 }
 
-func (controller *ReplayController) GetRank() texture.TextureRegion{
+func (controller *ReplayController) GetRank() texture.TextureRegion {
 	return controller.rank
 }
 
@@ -323,7 +320,7 @@ func (controller *ReplayController) SetDishowTime(time float64) {
 	controller.dishowtime = time
 }
 
-func (controller *ReplayController) GetDishowTime() float64{
+func (controller *ReplayController) GetDishowTime() float64 {
 	return controller.dishowtime
 }
 
@@ -333,7 +330,7 @@ func (controller *ReplayController) SetDishowPos(pos bmath.Vector2d, rate int) {
 	controller.dishowpos = bmath.Vector2d{pos.X, PLAYFIELD_HEIGHT - pos.Y - offsetY}
 }
 
-func (controller *ReplayController) GetDishowPos() bmath.Vector2d{
+func (controller *ReplayController) GetDishowPos() bmath.Vector2d {
 	return controller.dishowpos
 }
 

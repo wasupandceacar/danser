@@ -10,11 +10,11 @@ import (
 
 func SaveResult(oresult []hitjudge.ObjectResult, tresult []hitjudge.TotalResult, replay *rplpa.Replay) {
 	filename := settings.VSplayer.ReplayandCache.CacheDir + replay.ReplayMD5
-	oerr := ioutil.WriteFile(filename+".ooc", []byte(getObjectCache(oresult)), 0666)
+	oerr := ioutil.WriteFile(filename+".ooc", []byte(marshalObjectResult(oresult)), 0666)
 	if oerr != nil {
 		panic(oerr)
 	}
-	terr := ioutil.WriteFile(filename+".otc", []byte(getTotalCache(tresult)), 0666)
+	terr := ioutil.WriteFile(filename+".otc", []byte(marshalTotalResult(tresult)), 0666)
 	if terr != nil {
 		panic(terr)
 	}
@@ -24,10 +24,10 @@ func ReadResult(replay *rplpa.Replay) ([]hitjudge.ObjectResult, []hitjudge.Total
 	filename := settings.VSplayer.ReplayandCache.CacheDir + replay.ReplayMD5
 	oread, _ := ioutil.ReadFile(filename + ".ooc")
 	tread, _ := ioutil.ReadFile(filename + ".otc")
-	return setObjectCache(oread), setTotalCache(tread)
+	return unmarshalObjectResult(oread), unmarshalTotalResult(tread)
 }
 
-func getObjectCache(oresult []hitjudge.ObjectResult) string {
+func marshalObjectResult(oresult []hitjudge.ObjectResult) string {
 	data, err := json.MarshalIndent(oresult, "", "     ")
 	if err != nil {
 		panic(err)
@@ -35,7 +35,7 @@ func getObjectCache(oresult []hitjudge.ObjectResult) string {
 	return string(data)
 }
 
-func getTotalCache(tresult []hitjudge.TotalResult) string {
+func marshalTotalResult(tresult []hitjudge.TotalResult) string {
 	data, err := json.MarshalIndent(tresult, "", "     ")
 	if err != nil {
 		panic(err)
@@ -43,7 +43,7 @@ func getTotalCache(tresult []hitjudge.TotalResult) string {
 	return string(data)
 }
 
-func setObjectCache(r []byte) []hitjudge.ObjectResult {
+func unmarshalObjectResult(r []byte) []hitjudge.ObjectResult {
 	var oresult []hitjudge.ObjectResult
 	if err := json.Unmarshal(r, &oresult); err != nil {
 		panic(err)
@@ -51,7 +51,7 @@ func setObjectCache(r []byte) []hitjudge.ObjectResult {
 	return oresult
 }
 
-func setTotalCache(r []byte) []hitjudge.TotalResult {
+func unmarshalTotalResult(r []byte) []hitjudge.TotalResult {
 	var tresult []hitjudge.TotalResult
 	if err := json.Unmarshal(r, &tresult); err != nil {
 		panic(err)
