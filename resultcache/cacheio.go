@@ -9,7 +9,7 @@ import (
 )
 
 func SaveResult(oresult []hitjudge.ObjectResult, tresult []hitjudge.TotalResult, replay *rplpa.Replay) {
-	filename := settings.VSplayer.ReplayandCache.CacheDir + replay.BeatmapMD5
+	filename := settings.VSplayer.ReplayandCache.CacheDir + replay.ReplayMD5
 	oerr := ioutil.WriteFile(filename+".ooc", []byte(getObjectCache(oresult)), 0666)
 	if oerr != nil {
 		panic(oerr)
@@ -21,7 +21,7 @@ func SaveResult(oresult []hitjudge.ObjectResult, tresult []hitjudge.TotalResult,
 }
 
 func ReadResult(replay *rplpa.Replay) ([]hitjudge.ObjectResult, []hitjudge.TotalResult) {
-	filename := settings.VSplayer.ReplayandCache.CacheDir + replay.BeatmapMD5
+	filename := settings.VSplayer.ReplayandCache.CacheDir + replay.ReplayMD5
 	oread, _ := ioutil.ReadFile(filename + ".ooc")
 	tread, _ := ioutil.ReadFile(filename + ".otc")
 	return setObjectCache(oread), setTotalCache(tread)
