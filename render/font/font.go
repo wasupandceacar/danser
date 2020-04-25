@@ -142,41 +142,15 @@ func LoadFont(reader io.Reader, loc uint) *Font {
 }
 
 func (font *Font) Draw(renderer *render.SpriteBatch, x, y float64, size float64, text string) {
-	xpad := x
-
-	scale := size / font.initialSize
-
-	for i, c := range text {
-		if c-font.min < 0 || c-font.min > font.max || int(c) > 127 {
-			log.Println("Warning! A non-ASCII or unprintable character is presented in text! Skipping")
-			continue
-		}
-		char := font.glyphs[c-font.min]
-		if char == nil {
-			continue
-		}
-
-		kerning := 0.0
-
-		if i > 0 {
-			kerning = float64(font.face.Kern(rune(text[i-1]), c)) / 64
-		}
-
-		renderer.SetScale(scale, scale)
-		renderer.SetTranslation(bmath.NewVec2d(xpad+(char.bearingX-kerning+float64(char.region.Width)/2)*scale, y+(float64(char.region.Height)/2-char.bearingY)*scale))
-		renderer.DrawTexture(char.region)
-		xpad += scale * (char.advance - kerning)
-
-	}
+	font.DrawAndGetLastPosition(renderer, x, y, size, text)
 }
 
 func (font *Font) DrawAndGetLastPosition(renderer *render.SpriteBatch, x, y float64, size float64, text string) float64 {
 	xpad := x
-
 	scale := size / font.initialSize
 
 	for i, c := range text {
-		if c-font.min < 0 || c-font.min > font.max || int(c) > 127 {
+		if c-font.min < 0 || c-font.min >= font.max || int(c) > 127 {
 			log.Println("Warning! A non-ASCII or unprintable character is presented in text! Skipping")
 			continue
 		}
@@ -210,9 +184,11 @@ func (font *Font) DrawAll(renderer *render.SpriteBatch, words []Word) {
 	// 清除之前的文字，否则会重叠
 	gl.ClearColor(0, 0, 0, 1)
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+	//获得初始Y坐标
 	currentY := float64(settings.Graphics.GetHeight() - 40)
 	for _, word := range words {
 		font.Draw(renderer, word.X, currentY, word.Size, word.Text)
+		// 扩大1.7倍size的间距
 		currentY -= word.Size * 1.7
 	}
 }
