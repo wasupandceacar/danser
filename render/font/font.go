@@ -4,6 +4,7 @@ import (
 	"danser/bmath"
 	"danser/render"
 	"danser/render/texture"
+	"danser/settings"
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/golang/freetype"
 	"github.com/golang/freetype/truetype"
@@ -107,7 +108,7 @@ func LoadFont(reader io.Reader, loc uint) *Font {
 		context.SetSrc(fg)
 
 		px := 0 - (int(gBnd.Min.X) >> 6)
-		py := (gAscent)
+		py := gAscent
 		pt := freetype.Pt(px, py)
 
 		// Draw the text from mask to image
@@ -192,17 +193,18 @@ func (font *Font) DrawAndGetLastPosition(renderer *render.SpriteBatch, x, y floa
 }
 
 type Word struct {
-	X		float64
-	Y 		float64
-	Size	float64
-	Text 	string
+	X    float64
+	Size float64
+	Text string
 }
 
-func (font *Font) DrawAll (renderer *render.SpriteBatch, words []Word)  {
+func (font *Font) DrawAll(renderer *render.SpriteBatch, words []Word) {
 	// 清除之前的文字，否则会重叠
 	gl.ClearColor(0, 0, 0, 1)
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+	currentY := float64(settings.Graphics.GetHeight() - 20)
 	for _, word := range words {
-		font.Draw(renderer, word.X, word.Y, word.Size, word.Text)
+		font.Draw(renderer, word.X, currentY, word.Size, word.Text)
+		currentY += word.Size * 1.7
 	}
 }

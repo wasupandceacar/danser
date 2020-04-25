@@ -37,9 +37,9 @@ import (
 	"time"
 )
 
-var defaultpos = bmath.Vector2d{-1, -1}
+var defaultPos = bmath.Vector2d{X: -1, Y: -1}
 
-var nokey = rplpa.KeyPressed{
+var noKeyPressed = rplpa.KeyPressed{
 	LeftClick:  false,
 	RightClick: false,
 	Key1:       false,
@@ -50,7 +50,7 @@ var nokey = rplpa.KeyPressed{
 type Player struct {
 	font *font.Font
 	// 加粗字体
-	highlightfont  *font.Font
+	highlightFont  *font.Font
 	bMap           *beatmap.BeatMap
 	queue2         []objects.BaseObject
 	processed      []objects.Renderable
@@ -194,13 +194,11 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	// 重置时间
 	utils.ResetTime()
 
-	screenheight := settings.Graphics.GetHeight()
-
 	// 非replay debug
 	if !settings.VSplayer.ReplayandCache.ReplayDebug {
 		player.batch = render.NewSpriteBatch()
 		player.font = font.GetFont("Roboto Bold")
-		player.highlightfont = font.GetFont("Roboto Black")
+		player.highlightFont = font.GetFont("Roboto Black")
 
 		player.scamera = bmath.NewCamera()
 		player.scamera.SetViewport(int(settings.Graphics.GetWidth()), int(settings.Graphics.GetHeight()), false)
@@ -213,7 +211,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 		render.LoadTextures()
 		render.LoadSkinConfiguration()
 
-		loadwords = append(loadwords, font.Word{14, float64(screenheight - 160), 24, "Textures and skin configuration loaded..."})
+		loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: "Textures and skin configuration loaded..."})
 		player.font.DrawAll(player.batch, loadwords)
 		player.batch.End()
 		win.SwapBuffers()
@@ -227,7 +225,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 		log.Println("Playing:", player.mapFullName)
 
 		player.batch.Begin()
-		loadwords = append(loadwords, font.Word{14, float64(screenheight - 200), 24, "Map: " + player.mapFullName})
+		loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: "Map: " + player.mapFullName})
 		player.font.DrawAll(player.batch, loadwords)
 		player.batch.End()
 		win.SwapBuffers()
@@ -299,7 +297,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	//endregion
 
 	//region player初始化
-	tmpplindex := []int{}
+	var tmpplindex []int
 	if settings.VSplayer.PlayerInfo.SpecifiedPlayers {
 		specifiedplayers := strings.Split(settings.VSplayer.PlayerInfo.SpecifiedLine, ",")
 		for _, player := range specifiedplayers {
@@ -340,12 +338,12 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	right := 0
 	wrong := 0
 	// 错误的replay编号
-	wrongIndex := []int{}
+	var wrongIndex []int
 
 	if settings.VSplayer.ReplayandCache.ReadResultCache && !settings.VSplayer.ReplayandCache.ReplayDebug {
 		log.Println("本次选择读取缓存replay结果")
 		player.batch.Begin()
-		loadwords = append(loadwords, font.Word{14, float64(screenheight - 240), 24, "Read replay result cache... 0/" + strconv.Itoa(player.players)})
+		loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: "Read replay result cache... 0/" + strconv.Itoa(player.players)})
 		player.font.DrawAll(player.batch, loadwords)
 		player.batch.End()
 		win.SwapBuffers()
@@ -382,7 +380,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 			player.controller[k].SetTotalResult(totalresult)
 			log.Println("读取第", rnum, "个replay缓存完成，耗时", time.Now().Sub(t1), "，总耗时", time.Now().Sub(t))
 			player.batch.Begin()
-			loadwords = append(loadwords[:len(loadwords)-1], font.Word{14, float64(screenheight - 240), 24, "Read replay result cache... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(player.players)})
+			loadwords = append(loadwords[:len(loadwords)-1], font.Word{X: 14, Size: 24, Text: "Read replay result cache... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(player.players)})
 			player.font.DrawAll(player.batch, loadwords)
 			player.batch.End()
 			win.SwapBuffers()
@@ -391,7 +389,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 		log.Println("本次选择解析replay")
 		if !settings.VSplayer.ReplayandCache.ReplayDebug {
 			player.batch.Begin()
-			loadwords = append(loadwords, font.Word{14, float64(screenheight - 240), 24, "Analyze replay... 0/" + strconv.Itoa(player.players)})
+			loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: "Analyze replay... 0/" + strconv.Itoa(player.players)})
 			player.font.DrawAll(player.batch, loadwords)
 			player.batch.End()
 			win.SwapBuffers()
@@ -452,12 +450,12 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 			// 保存结果缓存
 			if settings.VSplayer.ReplayandCache.SaveResultCache && !settings.VSplayer.ReplayandCache.ReplayDebug {
 				resultcache.SaveResult(result, totalresult, r)
-				log.Println("已保存第", rnum, "个replay的结果缓存到"+r.BeatmapMD5+".ooc/otc")
+				log.Println("已保存第", rnum, "个replay的结果缓存到"+r.ReplayMD5+".ooc/otc")
 			}
 			log.Println("解析第", rnum, "个replay完成，耗时", time.Now().Sub(t1), "，总耗时", time.Now().Sub(t))
 			if !settings.VSplayer.ReplayandCache.ReplayDebug {
 				player.batch.Begin()
-				loadwords = append(loadwords[:len(loadwords)-1], font.Word{14, float64(screenheight - 240), 24, "Analyze replay... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(player.players)})
+				loadwords = append(loadwords[:len(loadwords)-1], font.Word{X: 14, Size: 24, Text: "Analyze replay... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(player.players)})
 				player.font.DrawAll(player.batch, loadwords)
 				player.batch.End()
 				win.SwapBuffers()
@@ -548,7 +546,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 
 	log.Println("Music:", beatMap.Audio)
 	player.batch.Begin()
-	loadwords = append(loadwords, font.Word{14, float64(screenheight - 280), 24, "Music: " + beatMap.Audio})
+	loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: "Music: " + beatMap.Audio})
 	player.font.DrawAll(player.batch, loadwords)
 	player.batch.End()
 	win.SwapBuffers()
@@ -680,9 +678,9 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 		player.objectcolorIndex = settings.VSplayer.PlayerFieldUI.CursorColorNum - 1
 	}
 
-	player.lastDishowPos = bmath.Vector2d{-1, -1}
+	player.lastDishowPos = bmath.Vector2d{X: -1, Y: -1}
 	player.SameRate = 0
-	player.lastMissPos = bmath.Vector2d{-1, -1}
+	player.lastMissPos = bmath.Vector2d{X: -1, Y: -1}
 	player.SameMissRate = 0
 
 	//endregion
@@ -713,7 +711,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 		player.difficulties = make([]oppai.PP, beatmapLength)
 		if !settings.VSplayer.ReplayandCache.ReplayDebug {
 			player.batch.Begin()
-			loadwords = append(loadwords, font.Word{14, float64(screenheight - 320), 24, "Calculate realtime difficulty... 0/" + strconv.Itoa(beatmapLength)})
+			loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: "Calculate realtime difficulty... 0/" + strconv.Itoa(beatmapLength)})
 			player.font.DrawAll(player.batch, loadwords)
 			player.batch.End()
 			win.SwapBuffers()
@@ -722,7 +720,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 			player.difficulties[k] = score.CalculateDiffbyNum(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, k+1, uint32(mods))
 			if !settings.VSplayer.ReplayandCache.ReplayDebug {
 				player.batch.Begin()
-				loadwords = append(loadwords[:len(loadwords)-1], font.Word{14, float64(screenheight - 320), 24, "Calculate realtime difficulty... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(beatmapLength)})
+				loadwords = append(loadwords[:len(loadwords)-1], font.Word{X: 14, Size: 24, Text: "Calculate realtime difficulty... " + strconv.Itoa(k+1) + "/" + strconv.Itoa(beatmapLength)})
 				player.font.DrawAll(player.batch, loadwords)
 				player.batch.End()
 				win.SwapBuffers()
@@ -814,33 +812,33 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 				progressMsF := musicPlayer.GetPosition()*1000 + float64(settings.Audio.Offset)
 
 				//真实的offset
-				true_offset := progressMsF - last
+				trueOffset := progressMsF - last
 
-				late_offset := 0.0
+				lateOffset := 0.0
 
 				if offset == REPLAY_END_TIME {
 					// 如果offset=-12345，replay结束，设置成最后的光标位置
 					// 如果是HR且图整体未开HR，上下翻转
 					if !settings.VSplayer.Mods.EnableHR && player.controller[k].GetMods()&MOD_HR > 0 {
-						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(PLAYFIELD_HEIGHT-r.ReplayData[index-1].MouseY)))
+						player.controller[k].Update(int64(progressMsF), trueOffset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(PLAYFIELD_HEIGHT-r.ReplayData[index-1].MouseY)))
 					} else {
-						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(r.ReplayData[index-1].MouseY)))
+						player.controller[k].Update(int64(progressMsF), trueOffset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(r.ReplayData[index-1].MouseY)))
 					}
 
 					// 按键改为无
-					player.controller[k].SetPresskey(nokey)
+					player.controller[k].SetPresskey(noKeyPressed)
 
 					// 修正last
-					last += float64(true_offset)
+					last += trueOffset
 
-					late_offset = 0.0
-				} else if true_offset >= float64(offset) {
+					lateOffset = 0.0
+				} else if trueOffset >= float64(offset) {
 					// 如果真实offset大于等于读到的offset，更新
 					// 如果是HR且图整体未开HR，上下翻转
 					if !settings.VSplayer.Mods.EnableHR && player.controller[k].GetMods()&MOD_HR > 0 {
-						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(posX), float64(PLAYFIELD_HEIGHT-posY)))
+						player.controller[k].Update(int64(progressMsF), trueOffset, bmath.NewVec2d(float64(posX), float64(PLAYFIELD_HEIGHT-posY)))
 					} else {
-						player.controller[k].Update(int64(progressMsF), true_offset, bmath.NewVec2d(float64(posX), float64(posY)))
+						player.controller[k].Update(int64(progressMsF), trueOffset, bmath.NewVec2d(float64(posX), float64(posY)))
 					}
 
 					if offset != 0 {
@@ -850,18 +848,18 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 					// 修正last
 					last += float64(offset)
 
-					late_offset = 0.0
+					lateOffset = 0.0
 
 					index++
-				} else if true_offset > 50 {
+				} else if trueOffset > 50 {
 					// 超过 50ms 未更新， 自动更新为上一个位置
 					if !settings.VSplayer.Mods.EnableHR && player.controller[k].GetMods()&MOD_HR > 0 {
-						player.controller[k].Update(int64(progressMsF), true_offset-late_offset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(PLAYFIELD_HEIGHT-r.ReplayData[index-1].MouseY)))
+						player.controller[k].Update(int64(progressMsF), trueOffset-lateOffset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(PLAYFIELD_HEIGHT-r.ReplayData[index-1].MouseY)))
 					} else {
-						player.controller[k].Update(int64(progressMsF), true_offset-late_offset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(r.ReplayData[index-1].MouseY)))
+						player.controller[k].Update(int64(progressMsF), trueOffset-lateOffset, bmath.NewVec2d(float64(r.ReplayData[index-1].MosueX), float64(r.ReplayData[index-1].MouseY)))
 					}
 
-					late_offset = true_offset
+					lateOffset = trueOffset
 				}
 
 				time.Sleep(time.Millisecond)
@@ -958,7 +956,7 @@ func (pl *Player) Show() {
 
 }
 
-func (pl *Player) Draw(delta float64) {
+func (pl *Player) Draw(_ float64) {
 
 	//region 无关3
 
@@ -1079,11 +1077,11 @@ func (pl *Player) Draw(delta float64) {
 		if settings.Playfield.BlurEnable {
 			pl.batch.End()
 
-			texture := pl.blurEffect.EndAndProcess()
+			textureBlur := pl.blurEffect.EndAndProcess()
 			pl.batch.Begin()
 			pl.batch.SetColor(1, 1, 1, bgAlpha)
 			pl.batch.SetCamera(mgl32.Ortho(-1, 1, -1, 1, 1, -1))
-			pl.batch.DrawUnscaled(texture.GetRegion())
+			pl.batch.DrawUnscaled(textureBlur.GetRegion())
 		}
 
 	}
@@ -1483,7 +1481,7 @@ func (pl *Player) Draw(delta float64) {
 						if !settings.VSplayer.Mods.EnableHR && pl.controller[k].GetMods()&MOD_HR > 0 {
 							trueJudgePos.Y = PLAYFIELD_HEIGHT - trueJudgePos.Y
 						}
-						if pl.lastDishowPos == defaultpos {
+						if pl.lastDishowPos == defaultPos {
 							pl.lastDishowPos = trueJudgePos
 						} else {
 							if pl.lastDishowPos == trueJudgePos {
@@ -1505,7 +1503,7 @@ func (pl *Player) Draw(delta float64) {
 						if !settings.VSplayer.Mods.EnableHR && pl.controller[k].GetMods()&MOD_HR > 0 {
 							trueJudgePos.Y = PLAYFIELD_HEIGHT - trueJudgePos.Y
 						}
-						if pl.lastMissPos == defaultpos {
+						if pl.lastMissPos == defaultPos {
 							pl.lastMissPos = trueJudgePos
 						} else {
 							if pl.lastMissPos == trueJudgePos {
@@ -1633,7 +1631,7 @@ func (pl *Player) Draw(delta float64) {
 			// 渲染pp排名
 			pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
 			if settings.VSplayer.PlayerInfoUI.Rank1Highlight && (pprank[k] == 1) {
-				pl.highlightfont.Draw(pl.batch, pl.ppurrankbaseX, pl.highlightfontbaseY-pl.lineoffset*float64(linecount)-gapY, pl.highlightfontsize, "#"+strconv.Itoa(pprank[k]))
+				pl.highlightFont.Draw(pl.batch, pl.ppurrankbaseX, pl.highlightfontbaseY-pl.lineoffset*float64(linecount)-gapY, pl.highlightfontsize, "#"+strconv.Itoa(pprank[k]))
 			} else {
 				pl.font.Draw(pl.batch, pl.ppurrankbaseX, pl.fontbaseY-pl.lineoffset*float64(linecount)-gapY, pl.fontsize, "#"+strconv.Itoa(pprank[k]))
 			}
@@ -1641,7 +1639,7 @@ func (pl *Player) Draw(delta float64) {
 				// 渲染ur排名
 				pl.batch.SetColor(1, 1, 1, float64(namecolor[3]))
 				if settings.VSplayer.PlayerInfoUI.Rank1Highlight && (urrank[k] == 1) {
-					pl.highlightfont.Draw(pl.batch, pl.ppurrankbaseX, pl.highlightfontbaseY-pl.lineoffset*float64(linecount+1)-gapY, pl.highlightfontsize, "#"+strconv.Itoa(urrank[k]))
+					pl.highlightFont.Draw(pl.batch, pl.ppurrankbaseX, pl.highlightfontbaseY-pl.lineoffset*float64(linecount+1)-gapY, pl.highlightfontsize, "#"+strconv.Itoa(urrank[k]))
 				} else {
 					pl.font.Draw(pl.batch, pl.ppurrankbaseX, pl.fontbaseY-pl.lineoffset*float64(linecount+1)-gapY, pl.fontsize, "#"+strconv.Itoa(urrank[k]))
 				}
