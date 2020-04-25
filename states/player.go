@@ -368,7 +368,8 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 		log.Println("Enabled Cache System")
 		for i := 0; i < player.playerCount; i++ {
 			rep := replay.ExtractReplay(replays[i])
-			if resultcache.IsCacheExists(rep) {
+			objectResult, totalResult, exists := resultcache.GetResult(rep)
+			if exists {
 				log.Printf("Reading %v's analyze cache %v.ooc/otc (%v/%v)...\n", rep.Username, rep.ReplayMD5, i+1, player.playerCount)
 				player.batch.Begin()
 				loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: fmt.Sprintf("Reading %v's analyze cache %v.ooc/otc (%v/%v)...", rep.Username, rep.ReplayMD5, i+1, player.playerCount)})
@@ -376,14 +377,12 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 				player.batch.End()
 				win.SwapBuffers()
 				//------------------------------------
-				t1 := time.Now()
-				objectResult, totalResult := resultcache.GetResult(rep)
 				configurePlayer(player, i, rep, objectResult, totalResult)
 				//------------------------------------
-				log.Printf("Finished reading %v analyze cache %v.ooc/otc (%v/%v), elapsed time: %v, total elapsed time: %v \n", rep.Username, rep.ReplayMD5, i+1, player.playerCount, time.Now().Sub(t1), time.Now().Sub(t))
+				log.Printf("Finished reading %v analyze cache %v.ooc/otc (%v/%v)\n", rep.Username, rep.ReplayMD5, i+1, player.playerCount)
 				loadwords = loadwords[:len(loadwords)-1]
 			} else {
-				log.Printf("Analyzing %v's replay (%v/%v)...\n", rep.Username, i+1, player.playerCount)
+				log.Printf("Falling back to analyze %v's replay (%v/%v)...\n", rep.Username, i+1, player.playerCount)
 				player.batch.Begin()
 				loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: fmt.Sprintf("Analyzing %v's replay (%v/%v)...", rep.Username, i+1, player.playerCount)})
 				player.font.DrawAll(player.batch, loadwords)

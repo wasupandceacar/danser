@@ -1,68 +1,54 @@
 package resultcache
 
 import (
+	"danser/build"
 	"danser/hitjudge"
 	"danser/settings"
 	"encoding/json"
 	"github.com/Mempler/rplpa"
 	"io/ioutil"
-	"os"
+	"log"
 )
 
-func CacheResult(oresult []hitjudge.ObjectResult, tresult []hitjudge.TotalResult, replay *rplpa.Replay) {
-	filename := settings.VSplayer.ReplayandCache.CacheDir + replay.ReplayMD5
-	oerr := ioutil.WriteFile(filename+".ooc", []byte(marshalObjectResult(oresult)), 0666)
-	if oerr != nil {
-		panic(oerr)
-	}
-	terr := ioutil.WriteFile(filename+".otc", []byte(marshalTotalResult(tresult)), 0666)
-	if terr != nil {
-		panic(terr)
-	}
+type Cache struct {
+	ObjectResults []hitjudge.ObjectResult
+	TotalResults  []hitjudge.TotalResult
+	Version       int
 }
 
-func GetResult(replay *rplpa.Replay) ([]hitjudge.ObjectResult, []hitjudge.TotalResult) {
-	filename := settings.VSplayer.ReplayandCache.CacheDir + replay.ReplayMD5
-	oread, _ := ioutil.ReadFile(filename + ".ooc")
-	tread, _ := ioutil.ReadFile(filename + ".otc")
-	return unmarshalObjectResult(oread), unmarshalTotalResult(tread)
-}
-
-func IsCacheExists(replay *rplpa.Replay) bool {
-	filename := settings.VSplayer.ReplayandCache.CacheDir + replay.ReplayMD5
-	_, err1 := os.Stat(filename + ".ooc")
-	_, err2 := os.Stat(filename + ".otc")
-	return !os.IsNotExist(err1) && !os.IsNotExist(err2)
-}
-
-func marshalObjectResult(oresult []hitjudge.ObjectResult) string {
-	data, err := json.MarshalIndent(oresult, "", "     ")
+func CacheResult(objectResults []hitjudge.ObjectResult, totalResults []hitjudge.TotalResult, rep *rplpa.Replay) {
+	err := ioutil.WriteFile(settings.VSplayer.ReplayandCache.CacheDir + rep.ReplayMD5 + ".oac", marshalCache(Cache{ObjectResults: objectResults, TotalResults: totalResults, Version: build.CACHE_VERSION}), 0666)
 	if err != nil {
 		panic(err)
 	}
-	return string(data)
 }
 
-func marshalTotalResult(tresult []hitjudge.TotalResult) string {
-	data, err := json.MarshalIndent(tresult, "", "     ")
+func GetResult(rep *rplpa.Replay) ([]hitjudge.ObjectResult, []hitjudge.TotalResult, bool) {
+	bytes, err := ioutil.ReadFile(settings.VSplayer.ReplayandCache.CacheDir + rep.ReplayMD5 + ".oac")
+	if err != nil {
+		log.Printf("Could not find ot could not access cache file for %v's replay, MD5 = %v", rep.Username, rep.ReplayMD5)
+		return nil, nil, false
+	}
+	cache := unmarshalCache(bytes)
+	if cache.Version != build.CACHE_VERSION {
+		log.Printf("Detected unmatched CACHE_VERSION in %v.oac (%v), overwriting...", rep.ReplayMD5, rep.Username)
+		return nil, nil, false
+	}
+	return cache.ObjectResults, cache.TotalResults, true
+}
+
+func marshalCache(cache Cache) []byte {
+	data, err := json.Marshal(cache)
 	if err != nil {
 		panic(err)
 	}
-	return string(data)
+	return data
 }
 
-func unmarshalObjectResult(r []byte) []hitjudge.ObjectResult {
-	var oresult []hitjudge.ObjectResult
-	if err := json.Unmarshal(r, &oresult); err != nil {
+func unmarshalCache(r []byte) Cache {
+	var cache Cache
+	if err := json.Unmarshal(r, &cache); err != nil {
 		panic(err)
 	}
-	return oresult
-}
-
-func unmarshalTotalResult(r []byte) []hitjudge.TotalResult {
-	var tresult []hitjudge.TotalResult
-	if err := json.Unmarshal(r, &tresult); err != nil {
-		panic(err)
-	}
-	return tresult
+	return cache
 }
