@@ -364,65 +364,86 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	*/
 
 	//TODO: Setting up specific player system
-	if settings.VSplayer.ReplayandCache.UseCacheSystem {
+	if settings.VSplayer.ReplayandCache.UseCacheSystem && !settings.VSplayer.ReplayandCache.ReplayDebug {
 		log.Println("Enabled Cache System")
 		for i := 0; i < player.playerCount; i++ {
 			rep := replay.ExtractReplay(replays[i])
 			objectResult, totalResult, exists := resultcache.GetResult(rep)
 			if exists {
 				log.Printf("Reading %v's analyze cache %v.ooc/otc (%v/%v)...\n", rep.Username, rep.ReplayMD5, i+1, player.playerCount)
-				player.batch.Begin()
-				loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: fmt.Sprintf("Reading %v's analyze cache %v.ooc/otc (%v/%v)...", rep.Username, rep.ReplayMD5, i+1, player.playerCount)})
-				player.font.DrawAll(player.batch, loadwords)
-				player.batch.End()
-				win.SwapBuffers()
+				if !settings.VSplayer.ReplayandCache.ReplayDebug {
+					player.batch.Begin()
+					loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: fmt.Sprintf("Reading %v's analyze cache %v.ooc/otc (%v/%v)...", rep.Username, rep.ReplayMD5, i+1, player.playerCount)})
+					player.font.DrawAll(player.batch, loadwords)
+					player.batch.End()
+					win.SwapBuffers()
+				}
 				//------------------------------------
-				configurePlayer(player, i, rep, objectResult, totalResult)
+				if !settings.VSplayer.ReplayandCache.ReplayDebug {
+					configurePlayer(player, i, rep, objectResult, totalResult)
+					loadwords = loadwords[:len(loadwords)-1]
+				}
 				//------------------------------------
 				log.Printf("Finished reading %v analyze cache %v.ooc/otc (%v/%v)\n", rep.Username, rep.ReplayMD5, i+1, player.playerCount)
-				loadwords = loadwords[:len(loadwords)-1]
 			} else {
 				log.Printf("Falling back to analyze %v's replay (%v/%v)...\n", rep.Username, i+1, player.playerCount)
-				player.batch.Begin()
-				loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: fmt.Sprintf("Analyzing %v's replay (%v/%v)...", rep.Username, i+1, player.playerCount)})
-				player.font.DrawAll(player.batch, loadwords)
-				player.batch.End()
-				win.SwapBuffers()
+				if !settings.VSplayer.ReplayandCache.ReplayDebug {
+					player.batch.Begin()
+					loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: fmt.Sprintf("Analyzing %v's replay (%v/%v)...", rep.Username, i+1, player.playerCount)})
+					player.font.DrawAll(player.batch, loadwords)
+					player.batch.End()
+					win.SwapBuffers()
+				}
 				//------------------------------------
 				t1 := time.Now()
 				objectResult, totalResult, _, _ := hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, rep, errs, NO_USE_CS_OFFSET)
-				configurePlayer(player, i, rep, objectResult, totalResult)
-				resultcache.CacheResult(objectResult, totalResult, rep)
+				if !settings.VSplayer.ReplayandCache.ReplayDebug {
+					configurePlayer(player, i, rep, objectResult, totalResult)
+					resultcache.CacheResult(objectResult, totalResult, rep)
+					loadwords = loadwords[:len(loadwords)-1]
+				}
 				//------------------------------------
 				log.Printf("Finished analyzing %v's replay (%v/%v), elapsed time: %v, total elapsed time: %v\n", rep.Username, i+1, player.playerCount, time.Now().Sub(t1), time.Now().Sub(t))
-				loadwords = loadwords[:len(loadwords)-1]
 			}
 		}
 	} else {
 		log.Println("Forced to analyze replays")
 		for i := 0; i < player.playerCount; i++ {
+			var rnum int
+			if settings.VSplayer.PlayerInfo.SpecifiedPlayers {
+				rnum = tmpplindex[i]
+			}else {
+				rnum = i+1
+			}
+
 			rep := replay.ExtractReplay(replays[i])
 			log.Printf("Analyzing %v's replay (%v/%v)...\n", rep.Username, i+1, player.playerCount)
-			player.batch.Begin()
-			loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: fmt.Sprintf("Analyzing %v's replay (%v/%v)...", rep.Username, i+1, player.playerCount)})
-			player.font.DrawAll(player.batch, loadwords)
-			player.batch.End()
-			win.SwapBuffers()
+			if !settings.VSplayer.ReplayandCache.ReplayDebug {
+				player.batch.Begin()
+				loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: fmt.Sprintf("Analyzing %v's replay (%v/%v)...", rep.Username, i+1, player.playerCount)})
+				player.font.DrawAll(player.batch, loadwords)
+				player.batch.End()
+				win.SwapBuffers()
+			}
 			//------------------------------------
 			t1 := time.Now()
-			objectResult, totalResult, _, _ := hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, rep, errs, NO_USE_CS_OFFSET)
-			configurePlayer(player, i, rep, objectResult, totalResult)
+			objectResult, totalResult, allright, _ := hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, rep, errs, NO_USE_CS_OFFSET)
+			if !settings.VSplayer.ReplayandCache.ReplayDebug {
+				configurePlayer(player, i, rep, objectResult, totalResult)
+				loadwords = loadwords[:len(loadwords)-1]
+			} else {
+				// 记录出错情况
+				if allright {
+					right += 1
+				}else {
+					wrong += 1
+					wrongIndex = append(wrongIndex, rnum)
+				}
+			}
 			//------------------------------------
 			log.Printf("Finished analyzing %v's replay (%v/%v), elapsed time: %v, total elapsed time: %v \n", rep.Username, i+1, player.playerCount, time.Now().Sub(t1), time.Now().Sub(t))
-			loadwords = loadwords[:len(loadwords)-1]
 		}
 	}
-
-	player.batch.Begin()
-	loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: "Analyze completed."})
-	player.font.DrawAll(player.batch, loadwords)
-	player.batch.End()
-	win.SwapBuffers()
 
 	//TODO: Replay debug system
 	if settings.VSplayer.ReplayandCache.ReplayDebug {
@@ -433,6 +454,12 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 		// 直接退出，不进行下面的渲染任务
 		log.Println("Debug Replay 结束，直接退出")
 		os.Exit(0)
+	} else {
+		player.batch.Begin()
+		loadwords = append(loadwords, font.Word{X: 14, Size: 24, Text: "Analyze completed."})
+		player.font.DrawAll(player.batch, loadwords)
+		player.batch.End()
+		win.SwapBuffers()
 	}
 
 	// 指定色彩设置
