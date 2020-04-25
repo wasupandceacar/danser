@@ -148,7 +148,7 @@ func (font *Font) Draw(renderer *render.SpriteBatch, x, y float64, size float64,
 
 	for i, c := range text {
 		if c-font.min < 0 || c-font.min > font.max || int(c) > 127 {
-			log.Println("Warning! A unprintable character is presented in text! Skipping")
+			log.Println("Warning! A non-ASCII or unprintable character is presented in text! Skipping")
 			continue
 		}
 		char := font.glyphs[c-font.min]
