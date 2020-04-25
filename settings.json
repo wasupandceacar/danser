@@ -66,8 +66,7 @@
 		"ReplayandCache": {
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
-			"SaveResultCache": true,
-			"ReadResultCache": false,
+			"UseCacheSystem": true,
 			"ReplayDebug": true
 		},
 		"ErrorFix": {

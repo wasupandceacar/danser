@@ -85,22 +85,22 @@ func RunPlayField() {
 		if settings.VSplayer.Mods.EnableDT {
 			// 开启DT
 			settings.SPEED = 1.5
-		}else if settings.VSplayer.Mods.EnableHT {
+		} else if settings.VSplayer.Mods.EnableHT {
 			settings.SPEED = 0.75
-		}else {
+		} else {
 			settings.SPEED = 1.0
 		}
 
 		// 开启EZ
 		if settings.VSplayer.Mods.EnableEZ {
-			beatMap.CircleSize = math.Min(beatMap.CircleSize * CS_EZ_HENSE, CS_MAX)
-			beatMap.AR = math.Min(beatMap.AR * AR_EZ_HENSE, AR_MAX)
+			beatMap.CircleSize = math.Min(beatMap.CircleSize*CS_EZ_HENSE, CS_MAX)
+			beatMap.AR = math.Min(beatMap.AR*AR_EZ_HENSE, AR_MAX)
 		}
 
 		// 开启HR
 		if settings.VSplayer.Mods.EnableHR {
-			beatMap.CircleSize = math.Min(beatMap.CircleSize * CS_HR_HENSE, CS_MAX)
-			beatMap.AR = math.Min(beatMap.AR * AR_HR_HENSE, AR_MAX)
+			beatMap.CircleSize = math.Min(beatMap.CircleSize*CS_HR_HENSE, CS_MAX)
+			beatMap.AR = math.Min(beatMap.AR*AR_HR_HENSE, AR_MAX)
 		}
 
 		// 开启HD，为维持HD效果，关闭一些特效
@@ -170,8 +170,7 @@ func RunPlayField() {
 			font.LoadFont(file2, 20)
 			file2.Close()
 
-			screenheight := settings.Graphics.GetHeight()
-			loadwords = append(loadwords, font.Word{14, float64(screenheight - 40), 24, "Font loaded..."})
+			loadwords = append(loadwords, font.Word{14, 24, "Font loaded..."})
 			dfont.DrawAll(batch, loadwords)
 			//dfont.Draw(batch, 14, float64(screenheight - 40), 24, "Font loaded...")
 			batch.End()
@@ -181,7 +180,7 @@ func RunPlayField() {
 			audio.LoadSamples()
 
 			batch.Begin()
-			loadwords = append(loadwords, font.Word{14, float64(screenheight - 80), 24, "Sound effects loaded..."})
+			loadwords = append(loadwords, font.Word{14, 24, "Sound effects loaded..."})
 			dfont.DrawAll(batch, loadwords)
 			batch.End()
 			win.SwapBuffers()
@@ -190,7 +189,7 @@ func RunPlayField() {
 			beatMap.LoadCustomSamples()
 
 			batch.Begin()
-			loadwords = append(loadwords, font.Word{14, float64(screenheight - 120), 24, "Beatmap loaded and parsed..."})
+			loadwords = append(loadwords, font.Word{14, 24, "Beatmap loaded and parsed..."})
 			dfont.DrawAll(batch, loadwords)
 			batch.End()
 			win.SwapBuffers()
@@ -219,7 +218,7 @@ func RunPlayField() {
 				player.Draw(0)
 			}
 
-			if win.GetKey(glfw.KeyEscape) == glfw.Press{
+			if win.GetKey(glfw.KeyEscape) == glfw.Press {
 				win.SetShouldClose(true)
 			}
 
@@ -267,7 +266,7 @@ func RunPlayField() {
 			win.SwapBuffers()
 			glfw.PollEvents()
 
-			if win.ShouldClose(){
+			if win.ShouldClose() {
 				player.Stop()
 				win.Destroy()
 				win = nil

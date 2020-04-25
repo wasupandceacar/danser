@@ -60,8 +60,7 @@ func (vsw VSPlayerMainWindow) SaveConfig() {
 
 	assign(&settings.VSplayer.ReplayandCache.ReplayDir, settings.VSplayer.ReplayandCache.ReplayDir, vsw.replayDir)
 	assign(&settings.VSplayer.ReplayandCache.CacheDir, settings.VSplayer.ReplayandCache.CacheDir, vsw.cacheDir)
-	assign(&settings.VSplayer.ReplayandCache.SaveResultCache, settings.VSplayer.ReplayandCache.SaveResultCache, vsw.saveResultCache)
-	assign(&settings.VSplayer.ReplayandCache.ReadResultCache, settings.VSplayer.ReplayandCache.ReadResultCache, vsw.readResultCache)
+	assign(&settings.VSplayer.ReplayandCache.UseCacheSystem, settings.VSplayer.ReplayandCache.UseCacheSystem, vsw.useCacheSystem)
 	assign(&settings.VSplayer.ReplayandCache.ReplayDebug, settings.VSplayer.ReplayandCache.ReplayDebug, vsw.replayDebug)
 
 	assign(&settings.VSplayer.ErrorFix.EnableErrorFix, settings.VSplayer.ErrorFix.EnableErrorFix, vsw.enableErrorFix)
@@ -82,43 +81,43 @@ func (vsw VSPlayerMainWindow) SaveConfig() {
 type VSPlayerMainWindow struct {
 	*walk.MainWindow
 
-	players *walk.LineEdit
+	players          *walk.LineEdit
 	specifiedPlayers *walk.CheckBox
-	specifiedLine *walk.LineEdit
-	specifiedColor *walk.LineEdit
+	specifiedLine    *walk.LineEdit
+	specifiedColor   *walk.LineEdit
 
-	baseSize *walk.LineEdit
-	baseX *walk.LineEdit
-	baseY *walk.LineEdit
-	showMouse1 *walk.CheckBox
-	showMouse2 *walk.CheckBox
-	showRealTimePP *walk.CheckBox
-	realTimePPGap *walk.LineEdit
-	showRealTimeUR *walk.CheckBox
+	baseSize        *walk.LineEdit
+	baseX           *walk.LineEdit
+	baseY           *walk.LineEdit
+	showMouse1      *walk.CheckBox
+	showMouse2      *walk.CheckBox
+	showRealTimePP  *walk.CheckBox
+	realTimePPGap   *walk.LineEdit
+	showRealTimeUR  *walk.CheckBox
 	showPPAndURRank *walk.CheckBox
-	rank1Highlight *walk.CheckBox
-	highlightMult *walk.LineEdit
-	lineGapMult *walk.LineEdit
+	rank1Highlight  *walk.CheckBox
+	highlightMult   *walk.LineEdit
+	lineGapMult     *walk.LineEdit
 
-	recorder *walk.LineEdit
-	recordTime *walk.LineEdit
-	recordBaseX *walk.LineEdit
-	recordBaseY *walk.LineEdit
+	recorder       *walk.LineEdit
+	recordTime     *walk.LineEdit
+	recordBaseX    *walk.LineEdit
+	recordBaseY    *walk.LineEdit
 	recordBaseSize *walk.LineEdit
-	recordAlpha *walk.LineEdit
+	recordAlpha    *walk.LineEdit
 
 	showDiffInfo *walk.CheckBox
-	diffBaseX *walk.LineEdit
-	diffBaseY *walk.LineEdit
+	diffBaseX    *walk.LineEdit
+	diffBaseY    *walk.LineEdit
 	diffBaseSize *walk.LineEdit
-	diffAlpha *walk.LineEdit
+	diffAlpha    *walk.LineEdit
 
-	hitFadeTime *walk.LineEdit
-	cursorColorNum *walk.LineEdit
-	cursorColorSkipNum *walk.LineEdit
+	hitFadeTime         *walk.LineEdit
+	cursorColorNum      *walk.LineEdit
+	cursorColorSkipNum  *walk.LineEdit
 	showHitCircleNumber *walk.CheckBox
 
-	title *walk.LineEdit
+	title      *walk.LineEdit
 	difficulty *walk.LineEdit
 
 	enableDT *walk.CheckBox
@@ -128,25 +127,24 @@ type VSPlayerMainWindow struct {
 	enableHD *walk.CheckBox
 
 	enableKnockout *walk.CheckBox
-	showTrueMiss *walk.CheckBox
+	showTrueMiss   *walk.CheckBox
 	playerFadeTime *walk.LineEdit
 	sameTimeOffset *walk.LineEdit
-	missMult *walk.LineEdit
+	missMult       *walk.LineEdit
 
-	replayDir *walk.LineEdit
-	cacheDir *walk.LineEdit
-	saveResultCache *walk.CheckBox
-	readResultCache *walk.CheckBox
-	replayDebug *walk.CheckBox
+	replayDir      *walk.LineEdit
+	cacheDir       *walk.LineEdit
+	useCacheSystem *walk.CheckBox
+	replayDebug    *walk.CheckBox
 
 	enableErrorFix *walk.CheckBox
-	errorFixFile *walk.LineEdit
+	errorFixFile   *walk.LineEdit
 
-	enableSkin *walk.CheckBox
-	skinDir *walk.LineEdit
+	enableSkin   *walk.CheckBox
+	skinDir      *walk.LineEdit
 	numberOffset *walk.LineEdit
 
-	cursorSize *walk.LineEdit
-	fullScreen *walk.CheckBox
+	cursorSize        *walk.LineEdit
+	fullScreen        *walk.CheckBox
 	storyboardEnabled *walk.CheckBox
 }

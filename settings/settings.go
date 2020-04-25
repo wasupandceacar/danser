@@ -8,68 +8,68 @@ import (
 const SETTINGSVERSION = "v1"
 
 type general struct {
-	OsuSongsDir 		string
+	OsuSongsDir string
 }
 
 //region VS-player 自定义参数区域
 
 type playerinfo struct {
-	Players				int
-	SpecifiedPlayers	bool
-	SpecifiedLine		string
-	SpecifiedColor		string
+	Players          int
+	SpecifiedPlayers bool
+	SpecifiedLine    string
+	SpecifiedColor   string
 }
 
 type playerinfoUI struct {
-	BaseSize		float64
-	BaseX			float64
-	BaseY			float64
-	ShowMouse1		bool
-	ShowMouse2		bool
-	ShowRealTimePP	bool
-	RealTimePPGap	float64
-	ShowRealTimeUR	bool
-	ShowPPAndURRank	bool
-	Rank1Highlight	bool
-	HighlightMult	float64
-	LineGapMult		float64
+	BaseSize        float64
+	BaseX           float64
+	BaseY           float64
+	ShowMouse1      bool
+	ShowMouse2      bool
+	ShowRealTimePP  bool
+	RealTimePPGap   float64
+	ShowRealTimeUR  bool
+	ShowPPAndURRank bool
+	Rank1Highlight  bool
+	HighlightMult   float64
+	LineGapMult     float64
 }
 
 type recordinfoUI struct {
-	Recorder		string
-	RecordTime		string
-	RecordBaseX		float64
-	RecordBaseY		float64
-	RecordBaseSize	float64
-	RecordAlpha		float64
+	Recorder       string
+	RecordTime     string
+	RecordBaseX    float64
+	RecordBaseY    float64
+	RecordBaseSize float64
+	RecordAlpha    float64
 }
 
 type diffinfoUI struct {
-	ShowDiffInfo	bool
-	DiffBaseX		float64
-	DiffBaseY		float64
-	DiffBaseSize	float64
-	DiffAlpha		float64
+	ShowDiffInfo bool
+	DiffBaseX    float64
+	DiffBaseY    float64
+	DiffBaseSize float64
+	DiffAlpha    float64
 }
 
 type playerfieldUI struct {
-	HitFadeTime			int64
-	CursorColorNum		int
-	CursorColorSkipNum	int
-	ShowHitCircleNumber	bool
+	HitFadeTime         int64
+	CursorColorNum      int
+	CursorColorSkipNum  int
+	ShowHitCircleNumber bool
 }
 
 type mapinfo struct {
-	Title	 		string
-	Difficulty	 	string
+	Title      string
+	Difficulty string
 }
 
 type mods struct {
-	EnableDT		bool
-	EnableHT		bool
-	EnableEZ		bool
-	EnableHR		bool
-	EnableHD		bool
+	EnableDT bool
+	EnableHT bool
+	EnableEZ bool
+	EnableHR bool
+	EnableHD bool
 }
 
 type knockout struct {
@@ -81,29 +81,28 @@ type knockout struct {
 }
 
 type replayandcache struct {
-	ReplayDir 			string
-	CacheDir 			string
-	SaveResultCache 	bool
-	ReadResultCache 	bool
-	ReplayDebug			bool
+	ReplayDir      string
+	CacheDir       string
+	UseCacheSystem bool
+	ReplayDebug    bool
 }
 
 type errorfix struct {
-	EnableErrorFix		bool
-	ErrorFixFile		string
+	EnableErrorFix bool
+	ErrorFixFile   string
 }
 
 type skin struct {
-	EnableSkin		bool
-	SkinDir			string
-	NumberOffset	int64
+	EnableSkin   bool
+	SkinDir      string
+	NumberOffset int64
 }
 
 type vsplayer struct {
 	PlayerInfo     *playerinfo
 	PlayerInfoUI   *playerinfoUI
 	RecordInfoUI   *recordinfoUI
-	DiffInfoUI	   *diffinfoUI
+	DiffInfoUI     *diffinfoUI
 	PlayerFieldUI  *playerfieldUI
 	MapInfo        *mapinfo
 	Mods           *mods
