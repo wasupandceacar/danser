@@ -81,7 +81,7 @@ func LoadFont(reader io.Reader, loc uint) *Font {
 		gh := int32((gBnd.Max.Y - gBnd.Min.Y) >> 6)
 		gw := int32((gBnd.Max.X - gBnd.Min.X) >> 6)
 
-		//if gylph has no diamensions set to a max value
+		//if glyph has no dimensions set to a max value
 		if gw == 0 || gh == 0 {
 			gBnd = ttf.Bounds(fixed.Int26_6(20))
 			gw = int32((gBnd.Max.X - gBnd.Min.X) >> 6)
@@ -147,7 +147,7 @@ func (font *Font) Draw(renderer *render.SpriteBatch, x, y float64, size float64,
 	scale := size / font.initialSize
 
 	for i, c := range text {
-		if c-font.min < 0 {
+		if c-font.min < 0 || c-font.min > font.max || int(c) > 127 {
 			log.Println("Warning! A unprintable character is presented in text! Skipping")
 			continue
 		}
