@@ -202,9 +202,9 @@ func (font *Font) DrawAll(renderer *render.SpriteBatch, words []Word) {
 	// 清除之前的文字，否则会重叠
 	gl.ClearColor(0, 0, 0, 1)
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-	currentY := float64(settings.Graphics.GetHeight() - 20)
+	currentY := float64(settings.Graphics.GetHeight() - 40)
 	for _, word := range words {
 		font.Draw(renderer, word.X, currentY, word.Size, word.Text)
-		currentY += word.Size * 1.7
+		currentY -= word.Size * 1.7
 	}
 }
