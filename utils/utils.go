@@ -149,12 +149,3 @@ func lastindexof(array []float64, ar float64) int {
 	return -1
 }
 
-func Filterascii(s string) (news string) {
-	for _, c := range s {
-		if int(c) <= 127 {
-			news += string(c)
-		}
-	}
-	return news
-}
-

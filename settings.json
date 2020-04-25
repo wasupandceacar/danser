@@ -57,7 +57,7 @@
 			"EnableHD": false
 		},
 		"Knockout": {
-			"EnableKnockout": false,
+			"EnableKnockout": true,
 			"ShowTrueMiss": false,
 			"PlayerFadeTime": 1500,
 			"SameTimeOffset": 12,
@@ -67,8 +67,8 @@
 			"ReplayDir": "replays\\",
 			"CacheDir": "cache\\",
 			"SaveResultCache": true,
-			"ReadResultCache": true,
-			"ReplayDebug": false
+			"ReadResultCache": false,
+			"ReplayDebug": true
 		},
 		"ErrorFix": {
 			"EnableErrorFix": false,

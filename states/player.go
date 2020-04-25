@@ -368,7 +368,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 				player.controller[k].SetRank(*render.RankX)
 			}
 			// 设置player名
-			player.controller[k].SetPlayername(utils.Filterascii(r.Username))
+			player.controller[k].SetPlayername(r.Username)
 			// 判断mod
 			mods := r.Mods
 			player.controller[k].SetMods(int(mods))
@@ -428,7 +428,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 				}
 				r := replay.ExtractReplay(replays[k])
 				// 设置player名
-				player.controller[k].SetPlayername(utils.Filterascii(r.Username))
+				player.controller[k].SetPlayername(r.Username)
 				// 判断mod
 				mods := r.Mods
 				player.controller[k].SetMods(int(mods))
