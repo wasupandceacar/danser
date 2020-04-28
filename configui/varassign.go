@@ -37,4 +37,3 @@ func assign(ivarpt interface{}, ivar interface{}, component interface{}) {
 	}
 	return
 }
-

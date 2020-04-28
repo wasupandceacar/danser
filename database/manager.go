@@ -1,20 +1,20 @@
 package database
 
 import (
+	"danser/settings"
 	"database/sql"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
-	"danser/settings"
 
-	"danser/beatmap"
 	"crypto/md5"
-	"io"
+	"danser/beatmap"
 	"encoding/hex"
 	_ "github.com/mattn/go-sqlite3"
-	"time"
+	"io"
 	"strconv"
+	"time"
 )
 
 var dbFile *sql.DB

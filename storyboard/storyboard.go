@@ -2,18 +2,18 @@ package storyboard
 
 import (
 	"bufio"
-	"os"
-	"log"
-	"strings"
-	"strconv"
-	"danser/bmath"
-	"danser/utils"
-	"path/filepath"
-	"danser/settings"
 	"danser/beatmap"
-	"danser/render/texture"
-	"fmt"
+	"danser/bmath"
 	"danser/render"
+	"danser/render/texture"
+	"danser/settings"
+	"danser/utils"
+	"fmt"
+	"log"
+	"os"
+	"path/filepath"
+	"strconv"
+	"strings"
 )
 
 type Storyboard struct {
@@ -47,7 +47,7 @@ func NewStoryboard(beatMap *beatmap.BeatMap) *Storyboard {
 		"?", "",
 		"*", "",
 		":", "",
-		"\"", "",)
+		"\"", "")
 
 	fix := func(el string) string {
 		return replacer.Replace(el)

@@ -39,35 +39,35 @@ func newReverse() (point *reversePoint) {
 }
 
 type Slider struct {
-	objData       *basicData
-	multiCurve    sliders.SliderAlgo
-	Timings       *Timings
-	TPoint        TimingPoint
-	pixelLength   float64
-	partLen       float64
-	repeat        int64
-	clicked       bool
-	sampleSets    []int
-	additionSets  []int
-	samples       []int
-	lastT         int64
-	Pos           m2.Vector2d
-	divides       int
-	TickPoints    []tickPoint
-	TickReverse   []tickPoint
-	TickReverseTrue   []tickPoint
-	ScorePoints   []tickPoint
-	ScorePointsTrue    []tickPoint
-	lastTick      int
-	End           bool
-	vao           *glhf.VertexSlice
-	created       bool
-	discreteCurve []bmath.Vector2d
-	reversePoints [2][]*reversePoint
+	objData              *basicData
+	multiCurve           sliders.SliderAlgo
+	Timings              *Timings
+	TPoint               TimingPoint
+	pixelLength          float64
+	partLen              float64
+	repeat               int64
+	clicked              bool
+	sampleSets           []int
+	additionSets         []int
+	samples              []int
+	lastT                int64
+	Pos                  m2.Vector2d
+	divides              int
+	TickPoints           []tickPoint
+	TickReverse          []tickPoint
+	TickReverseTrue      []tickPoint
+	ScorePoints          []tickPoint
+	ScorePointsTrue      []tickPoint
+	lastTick             int
+	End                  bool
+	vao                  *glhf.VertexSlice
+	created              bool
+	discreteCurve        []bmath.Vector2d
+	reversePoints        [2][]*reversePoint
 	startAngle, endAngle float64
-	typ			  string
+	typ                  string
 	// 曲线的真正终点
-	curveEndPos     m2.Vector2d
+	curveEndPos m2.Vector2d
 
 	//加入tail真正的judge点
 	TailJudgePoint  bmath.Vector2d
@@ -129,7 +129,7 @@ func NewSlider(data []string, number int64) *Slider {
 	slider.End = false
 	slider.lastTick = -1
 
-	slider.curveEndPos = points[len(points) - 1]
+	slider.curveEndPos = points[len(points)-1]
 
 	return slider
 }
@@ -189,7 +189,7 @@ func NewSliderbyPath(data []string, number int64, isHR bool) *Slider {
 	slider.End = false
 	slider.lastTick = -1
 
-	slider.curveEndPos = points[len(points) - 1]
+	slider.curveEndPos = points[len(points)-1]
 
 	return slider
 }
@@ -376,9 +376,9 @@ func (self *Slider) calculateTailJudgePoint() {
 	legacytailoffset := int64(36)
 	// 计算滑条持续时间
 	slidersuration := self.GetBasicData().EndTime - self.GetBasicData().StartTime
-	if slidersuration < legacytailoffset * 2  {
-		self.TailJudgeOffset = int64((slidersuration+1)/2)
-	}else {
+	if slidersuration < legacytailoffset*2 {
+		self.TailJudgeOffset = int64((slidersuration + 1) / 2)
+	} else {
 		self.TailJudgeOffset = legacytailoffset
 	}
 	// 计算实际判定点
@@ -503,24 +503,24 @@ func (self *Slider) DrawBody(time int64, preempt float64, fadeIn float64, color 
 
 	colorAlpha := 1.0
 	fadeInStart := float64(self.objData.StartTime) - preempt
-	fadeInEnd := math.Min(float64(self.objData.StartTime), fadeInStart + fadeIn)
+	fadeInEnd := math.Min(float64(self.objData.StartTime), fadeInStart+fadeIn)
 
 	if settings.VSplayer.Mods.EnableHD {
 		hiddenSliderBodyFadeOutStart := fadeInEnd
 		hiddenSliderBodyFadeOutEnd := float64(self.objData.EndTime)
-		if float64(time) < hiddenSliderBodyFadeOutStart && float64(time) >= fadeInStart{
-			colorAlpha = Clamp(1.0 - (fadeInEnd-float64(time))/fadeIn, 0.0, 1.0)
-		}else if float64(time) >= hiddenSliderBodyFadeOutStart {
-			colorAlpha = Clamp((hiddenSliderBodyFadeOutEnd - float64(time))/(hiddenSliderBodyFadeOutEnd - hiddenSliderBodyFadeOutStart), 0.0, 1.0)
-		}else {
+		if float64(time) < hiddenSliderBodyFadeOutStart && float64(time) >= fadeInStart {
+			colorAlpha = Clamp(1.0-(fadeInEnd-float64(time))/fadeIn, 0.0, 1.0)
+		} else if float64(time) >= hiddenSliderBodyFadeOutStart {
+			colorAlpha = Clamp((hiddenSliderBodyFadeOutEnd-float64(time))/(hiddenSliderBodyFadeOutEnd-hiddenSliderBodyFadeOutStart), 0.0, 1.0)
+		} else {
 			colorAlpha = float64(color[3])
 		}
-	}else {
-		if time < self.objData.StartTime && float64(time) >= fadeInStart{
+	} else {
+		if time < self.objData.StartTime && float64(time) >= fadeInStart {
 			colorAlpha = Clamp(1.0-(fadeInEnd-float64(time))/fadeIn, 0.0, 1.0)
-		}else if time >= self.objData.EndTime {
-			colorAlpha = Clamp(1.0 - float64(time-self.objData.EndTime)/(preempt/4), 0.0, 1.0)
-		}else {
+		} else if time >= self.objData.EndTime {
+			colorAlpha = Clamp(1.0-float64(time-self.objData.EndTime)/(preempt/4), 0.0, 1.0)
+		} else {
 			colorAlpha = float64(color[3])
 		}
 	}
@@ -536,10 +536,10 @@ func (self *Slider) DrawBody(time int64, preempt float64, fadeIn float64, color 
 }
 
 func (self *Slider) getPulse(time int64) float64 {
-	for k := 0; k < len(self.ScorePointsTrue) - 1; k++ {
+	for k := 0; k < len(self.ScorePointsTrue)-1; k++ {
 		if time >= self.ScorePointsTrue[k].Time && time < self.ScorePointsTrue[k+1].Time {
-			mult := m2.Fmod(float64(time - self.ScorePointsTrue[k].Time) / float64(self.ScorePointsTrue[k+1].Time - self.ScorePointsTrue[k].Time), 1.0)
-			return 1.0 + 0.15 * mult * mult
+			mult := m2.Fmod(float64(time-self.ScorePointsTrue[k].Time)/float64(self.ScorePointsTrue[k+1].Time-self.ScorePointsTrue[k].Time), 1.0)
+			return 1.0 + 0.15*mult*mult
 		}
 	}
 	return 1.0
@@ -554,25 +554,25 @@ func (self *Slider) Draw(time int64, preempt float64, fadeIn float64, color mgl3
 	alphaB := 1.0
 
 	fadeInStart := float64(self.objData.StartTime) - preempt
-	fadeInEnd := math.Min(float64(self.objData.StartTime), fadeInStart + fadeIn)
+	fadeInEnd := math.Min(float64(self.objData.StartTime), fadeInStart+fadeIn)
 
 	// 除note、sliderball的物件
 	if settings.VSplayer.Mods.EnableHD {
 		hiddenSliderBodyFadeOutStart := fadeInEnd
 		hiddenSliderBodyFadeOutEnd := float64(self.objData.EndTime)
-		if float64(time) < hiddenSliderBodyFadeOutStart && float64(time) >= fadeInStart{
-			alpha = Clamp(1.0 - (fadeInEnd-float64(time))/fadeIn, 0.0, 1.0)
-		}else if float64(time) >= hiddenSliderBodyFadeOutStart {
-			alpha = Clamp((hiddenSliderBodyFadeOutEnd - float64(time))/(hiddenSliderBodyFadeOutEnd - hiddenSliderBodyFadeOutStart), 0.0, 1.0)
-		}else {
+		if float64(time) < hiddenSliderBodyFadeOutStart && float64(time) >= fadeInStart {
+			alpha = Clamp(1.0-(fadeInEnd-float64(time))/fadeIn, 0.0, 1.0)
+		} else if float64(time) >= hiddenSliderBodyFadeOutStart {
+			alpha = Clamp((hiddenSliderBodyFadeOutEnd-float64(time))/(hiddenSliderBodyFadeOutEnd-hiddenSliderBodyFadeOutStart), 0.0, 1.0)
+		} else {
 			alpha = float64(color[3])
 		}
-	}else {
-		if time < self.objData.StartTime && float64(time) >= fadeInStart{
-			alpha = Clamp(1.0 - (fadeInEnd-float64(time))/fadeIn, 0.0, 1.0)
-		}else if time >= self.objData.EndTime {
-			alpha = Clamp(1.0 - float64(time-self.objData.EndTime)/(preempt/4), 0.0, 1.0)
-		}else {
+	} else {
+		if time < self.objData.StartTime && float64(time) >= fadeInStart {
+			alpha = Clamp(1.0-(fadeInEnd-float64(time))/fadeIn, 0.0, 1.0)
+		} else if time >= self.objData.EndTime {
+			alpha = Clamp(1.0-float64(time-self.objData.EndTime)/(preempt/4), 0.0, 1.0)
+		} else {
 			alpha = float64(color[3])
 		}
 	}
@@ -580,23 +580,23 @@ func (self *Slider) Draw(time int64, preempt float64, fadeIn float64, color mgl3
 	// note
 	if settings.VSplayer.Mods.EnableHD {
 		hiddenFadeInStart := float64(self.objData.StartTime) - preempt
-		hiddenFadeInEnd := hiddenFadeInStart + preempt * FADE_IN_DURATION_MULTIPLIER
+		hiddenFadeInEnd := hiddenFadeInStart + preempt*FADE_IN_DURATION_MULTIPLIER
 
 		hiddenFadeOutStart := hiddenFadeInEnd
-		hiddenFadeOutEnd := hiddenFadeOutStart + preempt * FADE_OUT_DURATION_MULTIPLIER
+		hiddenFadeOutEnd := hiddenFadeOutStart + preempt*FADE_OUT_DURATION_MULTIPLIER
 		if float64(time) < hiddenFadeInEnd && float64(time) >= hiddenFadeInStart {
-			alphaC = Clamp(1.0 - (hiddenFadeInEnd - float64(time)) / (hiddenFadeInEnd - hiddenFadeInStart), 0.0, 1.0)
+			alphaC = Clamp(1.0-(hiddenFadeInEnd-float64(time))/(hiddenFadeInEnd-hiddenFadeInStart), 0.0, 1.0)
 		} else if float64(time) >= hiddenFadeOutStart {
-			alphaC = Clamp((hiddenFadeOutEnd - float64(time)) / (hiddenFadeOutEnd - hiddenFadeOutStart), 0.0, 1.0)
+			alphaC = Clamp((hiddenFadeOutEnd-float64(time))/(hiddenFadeOutEnd-hiddenFadeOutStart), 0.0, 1.0)
 		} else {
 			alphaC = float64(color[3])
 		}
-	}else {
+	} else {
 		if time < self.objData.StartTime && float64(time) >= fadeInStart {
-			alphaC = Clamp(1.0 - (fadeInEnd - float64(time))/ fadeIn, 0.0, 1.0)
-		}else if time >= self.objData.StartTime {
-			alphaC = Clamp(1.0 - float64(time - self.objData.StartTime)/(preempt/2), 0.0, 1.0)
-		}else {
+			alphaC = Clamp(1.0-(fadeInEnd-float64(time))/fadeIn, 0.0, 1.0)
+		} else if time >= self.objData.StartTime {
+			alphaC = Clamp(1.0-float64(time-self.objData.StartTime)/(preempt/2), 0.0, 1.0)
+		} else {
 			alphaC = float64(color[3])
 		}
 	}
@@ -604,9 +604,9 @@ func (self *Slider) Draw(time int64, preempt float64, fadeIn float64, color mgl3
 	// sliderball
 	if time >= self.objData.EndTime {
 		alphaB = 0.0
-	}else if time >= self.objData.StartTime {
+	} else if time >= self.objData.StartTime {
 		alphaB = 1.0
-	}else {
+	} else {
 		alphaB = float64(color[3])
 	}
 
@@ -623,7 +623,7 @@ func (self *Slider) Draw(time int64, preempt float64, fadeIn float64, color mgl3
 			for k, p := range self.reversePoints[i] {
 				if p.fade.GetValue() >= 0 {
 					if i == 1 {
-						out := len(self.discreteCurve)-1
+						out := len(self.discreteCurve) - 1
 						batch.SetTranslation(self.discreteCurve[out])
 						if out == 0 {
 							batch.SetRotation(self.startAngle)
@@ -637,20 +637,20 @@ func (self *Slider) Draw(time int64, preempt float64, fadeIn float64, color mgl3
 						batch.SetRotation(self.startAngle + math.Pi)
 					}
 					batch.SetSubScale(p.pulse.GetValue(), p.pulse.GetValue())
-					num := k*2
+					num := k * 2
 					if i == 0 {
 						num += 1
 					}
 					fnum := num
 					var reverseArrowFadeInStart int64
-					if (k!=0) || (i!=1) {
+					if (k != 0) || (i != 1) {
 						//如果不是第一个折返点，则多显示一倍时间
 						fnum -= 1
 						reverseArrowFadeInStart = self.TickReverse[fnum].Time
-					}else {
+					} else {
 						if settings.Objects.SliderSnakeIn {
-							reverseArrowFadeInStart = self.TickReverse[fnum].Time - int64(preempt) * 2 / 3
-						}else {
+							reverseArrowFadeInStart = self.TickReverse[fnum].Time - int64(preempt)*2/3
+						} else {
 							reverseArrowFadeInStart = self.TickReverse[fnum].Time - int64(preempt)
 						}
 					}
@@ -658,20 +658,20 @@ func (self *Slider) Draw(time int64, preempt float64, fadeIn float64, color mgl3
 					var reverseArrowAlpha float64
 					if time >= self.TickReverseTrue[num].Time {
 						reverseArrowAlpha = 0.0
-					}else if time >= reverseArrowFadeInStart{
-						if (k!=0) || (i!=1) {
+					} else if time >= reverseArrowFadeInStart {
+						if (k != 0) || (i != 1) {
 							reverseArrowAlpha = 1.0
-						}else {
-							reverseArrowAlpha = 1.0 - clampF((float64(reverseArrowFadeInEnd-time) / 150.0), 0.0, 1.0)
+						} else {
+							reverseArrowAlpha = 1.0 - clampF((float64(reverseArrowFadeInEnd-time)/150.0), 0.0, 1.0)
 						}
 						//reverseArrowAlpha = 1.0 - clampF((float64(reverseArrowFadeInEnd-time) / 150.0), 0.0, 1.0)
-					}else {
+					} else {
 						reverseArrowAlpha = 0.0
 					}
 
 					pulse := self.getPulse(time)
 					batch.SetColor(1, 1, 1, reverseArrowAlpha)
-					batch.DrawUnitFix(*render.SliderReverse, float64(118 * render.SliderReverse2x) / pulse, float64(118 * render.SliderReverse2x) / pulse)
+					batch.DrawUnitFix(*render.SliderReverse, float64(118*render.SliderReverse2x)/pulse, float64(118*render.SliderReverse2x)/pulse)
 				}
 			}
 		}
@@ -822,13 +822,13 @@ func (self *Slider) DrawApproach(time int64, preempt float64, fadeIn float64, co
 	arr := float64(self.objData.StartTime-time) / preempt
 
 	approachCircleFadeInStart := float64(self.objData.StartTime) - preempt
-	approachCircleFadeInEnd := math.Min(float64(self.objData.StartTime), approachCircleFadeInStart + 2 * fadeIn)
+	approachCircleFadeInEnd := math.Min(float64(self.objData.StartTime), approachCircleFadeInStart+2*fadeIn)
 
-	if time < self.objData.StartTime && float64(time) >= approachCircleFadeInStart{
+	if time < self.objData.StartTime && float64(time) >= approachCircleFadeInStart {
 		alpha = Clamp(1.0-(approachCircleFadeInEnd-float64(time))/fadeIn, 0.0, 1.0)
-	}else if time >= self.objData.StartTime{
-		alpha = Clamp(1.0 - float64(time-self.objData.StartTime)/(preempt/2), 0.0, 1.0)
-	}else {
+	} else if time >= self.objData.StartTime {
+		alpha = Clamp(1.0-float64(time-self.objData.StartTime)/(preempt/2), 0.0, 1.0)
+	} else {
 		alpha = float64(color[3])
 	}
 
@@ -837,7 +837,7 @@ func (self *Slider) DrawApproach(time int64, preempt float64, fadeIn float64, co
 	if settings.Objects.DrawApproachCircles && time <= self.objData.StartTime {
 		batch.SetColor(float64(color[0]), float64(color[1]), float64(color[2]), alpha)
 		batch.SetSubScale(1.0+arr*2, 1.0+arr*2)
-		batch.DrawUnitFix(*render.ApproachCircle, float64(128 * render.ApproachCircle2x), float64(128 * render.ApproachCircle2x))
+		batch.DrawUnitFix(*render.ApproachCircle, float64(128*render.ApproachCircle2x), float64(128*render.ApproachCircle2x))
 	}
 
 	batch.SetSubScale(1, 1)

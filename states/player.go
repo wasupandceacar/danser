@@ -351,16 +351,16 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 
 	//Information: How to calculate ReplayIndex
 	/*
-	var rnum int
-	if settings.VSplayer.PlayerInfo.SpecifiedPlayers {
-		rnum = tmpplindex[k]
-	} else {
-		rnum = k + 1
-	}
+		var rnum int
+		if settings.VSplayer.PlayerInfo.SpecifiedPlayers {
+			rnum = tmpplindex[k]
+		} else {
+			rnum = k + 1
+		}
 
-	then
+		then
 
-	hitjudge.FilterError(rnum, errs)
+		hitjudge.FilterError(rnum, errs)
 	*/
 
 	//TODO: Setting up specific player system

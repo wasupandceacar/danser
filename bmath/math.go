@@ -14,5 +14,5 @@ func Xor(v1 bool, v2 bool) bool {
 }
 
 func Fmod(a float64, b float64) float64 {
-	return a - float64(int(a / b)) * b
+	return a - float64(int(a/b))*b
 }

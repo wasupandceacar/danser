@@ -3,11 +3,11 @@ package storyboard
 import (
 	"danser/bmath"
 	"danser/render"
-	"github.com/go-gl/mathgl/mgl32"
-	"unicode"
-	"strings"
-	"math"
 	"danser/render/texture"
+	"github.com/go-gl/mathgl/mgl32"
+	"math"
+	"strings"
+	"unicode"
 )
 
 const (

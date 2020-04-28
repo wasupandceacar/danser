@@ -13,13 +13,13 @@ static inline void SyncFunc(HSYNC handle, DWORD channel, DWORD data, void *user)
 static inline void setSync(HCHANNEL channel) {
 	BASS_ChannelSetSync(channel, BASS_SYNC_END | BASS_SYNC_MIXTIME, 0, SyncFunc, 0);
 }
- */
+*/
 import "C"
 import (
 	"unsafe"
 	//"log"
-	"math"
 	"danser/settings"
+	"math"
 )
 
 const (

@@ -92,35 +92,35 @@ func LoadTextures() {
 	CursorTop, _, _ = loadTextureToAtlas(Atlas, "cursor-top")
 	SliderGradient, _ = loadTexture("slidergradient")
 	CursorTrail, _ = loadTexture("cursortrail")
-	PressKey, _, _ = loadTextureToAtlas(Atlas,"presskey")
+	PressKey, _, _ = loadTextureToAtlas(Atlas, "presskey")
 
-	Hit300, _, _ = loadTextureToAtlas(Atlas,"hit-300")
-	Hit100, _, _ = loadTextureToAtlas(Atlas,"hit-100")
-	Hit50, _, _ = loadTextureToAtlas(Atlas,"hit-50")
-	Hit0, _, _ = loadTextureToAtlas(Atlas,"hit-0")
+	Hit300, _, _ = loadTextureToAtlas(Atlas, "hit-300")
+	Hit100, _, _ = loadTextureToAtlas(Atlas, "hit-100")
+	Hit50, _, _ = loadTextureToAtlas(Atlas, "hit-50")
+	Hit0, _, _ = loadTextureToAtlas(Atlas, "hit-0")
 
-	Circle0, _, DefaultNumber2x = loadTextureToAtlas(Atlas,"default-0")
-	Circle1, _, _ = loadTextureToAtlas(Atlas,"default-1")
-	Circle2, _, _ = loadTextureToAtlas(Atlas,"default-2")
-	Circle3, _, _ = loadTextureToAtlas(Atlas,"default-3")
-	Circle4, _, _ = loadTextureToAtlas(Atlas,"default-4")
-	Circle5, _, _ = loadTextureToAtlas(Atlas,"default-5")
-	Circle6, _, _ = loadTextureToAtlas(Atlas,"default-6")
-	Circle7, _, _ = loadTextureToAtlas(Atlas,"default-7")
-	Circle8, _, _ = loadTextureToAtlas(Atlas,"default-8")
-	Circle9, _, _ = loadTextureToAtlas(Atlas,"default-9")
+	Circle0, _, DefaultNumber2x = loadTextureToAtlas(Atlas, "default-0")
+	Circle1, _, _ = loadTextureToAtlas(Atlas, "default-1")
+	Circle2, _, _ = loadTextureToAtlas(Atlas, "default-2")
+	Circle3, _, _ = loadTextureToAtlas(Atlas, "default-3")
+	Circle4, _, _ = loadTextureToAtlas(Atlas, "default-4")
+	Circle5, _, _ = loadTextureToAtlas(Atlas, "default-5")
+	Circle6, _, _ = loadTextureToAtlas(Atlas, "default-6")
+	Circle7, _, _ = loadTextureToAtlas(Atlas, "default-7")
+	Circle8, _, _ = loadTextureToAtlas(Atlas, "default-8")
+	Circle9, _, _ = loadTextureToAtlas(Atlas, "default-9")
 
-	RankXH, _, _ = loadTextureToAtlas(Atlas,"ranking-XH-small")
-	RankSH, _, _ = loadTextureToAtlas(Atlas,"ranking-SH-small")
-	RankX, _, _ = loadTextureToAtlas(Atlas,"ranking-X-small")
-	RankS, _, _ = loadTextureToAtlas(Atlas,"ranking-S-small")
-	RankA, _, _ = loadTextureToAtlas(Atlas,"ranking-A-small")
-	RankB, _, _ = loadTextureToAtlas(Atlas,"ranking-B-small")
-	RankC, _, _ = loadTextureToAtlas(Atlas,"ranking-C-small")
-	RankD, _, _ = loadTextureToAtlas(Atlas,"ranking-D-small")
+	RankXH, _, _ = loadTextureToAtlas(Atlas, "ranking-XH-small")
+	RankSH, _, _ = loadTextureToAtlas(Atlas, "ranking-SH-small")
+	RankX, _, _ = loadTextureToAtlas(Atlas, "ranking-X-small")
+	RankS, _, _ = loadTextureToAtlas(Atlas, "ranking-S-small")
+	RankA, _, _ = loadTextureToAtlas(Atlas, "ranking-A-small")
+	RankB, _, _ = loadTextureToAtlas(Atlas, "ranking-B-small")
+	RankC, _, _ = loadTextureToAtlas(Atlas, "ranking-C-small")
+	RankD, _, _ = loadTextureToAtlas(Atlas, "ranking-D-small")
 }
 
-func loadTextureToAtlas(atlas *texture.TextureAtlas, picname string) (*texture.TextureRegion, error, int32){
+func loadTextureToAtlas(atlas *texture.TextureAtlas, picname string) (*texture.TextureRegion, error, int32) {
 	var path string
 	is2x := 1
 	if settings.VSplayer.Skin.EnableSkin {
@@ -133,28 +133,28 @@ func loadTextureToAtlas(atlas *texture.TextureAtlas, picname string) (*texture.T
 				// 2x 贴图存在, 替换，设置 2x flag
 				path = settings.VSplayer.Skin.SkinDir + picname + "@2x.png"
 				is2x = 2
-			}else {
+			} else {
 				picExist, _ := utils.PathExists(settings.VSplayer.Skin.SkinDir + picname + ".png")
 				if picExist {
 					// 贴图存在，替换
 					path = settings.VSplayer.Skin.SkinDir + picname + ".png"
-				}else {
+				} else {
 					// 不存在，使用默认
 					path = "assets/textures/" + picname + ".png"
 				}
 			}
-		}else {
+		} else {
 			// 皮肤文件夹不存在
 			panic("皮肤文件夹不存在！")
 		}
-	}else {
+	} else {
 		path = "assets/textures/" + picname + ".png"
 	}
 	loadTexture, loadError := utils.LoadTextureToAtlas(atlas, path)
 	return loadTexture, loadError, int32(is2x)
 }
 
-func loadTexture(picname string) (*texture.TextureSingle, error){
+func loadTexture(picname string) (*texture.TextureSingle, error) {
 	var path string
 	if settings.VSplayer.Skin.EnableSkin {
 		// 使用自定义皮肤，则检查皮肤文件夹是否存在相关贴图
@@ -164,15 +164,15 @@ func loadTexture(picname string) (*texture.TextureSingle, error){
 			if picExist {
 				// 贴图存在，替换
 				path = settings.VSplayer.Skin.SkinDir + picname + ".png"
-			}else {
+			} else {
 				// 不存在，使用默认
 				path = "assets/textures/" + picname + ".png"
 			}
-		}else {
+		} else {
 			// 皮肤文件夹不存在
 			panic("皮肤文件夹不存在！")
 		}
-	}else {
+	} else {
 		path = "assets/textures/" + picname + ".png"
 	}
 	return utils.LoadTexture(path)
@@ -189,15 +189,15 @@ func LoadSkinConfiguration() {
 			if picExist {
 				// 皮肤配置文件存在
 				path = settings.VSplayer.Skin.SkinDir + "skin.ini"
-			}else {
+			} else {
 				// 皮肤配置文件不存在，使用默认
 				panic("皮肤配置不存在！")
 			}
-		}else {
+		} else {
 			// 皮肤文件夹不存在
 			panic("皮肤文件夹不存在！")
 		}
-	}else {
+	} else {
 		path = "assets/textures/skin.ini"
 	}
 	skinConfig, err := ini.NewFileConf(path)
@@ -207,7 +207,7 @@ func LoadSkinConfiguration() {
 	SkinVersionstring := skinConfig.String("General.Version")
 	if SkinVersionstring == "latest" || SkinVersionstring == "User" {
 		SkinVersion = 2.5
-	}else {
+	} else {
 		SkinVersion, err = strconv.ParseFloat(SkinVersionstring, 64)
 		if err != nil {
 			log.Println("未找到皮肤版本配置，将使用最新版本。")

@@ -32,7 +32,7 @@ func difficultyRate(diff, min, mid, max float64) float64 {
 
 // OD规范为带0.5的向下取整小数
 func AdjustOD(OD float64) float64 {
-	return math.Floor( OD + 0.5 ) - 0.5
+	return math.Floor(OD+0.5) - 0.5
 }
 
 func calculateStackLeniency(b *BeatMap) {
@@ -42,9 +42,9 @@ func calculateStackLeniency(b *BeatMap) {
 	b.ARms = preempt
 	b.FadeIn = difficultyRate(b.AR, 1200, 800, 300)
 	// 加入OD
-	b.OD300 = AdjustOD(OD_300_BASE - ( b.OD * OD_300_MULT ) + OD_PRECISION_FIX)
-	b.OD100 = AdjustOD(OD_100_BASE - ( b.OD * OD_100_MULT ) + OD_PRECISION_FIX)
-	b.OD50 = AdjustOD(OD_50_BASE - ( b.OD * OD_50_MULT ) + OD_PRECISION_FIX)
+	b.OD300 = AdjustOD(OD_300_BASE - (b.OD * OD_300_MULT) + OD_PRECISION_FIX)
+	b.OD100 = AdjustOD(OD_100_BASE - (b.OD * OD_100_MULT) + OD_PRECISION_FIX)
+	b.OD50 = AdjustOD(OD_50_BASE - (b.OD * OD_50_MULT) + OD_PRECISION_FIX)
 	b.ODMiss = AdjustOD(OD_MISS_BASE + OD_PRECISION_FIX)
 	hitObjects := b.HitObjects
 
@@ -181,18 +181,18 @@ func calculateStackLeniencywithMods(b *BeatMap, isHR bool, isEZ bool) {
 
 	newAR := b.AR
 	if isHR {
-		newAR = math.Min(b.AR * AR_HR_HENSE, AR_MAX)
+		newAR = math.Min(b.AR*AR_HR_HENSE, AR_MAX)
 	}
 	if isEZ {
-		newAR = math.Min(b.AR * AR_EZ_HENSE, AR_MAX)
+		newAR = math.Min(b.AR*AR_EZ_HENSE, AR_MAX)
 	}
 	preempt := difficultyRate(newAR, 1800, 1200, 450)
 	b.ARms = preempt
 	b.FadeIn = difficultyRate(newAR, 1200, 800, 300)
 	// 加入OD
-	b.OD300 = AdjustOD(OD_300_BASE - ( b.OD * OD_300_MULT ) + OD_PRECISION_FIX)
-	b.OD100 = AdjustOD(OD_100_BASE - ( b.OD * OD_100_MULT ) + OD_PRECISION_FIX)
-	b.OD50 = AdjustOD(OD_50_BASE - ( b.OD * OD_50_MULT ) + OD_PRECISION_FIX)
+	b.OD300 = AdjustOD(OD_300_BASE - (b.OD * OD_300_MULT) + OD_PRECISION_FIX)
+	b.OD100 = AdjustOD(OD_100_BASE - (b.OD * OD_100_MULT) + OD_PRECISION_FIX)
+	b.OD50 = AdjustOD(OD_50_BASE - (b.OD * OD_50_MULT) + OD_PRECISION_FIX)
 	b.ODMiss = AdjustOD(OD_MISS_BASE + OD_PRECISION_FIX)
 	hitObjects := b.HitObjects
 
@@ -323,4 +323,3 @@ func calculateStackLeniencywithMods(b *BeatMap, isHR bool, isEZ bool) {
 		}
 	}
 }
-

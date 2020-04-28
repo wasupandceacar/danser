@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"time"
 	"runtime"
+	"time"
 )
 
 /*
@@ -47,7 +47,7 @@ long long getNanoTime() {
 	return 0;
 }
 #endif
- */
+*/
 import "C"
 
 func GetNanoTime() int64 {

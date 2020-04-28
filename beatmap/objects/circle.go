@@ -87,27 +87,27 @@ func (self *Circle) GetPosition() bmath.Vector2d {
 func (self *Circle) Draw(time int64, preempt float64, fadeIn float64, color mgl32.Vec4, batch *render.SpriteBatch) bool {
 	alpha := 1.0
 	fadeInStart := float64(self.objData.StartTime) - preempt
-	fadeInEnd := math.Min(float64(self.objData.StartTime), fadeInStart + fadeIn)
+	fadeInEnd := math.Min(float64(self.objData.StartTime), fadeInStart+fadeIn)
 
 	if settings.VSplayer.Mods.EnableHD {
 		hiddenFadeInStart := float64(self.objData.StartTime) - preempt
-		hiddenFadeInEnd := hiddenFadeInStart + preempt * FADE_IN_DURATION_MULTIPLIER
+		hiddenFadeInEnd := hiddenFadeInStart + preempt*FADE_IN_DURATION_MULTIPLIER
 
 		hiddenFadeOutStart := hiddenFadeInEnd
-		hiddenFadeOutEnd := hiddenFadeOutStart + preempt * FADE_OUT_DURATION_MULTIPLIER
+		hiddenFadeOutEnd := hiddenFadeOutStart + preempt*FADE_OUT_DURATION_MULTIPLIER
 		if float64(time) < hiddenFadeInEnd && float64(time) >= hiddenFadeInStart {
-			alpha = Clamp(1.0 - (hiddenFadeInEnd - float64(time)) / (hiddenFadeInEnd - hiddenFadeInStart), 0.0, 1.0)
+			alpha = Clamp(1.0-(hiddenFadeInEnd-float64(time))/(hiddenFadeInEnd-hiddenFadeInStart), 0.0, 1.0)
 		} else if float64(time) >= hiddenFadeOutStart {
-			alpha = Clamp((hiddenFadeOutEnd - float64(time)) / (hiddenFadeOutEnd - hiddenFadeOutStart), 0.0, 1.0)
+			alpha = Clamp((hiddenFadeOutEnd-float64(time))/(hiddenFadeOutEnd-hiddenFadeOutStart), 0.0, 1.0)
 		} else {
 			alpha = float64(color[3])
 		}
-	}else {
+	} else {
 		if time < self.objData.StartTime && float64(time) >= fadeInStart {
-			alpha = Clamp(1.0 - (fadeInEnd - float64(time))/ fadeIn, 0.0, 1.0)
-		}else if time >= self.objData.StartTime {
-			alpha = Clamp(1.0 - float64(time - self.objData.StartTime)/(preempt/2), 0.0, 1.0)
-		}else {
+			alpha = Clamp(1.0-(fadeInEnd-float64(time))/fadeIn, 0.0, 1.0)
+		} else if time >= self.objData.StartTime {
+			alpha = Clamp(1.0-float64(time-self.objData.StartTime)/(preempt/2), 0.0, 1.0)
+		} else {
 			alpha = float64(color[3])
 		}
 	}
@@ -182,13 +182,13 @@ func (self *Circle) DrawApproach(time int64, preempt float64, fadeIn float64, co
 	arr := float64(self.objData.StartTime-time) / preempt
 
 	approachCircleFadeInStart := float64(self.objData.StartTime) - preempt
-	approachCircleFadeInEnd := math.Min(float64(self.objData.StartTime), approachCircleFadeInStart + 2 * fadeIn)
+	approachCircleFadeInEnd := math.Min(float64(self.objData.StartTime), approachCircleFadeInStart+2*fadeIn)
 
-	if time < self.objData.StartTime && float64(time) >= approachCircleFadeInStart{
+	if time < self.objData.StartTime && float64(time) >= approachCircleFadeInStart {
 		alpha = Clamp(1.0-(approachCircleFadeInEnd-float64(time))/fadeIn, 0.0, 1.0)
-	}else if time >= self.objData.StartTime{
-		alpha = Clamp(1.0 - float64(time-self.objData.StartTime)/(preempt/2), 0.0, 1.0)
-	}else {
+	} else if time >= self.objData.StartTime {
+		alpha = Clamp(1.0-float64(time-self.objData.StartTime)/(preempt/2), 0.0, 1.0)
+	} else {
 		alpha = float64(color[3])
 	}
 
@@ -197,7 +197,7 @@ func (self *Circle) DrawApproach(time int64, preempt float64, fadeIn float64, co
 	if settings.Objects.DrawApproachCircles && time <= self.objData.StartTime {
 		batch.SetColor(float64(color[0]), float64(color[1]), float64(color[2]), alpha)
 		batch.SetSubScale(1.0+arr*2, 1.0+arr*2)
-		batch.DrawUnitFix(*render.ApproachCircle, float64(128 * render.ApproachCircle2x), float64(128 * render.ApproachCircle2x))
+		batch.DrawUnitFix(*render.ApproachCircle, float64(128*render.ApproachCircle2x), float64(128*render.ApproachCircle2x))
 	}
 
 	batch.SetSubScale(1, 1)

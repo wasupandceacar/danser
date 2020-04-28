@@ -21,7 +21,6 @@ var Origin = map[string]bmath.Vector2d{
 	"5":         bmath.NewVec2d(0, -1),
 	"TopCentre": bmath.NewVec2d(0, -1),
 
-
 	"7":           bmath.NewVec2d(1, 0),
 	"CentreRight": bmath.NewVec2d(1, 0),
 

@@ -1,10 +1,10 @@
 package texture
 
 import (
-	"image"
-	"github.com/go-gl/gl/v3.3-core/gl"
-	"runtime"
 	"github.com/faiface/mainthread"
+	"github.com/go-gl/gl/v3.3-core/gl"
+	"image"
+	"runtime"
 )
 
 type TextureSingle struct {

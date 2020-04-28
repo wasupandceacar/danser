@@ -10,17 +10,17 @@ package ini
  * 本包的配置文件是严格区分大小写的 需要禁止区分大小写 将在后期加入或自行加入
  */
 
-import(
+import (
 	"bufio"
 	"errors"
-	"os"
-	"strings"
-	"strconv"
 	"net/url"
+	"os"
+	"strconv"
+	"strings"
 )
 
 // 配置文件
-type Config struct{
+type Config struct {
 	conf map[string]url.Values
 }
 
@@ -41,7 +41,7 @@ func (c *Config) Int(tag string) (int, error) {
 }
 
 // 返回一个int64配置值
-func(c *Config) Int64(tag string) (int64, error) {
+func (c *Config) Int64(tag string) (int64, error) {
 	return strconv.ParseInt(c.String(tag), 10, 64)
 }
 
@@ -83,10 +83,10 @@ func NewFileConf(filePath string) (*Config, error) {
 		}
 
 		if idx := strings.Index(lstr, "["); idx != -1 {
-			if lstr[len(lstr) - 1:] != "]" {
+			if lstr[len(lstr)-1:] != "]" {
 				return nil, errors.New("Error:field to parse this symbol style:\"" + lstr + "\"")
 			}
-			tag = lstr[1:len(lstr) - 1]
+			tag = lstr[1 : len(lstr)-1]
 			cf.conf[tag] = url.Values{}
 		} else {
 			lstr = replacer.Replace(lstr)
@@ -94,7 +94,7 @@ func NewFileConf(filePath string) (*Config, error) {
 			spl := strings.Split(lstr, ":")
 
 			// 增加注释符 //
-			if lstr[0:1] == ";" || lstr[0:2] == "//"{
+			if lstr[0:1] == ";" || lstr[0:2] == "//" {
 				continue
 			}
 
@@ -135,4 +135,3 @@ func PathExists(path string) bool {
 
 	return false
 }
-

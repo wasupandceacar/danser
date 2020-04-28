@@ -2,9 +2,9 @@ package texture
 
 import (
 	"github.com/faiface/mainthread"
-	"runtime"
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"log"
+	"runtime"
 )
 
 type rectangle struct {

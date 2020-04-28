@@ -1,14 +1,14 @@
 package effects
 
 import (
-	"github.com/wieku/glhf"
-	"github.com/go-gl/mathgl/mgl32"
-	"io/ioutil"
-	"github.com/go-gl/gl/v3.3-core/gl"
-	"math"
-	"danser/settings"
-	"danser/render/texture"
 	"danser/render/framebuffer"
+	"danser/render/texture"
+	"danser/settings"
+	"github.com/go-gl/gl/v3.3-core/gl"
+	"github.com/go-gl/mathgl/mgl32"
+	"github.com/wieku/glhf"
+	"io/ioutil"
+	"math"
 )
 
 type BlurEffect struct {

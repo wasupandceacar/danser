@@ -2,16 +2,16 @@ package render
 
 import (
 	"danser/bmath"
-	"math"
-	"github.com/wieku/glhf"
-	"log"
-	_ "image/png"
+	"danser/render/framebuffer"
+	"danser/settings"
+	"danser/utils"
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/go-gl/mathgl/mgl32"
-	"danser/settings"
+	"github.com/wieku/glhf"
+	_ "image/png"
 	"io/ioutil"
-	"danser/utils"
-	"danser/render/framebuffer"
+	"log"
+	"math"
 )
 
 var sliderShader *glhf.Shader = nil
@@ -162,11 +162,11 @@ func createMesh(curve []bmath.Vector2d) []float32 {
 	return vertices
 }
 
-func set(array []float32, index int, data ... float32) {
+func set(array []float32, index int, data ...float32) {
 	copy(array[index:index+len(data)], data)
 }
 
-func createCircle(x, y, radius float64, segments int) ([]bmath.Vector2d) {
+func createCircle(x, y, radius float64, segments int) []bmath.Vector2d {
 	points := make([]bmath.Vector2d, segments+2)
 	points[0] = bmath.NewVec2d(x, y)
 

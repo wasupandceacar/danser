@@ -13,7 +13,7 @@ func SaveError(errors []Error) {
 	}
 }
 
-func ReadError() ([]Error) {
+func ReadError() []Error {
 	oread, _ := ioutil.ReadFile(settings.VSplayer.ErrorFix.ErrorFixFile)
 	return setErrorCache(oread)
 }

@@ -2,8 +2,8 @@ package bmath
 
 import (
 	"fmt"
-	"math"
 	"github.com/go-gl/mathgl/mgl32"
+	"math"
 )
 
 type Vector2d struct {

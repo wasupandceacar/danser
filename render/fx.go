@@ -1,8 +1,8 @@
 package render
 
 import (
-	"github.com/wieku/glhf"
 	"github.com/go-gl/mathgl/mgl32"
+	"github.com/wieku/glhf"
 )
 
 var fxshader *glhf.Shader = nil

@@ -21,7 +21,7 @@ func GetOsrFiles() (files []string, err error) {
 			pl, _ := strconv.Atoi(player)
 			if pl <= 0 {
 				log.Panic("指定player的字符串有误，请重新检查设定")
-			}else {
+			} else {
 				specifiedplayerindex = append(specifiedplayerindex, pl)
 			}
 		}
@@ -35,7 +35,7 @@ func GetOsrFiles() (files []string, err error) {
 				}
 			}
 		}
-	}else {
+	} else {
 		for _, fi := range dir {
 			ok := strings.HasSuffix(fi.Name(), ".osr")
 			if ok {
@@ -43,5 +43,5 @@ func GetOsrFiles() (files []string, err error) {
 			}
 		}
 	}
-	return files,nil
+	return files, nil
 }

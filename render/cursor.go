@@ -109,6 +109,7 @@ func (cr *Cursor) SetPos(pt bmath.Vector2d) {
 
 	cr.Position = tmp
 }
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func (cr *Cursor) SetScreenPos(pt bmath.Vector2d) {
@@ -175,7 +176,7 @@ func (cr *Cursor) Update(tim float64) {
 	}
 }
 
-func fillArray(dst []float32, index int, values ... float32) {
+func fillArray(dst []float32, index int, values ...float32) {
 	for i, j := range values {
 		dst[index+i] = j
 	}

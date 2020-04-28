@@ -13,7 +13,7 @@ func main() {
 
 	flag.Parse()
 
-	if !*stdinLog{
+	if !*stdinLog {
 		// 设置log文件
 		file, _ := os.OpenFile("vsplayer.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 		defer file.Close()

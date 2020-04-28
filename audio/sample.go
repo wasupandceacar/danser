@@ -2,13 +2,13 @@ package audio
 
 /*
 #include "bass.h"
- */
+*/
 import "C"
 
 import (
-	"unsafe"
 	"danser/settings"
 	"os"
+	"unsafe"
 )
 
 type Sample struct {

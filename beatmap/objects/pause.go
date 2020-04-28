@@ -1,9 +1,9 @@
 package objects
 
 import (
+	"danser/bmath"
 	. "danser/osuconst"
 	"strconv"
-	"danser/bmath"
 )
 
 type Pause struct {
@@ -15,7 +15,7 @@ func NewPause(data []string) *Pause {
 	pause.objData = &basicData{}
 	pause.objData.StartTime, _ = strconv.ParseInt(data[1], 10, 64)
 	pause.objData.EndTime, _ = strconv.ParseInt(data[2], 10, 64)
-	pause.objData.StartPos = bmath.NewVec2d(PLAYFIELD_WIDTH / 2, PLAYFIELD_HEIGHT / 2)
+	pause.objData.StartPos = bmath.NewVec2d(PLAYFIELD_WIDTH/2, PLAYFIELD_HEIGHT/2)
 	pause.objData.EndPos = pause.objData.StartPos
 	pause.objData.Number = -1
 	return pause

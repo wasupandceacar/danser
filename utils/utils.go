@@ -1,14 +1,14 @@
 package utils
 
 import (
-	"os"
-	_ "image/jpeg"
+	"danser/render/texture"
 	_ "golang.org/x/image/bmp"
-	_ "image/png"
 	"image"
 	"image/draw"
+	_ "image/jpeg"
+	_ "image/png"
 	"log"
-	"danser/render/texture"
+	"os"
 	"sort"
 )
 
@@ -130,7 +130,7 @@ func SortRankHighToLow(array []float64) (rank []int) {
 func firstindexof(array []float64, ar float64) int {
 	error := 0.1
 	for i, a := range array {
-		if (ar >= a - error) && (ar <= a + error) {
+		if (ar >= a-error) && (ar <= a+error) {
 			return i
 		}
 	}
@@ -140,12 +140,11 @@ func firstindexof(array []float64, ar float64) int {
 // 查找最后一个指定元素返回的下标
 func lastindexof(array []float64, ar float64) int {
 	error := 0.1
-	for i := len(array)-1; i >= 0; i-- {
+	for i := len(array) - 1; i >= 0; i-- {
 		a := array[i]
-		if (ar >= a - error) && (ar <= a + error) {
+		if (ar >= a-error) && (ar <= a+error) {
 			return i
 		}
 	}
 	return -1
 }
-

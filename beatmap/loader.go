@@ -1,12 +1,12 @@
 package beatmap
 
 import (
-	"sync"
-	"os"
+	"danser/settings"
 	"log"
+	"os"
 	"path/filepath"
 	"strings"
-	"danser/settings"
+	"sync"
 )
 
 func LoadBeatmaps() []*BeatMap {

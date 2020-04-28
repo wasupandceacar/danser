@@ -1,8 +1,8 @@
 package storyboard
 
 import (
-	"sort"
 	"math"
+	"sort"
 )
 
 type Transformations struct {

@@ -12,15 +12,15 @@ import (
 const batchSize = 2000
 
 type SpriteBatch struct {
-	shader *glhf.Shader
-	additive   bool
-	color      mgl32.Vec4
-	Projection mgl32.Mat4
-	position   bmath.Vector2d
-	scale      bmath.Vector2d
-	subscale   bmath.Vector2d
-	numberscale  	bmath.Vector2d
-	rotation   float64
+	shader      *glhf.Shader
+	additive    bool
+	color       mgl32.Vec4
+	Projection  mgl32.Mat4
+	position    bmath.Vector2d
+	scale       bmath.Vector2d
+	subscale    bmath.Vector2d
+	numberscale bmath.Vector2d
+	rotation    float64
 
 	transform mgl32.Mat4
 	texture   texture.Texture

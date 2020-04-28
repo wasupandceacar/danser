@@ -17,7 +17,7 @@ type Cache struct {
 }
 
 func CacheResult(objectResults []hitjudge.ObjectResult, totalResults []hitjudge.TotalResult, rep *rplpa.Replay) {
-	err := ioutil.WriteFile(settings.VSplayer.ReplayandCache.CacheDir + rep.ReplayMD5 + ".oac", marshalCache(Cache{ObjectResults: objectResults, TotalResults: totalResults, Version: build.CACHE_VERSION}), 0666)
+	err := ioutil.WriteFile(settings.VSplayer.ReplayandCache.CacheDir+rep.ReplayMD5+".oac", marshalCache(Cache{ObjectResults: objectResults, TotalResults: totalResults, Version: build.CACHE_VERSION}), 0666)
 	if err != nil {
 		panic(err)
 	}

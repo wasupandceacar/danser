@@ -4,10 +4,10 @@ import . "danser/osuconst"
 
 func CalculateAccuracy(hits []int64) float64 {
 	sum := int64(0)
-	for _, value := range hits{
+	for _, value := range hits {
 		sum += value
 	}
-	return 100 * float64(sum) / float64(300 * len(hits))
+	return 100 * float64(sum) / float64(300*len(hits))
 }
 
 func CalculateRank(hits []int64, mods uint32) Rank {
@@ -15,8 +15,8 @@ func CalculateRank(hits []int64, mods uint32) Rank {
 	count300 := 0
 	count100 := 0
 	count50 := 0
-	countmiss :=0
-	for _, value := range hits{
+	countmiss := 0
+	for _, value := range hits {
 		switch value {
 		case 300:
 			count300 += 1
@@ -36,28 +36,28 @@ func CalculateRank(hits []int64, mods uint32) Rank {
 		if IsSilver(mods) {
 			// SSH
 			return SSH
-		}else {
+		} else {
 			// SS
 			return SS
 		}
-	}else if ((float64(count300) / float64(countall)) > 0.9) && ((float64(count50) / float64(countall)) < 0.01) && (countmiss == 0) {
+	} else if ((float64(count300) / float64(countall)) > 0.9) && ((float64(count50) / float64(countall)) < 0.01) && (countmiss == 0) {
 		if IsSilver(mods) {
 			// SH
 			return SH
-		}else {
+		} else {
 			// S
 			return S
 		}
-	}else if ((float64(count300) / float64(countall)) > 0.9) || (((float64(count300) / float64(countall)) > 0.8) && (countmiss == 0)) {
+	} else if ((float64(count300) / float64(countall)) > 0.9) || (((float64(count300) / float64(countall)) > 0.8) && (countmiss == 0)) {
 		// A
 		return A
-	}else if ((float64(count300) / float64(countall)) > 0.8) || (((float64(count300) / float64(countall)) > 0.7) && (countmiss == 0)) {
+	} else if ((float64(count300) / float64(countall)) > 0.8) || (((float64(count300) / float64(countall)) > 0.7) && (countmiss == 0)) {
 		// B
 		return B
-	}else if ((float64(count300) / float64(countall)) > 0.6) {
+	} else if (float64(count300) / float64(countall)) > 0.6 {
 		// C
 		return C
-	}else {
+	} else {
 		// D
 		return D
 	}

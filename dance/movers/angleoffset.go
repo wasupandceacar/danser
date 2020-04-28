@@ -1,11 +1,11 @@
 package movers
 
 import (
-	"math"
 	"danser/beatmap/objects"
-	"danser/settings"
 	"danser/bmath"
 	"danser/bmath/curves"
+	"danser/settings"
+	"math"
 )
 
 type AngleOffsetMover struct {

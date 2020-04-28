@@ -13,6 +13,6 @@ func ProfStart() {
 	pprof.StartCPUProfile(f)
 }
 
-func ProfEnd(){
+func ProfEnd() {
 	pprof.StopCPUProfile()
 }

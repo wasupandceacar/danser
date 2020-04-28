@@ -1,8 +1,8 @@
 package osuconst
 
 // osu判定区域相对大小
-const PLAYFIELD_WIDTH  = 512.0
-const PLAYFIELD_HEIGHT  = 384.0
+const PLAYFIELD_WIDTH = 512.0
+const PLAYFIELD_HEIGHT = 384.0
 
 // 原始皮肤基准大小
 const DEFAULT_SKIN_SIZE = 667.0
@@ -70,6 +70,3 @@ const BASE_STACK_OFFSET = -6.4
 
 // replay时间结束默认时间
 const REPLAY_END_TIME = -12345
-
-
-

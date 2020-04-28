@@ -212,7 +212,7 @@ func InOutElastic(t float64) float64 {
 	return InOutElasticFunction(0.5)(t)
 }
 
-func InElasticFunction(period float64) (func(float64) float64) {
+func InElasticFunction(period float64) func(float64) float64 {
 	p := period
 	return func(t float64) float64 {
 		t -= 1
@@ -220,14 +220,14 @@ func InElasticFunction(period float64) (func(float64) float64) {
 	}
 }
 
-func OutElasticFunction(period, mod float64) (func(float64) float64) {
+func OutElasticFunction(period, mod float64) func(float64) float64 {
 	p := period
 	return func(t float64) float64 {
 		return math.Pow(2, -10*t)*math.Sin((mod*t-p/4)*(2*math.Pi/p)) + 1
 	}
 }
 
-func InOutElasticFunction(period float64) (func(float64) float64) {
+func InOutElasticFunction(period float64) func(float64) float64 {
 	p := period
 	return func(t float64) float64 {
 		t *= 2

@@ -1,12 +1,12 @@
 package movers
 
 import (
-	. "danser/osuconst"
-	"math"
 	"danser/beatmap/objects"
-	"danser/settings"
 	"danser/bmath"
 	"danser/bmath/curves"
+	. "danser/osuconst"
+	"danser/settings"
+	"math"
 )
 
 type BezierMover struct {
@@ -19,13 +19,13 @@ type BezierMover struct {
 
 func NewBezierMover() MultiPointMover {
 	bm := &BezierMover{invert: 1}
-	bm.pt = bmath.NewVec2d(PLAYFIELD_WIDTH / 2, PLAYFIELD_HEIGHT / 2)
+	bm.pt = bmath.NewVec2d(PLAYFIELD_WIDTH/2, PLAYFIELD_HEIGHT/2)
 	bm.previousSpeed = -1
 	return bm
 }
 
 func (bm *BezierMover) Reset() {
-	bm.pt = bmath.NewVec2d(PLAYFIELD_WIDTH / 2, PLAYFIELD_HEIGHT / 2)
+	bm.pt = bmath.NewVec2d(PLAYFIELD_WIDTH/2, PLAYFIELD_HEIGHT/2)
 	bm.invert = 1
 	bm.previousSpeed = -1
 }
@@ -59,18 +59,18 @@ func (bm *BezierMover) SetObjects(objs []objects.BaseObject) {
 	} else if ok1 && ok2 {
 		endAngle := s1.GetEndAngle()
 		startAngle := s2.GetStartAngle()
-		bm.pt = bmath.NewVec2dRad(endAngle, s1.GetPointAt(endTime - 10).Dst(endPos)*aggressiveness*sliderAggressiveness/10).Add(endPos)
-		pt2 := bmath.NewVec2dRad(startAngle, s2.GetPointAt(startTime + 10).Dst(startPos)*aggressiveness*sliderAggressiveness/10).Add(startPos)
+		bm.pt = bmath.NewVec2dRad(endAngle, s1.GetPointAt(endTime-10).Dst(endPos)*aggressiveness*sliderAggressiveness/10).Add(endPos)
+		pt2 := bmath.NewVec2dRad(startAngle, s2.GetPointAt(startTime+10).Dst(startPos)*aggressiveness*sliderAggressiveness/10).Add(startPos)
 		points = []bmath.Vector2d{endPos, bm.pt, pt2, startPos}
 	} else if ok1 {
 		endAngle := s1.GetEndAngle()
-		pt1 := bmath.NewVec2dRad(endAngle, s1.GetPointAt(endTime - 10).Dst(endPos)*aggressiveness*sliderAggressiveness/10).Add(endPos)
+		pt1 := bmath.NewVec2dRad(endAngle, s1.GetPointAt(endTime-10).Dst(endPos)*aggressiveness*sliderAggressiveness/10).Add(endPos)
 		bm.pt = bmath.NewVec2dRad(startPos.AngleRV(bm.pt), genScale*aggressiveness).Add(startPos)
 		points = []bmath.Vector2d{endPos, pt1, bm.pt, startPos}
 	} else if ok2 {
 		startAngle := s2.GetStartAngle()
 		bm.pt = bmath.NewVec2dRad(endPos.AngleRV(bm.pt), genScale*aggressiveness).Add(endPos)
-		pt1 := bmath.NewVec2dRad(startAngle, s2.GetPointAt(startTime + 10).Dst(startPos)*aggressiveness*sliderAggressiveness/10).Add(startPos)
+		pt1 := bmath.NewVec2dRad(startAngle, s2.GetPointAt(startTime+10).Dst(startPos)*aggressiveness*sliderAggressiveness/10).Add(startPos)
 		points = []bmath.Vector2d{endPos, bm.pt, pt1, startPos}
 	} else {
 		angle := endPos.AngleRV(bm.pt)

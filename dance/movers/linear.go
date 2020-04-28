@@ -1,10 +1,10 @@
 package movers
 
 import (
-	"math"
 	"danser/beatmap/objects"
-	"danser/bmath/curves"
 	"danser/bmath"
+	"danser/bmath/curves"
+	"math"
 )
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

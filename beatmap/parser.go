@@ -274,7 +274,9 @@ func ParseObjects(beatMap *BeatMap) {
 		}
 	}
 
-	sort.Slice(beatMap.HitObjects, func(i, j int) bool { return beatMap.HitObjects[i].GetBasicData().StartTime < beatMap.HitObjects[j].GetBasicData().StartTime })
+	sort.Slice(beatMap.HitObjects, func(i, j int) bool {
+		return beatMap.HitObjects[i].GetBasicData().StartTime < beatMap.HitObjects[j].GetBasicData().StartTime
+	})
 
 	// 计算总的序号
 	num := 0
@@ -323,7 +325,9 @@ func ParseObjectsbyPath(beatMap *BeatMap, filename string, isHR bool, isEZ bool)
 		}
 	}
 
-	sort.Slice(beatMap.HitObjects, func(i, j int) bool { return beatMap.HitObjects[i].GetBasicData().StartTime < beatMap.HitObjects[j].GetBasicData().StartTime })
+	sort.Slice(beatMap.HitObjects, func(i, j int) bool {
+		return beatMap.HitObjects[i].GetBasicData().StartTime < beatMap.HitObjects[j].GetBasicData().StartTime
+	})
 
 	num := 0
 

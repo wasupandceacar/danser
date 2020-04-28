@@ -1,10 +1,10 @@
 package effects
 
 import (
+	"danser/render/framebuffer"
+	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/wieku/glhf"
 	"io/ioutil"
-	"github.com/go-gl/gl/v3.3-core/gl"
-	"danser/render/framebuffer"
 )
 
 type BloomEffect struct {

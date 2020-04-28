@@ -29,16 +29,16 @@ type basicData struct {
 	StackOffset        om.Vector2d
 	StackIndex         int64
 	// 一个combo内的object序号
-	Number             int64
+	Number int64
 	// 总的obejct序号
-	ObjectNumber	   int64
-	SliderPoint        bool
+	ObjectNumber int64
+	SliderPoint  bool
 
 	// 物件的判定时间
 	// note：开始时间
 	// 滑条：结束时间减滑条尾偏移
 	// 转盘：结束时间
-	JudgeTime	int64
+	JudgeTime int64
 
 	sampleSet    int
 	additionSet  int
@@ -78,7 +78,6 @@ func (bData *basicData) parseExtras(data []string, extraIndex int) {
 		} else {
 			bData.customVolume = 0
 		}
-
 
 		bData.sampleSet = int(sampleSet)
 		bData.additionSet = int(additionSet)

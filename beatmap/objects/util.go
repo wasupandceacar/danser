@@ -14,7 +14,7 @@ func GetObject(data []string, number int64) (BaseObject, int64) {
 		if objType == NEWCIRCLE {
 			// 新的combo
 			newnumber = 1
-		}else {
+		} else {
 			// 继续combo
 			newnumber += 1
 		}
@@ -23,7 +23,7 @@ func GetObject(data []string, number int64) (BaseObject, int64) {
 		if objType == NEWSLIDER {
 			// 新的combo
 			newnumber = 1
-		}else {
+		} else {
 			// 继续combo
 			newnumber += 1
 		}
@@ -34,10 +34,10 @@ func GetObject(data []string, number int64) (BaseObject, int64) {
 			return sl, newnumber
 		}
 	} else if (objType & SPINNNER) > 0 {
-		if objType == NEWSPINNNER{
+		if objType == NEWSPINNNER {
 			// 新的combo
 			newnumber = 1
-		}else {
+		} else {
 			// 继续combo
 			newnumber += 1
 		}
@@ -54,7 +54,7 @@ func GetObjectbyPath(data []string, number int64, isHR bool) (BaseObject, int64)
 		if objType == NEWCIRCLE {
 			// 新的combo
 			newnumber = 1
-		}else {
+		} else {
 			// 继续combo
 			newnumber += 1
 		}
@@ -63,7 +63,7 @@ func GetObjectbyPath(data []string, number int64, isHR bool) (BaseObject, int64)
 		if objType == NEWSLIDER {
 			// 新的combo
 			newnumber = 1
-		}else {
+		} else {
 			// 继续combo
 			newnumber += 1
 		}
@@ -74,10 +74,10 @@ func GetObjectbyPath(data []string, number int64, isHR bool) (BaseObject, int64)
 			return sl, newnumber
 		}
 	} else if (objType & SPINNNER) > 0 {
-		if objType == NEWSPINNNER{
+		if objType == NEWSPINNNER {
 			// 新的combo
 			newnumber = 1
-		}else {
+		} else {
 			// 继续combo
 			newnumber += 1
 		}
@@ -123,7 +123,7 @@ func DrawHitCircleNumber(number int64, position bmath.Vector2d, batch *render.Sp
 }
 
 // 获取圈内数字宽度
-func GetHitCircleNumberWidth(number int64) int32{
+func GetHitCircleNumberWidth(number int64) int32 {
 	switch number {
 	case 0:
 		return render.Circle0.Width
@@ -153,18 +153,18 @@ func GetHitCircleNumberWidth(number int64) int32{
 func Clamp(value float64, min float64, max float64) float64 {
 	if value < min {
 		return min
-	}else if value > max {
+	} else if value > max {
 		return max
-	}else {
+	} else {
 		return value
 	}
 }
 
 const (
-	CIRCLE int64 = 1
-	SLIDER int64 = 2
-	SPINNNER int64 = 8
-	NEWCIRCLE int64 = 5
-	NEWSLIDER int64 = 6
+	CIRCLE      int64 = 1
+	SLIDER      int64 = 2
+	SPINNNER    int64 = 8
+	NEWCIRCLE   int64 = 5
+	NEWSLIDER   int64 = 6
 	NEWSPINNNER int64 = 12
 )

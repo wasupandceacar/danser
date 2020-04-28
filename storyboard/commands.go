@@ -1,12 +1,12 @@
 package storyboard
 
 import (
-	"danser/bmath"
-	"math"
-	"github.com/go-gl/mathgl/mgl32"
 	"danser/animation/easing"
-	"strconv"
+	"danser/bmath"
+	"github.com/go-gl/mathgl/mgl32"
 	"log"
+	"math"
+	"strconv"
 )
 
 type Command struct {

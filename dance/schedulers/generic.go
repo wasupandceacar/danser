@@ -66,8 +66,6 @@ import (
 //	//log.Println(time, sched.cursor.Position)
 //}
 
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // 修改Scheduler
 type ReplayScheduler struct {
@@ -85,4 +83,5 @@ func (sched *ReplayScheduler) Init(objs []objects.BaseObject, cursor *render.Cur
 func (sched *ReplayScheduler) Update(time int64, position bmath.Vector2d) {
 	sched.cursor.SetPos(position)
 }
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
