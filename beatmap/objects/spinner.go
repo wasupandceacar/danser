@@ -11,7 +11,7 @@ import (
 )
 
 type Spinner struct {
-	objData         *basicData
+	objData         *BasicData
 	pos             bmath.Vector2d
 	Timings         *Timings
 	sample          int
@@ -32,7 +32,7 @@ func NewSpinner(data []string, number int64) *Spinner {
 	return spinner
 }
 
-func (self Spinner) GetBasicData() *basicData {
+func (self Spinner) GetBasicData() *BasicData {
 	return self.objData
 }
 

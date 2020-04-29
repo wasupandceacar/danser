@@ -11,7 +11,7 @@ import (
 )
 
 type BaseObject interface {
-	GetBasicData() *basicData
+	GetBasicData() *BasicData
 	Update(time int64) bool
 	GetPosition() om.Vector2d
 	SetDifficulty(preempt, fadeIn float64)
@@ -23,7 +23,7 @@ type Renderable interface {
 	GetObjectNumber() int64
 }
 
-type basicData struct {
+type BasicData struct {
 	StartPos, EndPos   om.Vector2d
 	StartTime, EndTime int64
 	StackOffset        om.Vector2d
@@ -46,27 +46,27 @@ type basicData struct {
 	customVolume float64
 }
 
-func commonParse(data []string, number int64) *basicData {
+func commonParse(data []string, number int64) *BasicData {
 	x, _ := strconv.ParseFloat(data[0], 64)
 	y, _ := strconv.ParseFloat(data[1], 64)
 	if settings.VSplayer.Mods.EnableHR {
 		y = PLAYFIELD_HEIGHT - y
 	}
 	time, _ := strconv.ParseInt(data[2], 10, 64)
-	return &basicData{StartPos: om.NewVec2d(x, y), StartTime: time, Number: number}
+	return &BasicData{StartPos: om.NewVec2d(x, y), StartTime: time, Number: number}
 }
 
-func commonParsebyPath(data []string, number int64, isHR bool) *basicData {
+func commonParsebyPath(data []string, number int64, isHR bool) *BasicData {
 	x, _ := strconv.ParseFloat(data[0], 64)
 	y, _ := strconv.ParseFloat(data[1], 64)
 	if isHR {
 		y = PLAYFIELD_HEIGHT - y
 	}
 	time, _ := strconv.ParseInt(data[2], 10, 64)
-	return &basicData{StartPos: om.NewVec2d(x, y), StartTime: time, Number: number}
+	return &BasicData{StartPos: om.NewVec2d(x, y), StartTime: time, Number: number}
 }
 
-func (bData *basicData) parseExtras(data []string, extraIndex int) {
+func (bData *BasicData) parseExtras(data []string, extraIndex int) {
 	if extraIndex < len(data) {
 		extras := strings.Split(data[extraIndex], ":")
 		sampleSet, _ := strconv.ParseInt(extras[0], 10, 64)

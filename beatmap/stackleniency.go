@@ -38,14 +38,14 @@ func AdjustOD(OD float64) float64 {
 func calculateStackLeniency(b *BeatMap) {
 	stack_distance := 3.0
 
-	preempt := difficultyRate(b.AR, 1800, 1200, 450)
+	preempt := difficultyRate(b.ApproachRate, 1800, 1200, 450)
 	b.ARms = preempt
-	b.FadeIn = difficultyRate(b.AR, 1200, 800, 300)
+	b.FadeIn = difficultyRate(b.ApproachRate, 1200, 800, 300)
 	// 加入OD
-	b.OD300 = AdjustOD(OD_300_BASE - (b.OD * OD_300_MULT) + OD_PRECISION_FIX)
-	b.OD100 = AdjustOD(OD_100_BASE - (b.OD * OD_100_MULT) + OD_PRECISION_FIX)
-	b.OD50 = AdjustOD(OD_50_BASE - (b.OD * OD_50_MULT) + OD_PRECISION_FIX)
-	b.ODMiss = AdjustOD(OD_MISS_BASE + OD_PRECISION_FIX)
+	b.OD300 = AdjustOD(HITWINDOW_300_BASE - (b.OverallDifficulty * HITWINDOW_300_MULT) + HITWINDOW_OFFSET)
+	b.OD100 = AdjustOD(HITWINDOW_100_BASE - (b.OverallDifficulty * HITWINDOW_100_MULT) + HITWINDOW_OFFSET)
+	b.OD50 = AdjustOD(HITWINDOW_50_BASE - (b.OverallDifficulty * HITWINDOW_50_MULT) + HITWINDOW_OFFSET)
+	b.ODMiss = AdjustOD(OD_MISS_BASE + HITWINDOW_OFFSET)
 	hitObjects := b.HitObjects
 
 	if !settings.Objects.StackEnabled {
@@ -179,21 +179,21 @@ func calculateStackLeniency(b *BeatMap) {
 func calculateStackLeniencywithMods(b *BeatMap, isHR bool, isEZ bool) {
 	stack_distance := 3.0
 
-	newAR := b.AR
+	newAR := b.ApproachRate
 	if isHR {
-		newAR = math.Min(b.AR*AR_HR_HENSE, AR_MAX)
+		newAR = math.Min(b.ApproachRate*AR_HR_HENSE, AR_MAX)
 	}
 	if isEZ {
-		newAR = math.Min(b.AR*AR_EZ_HENSE, AR_MAX)
+		newAR = math.Min(b.ApproachRate*AR_EZ_HENSE, AR_MAX)
 	}
 	preempt := difficultyRate(newAR, 1800, 1200, 450)
 	b.ARms = preempt
 	b.FadeIn = difficultyRate(newAR, 1200, 800, 300)
 	// 加入OD
-	b.OD300 = AdjustOD(OD_300_BASE - (b.OD * OD_300_MULT) + OD_PRECISION_FIX)
-	b.OD100 = AdjustOD(OD_100_BASE - (b.OD * OD_100_MULT) + OD_PRECISION_FIX)
-	b.OD50 = AdjustOD(OD_50_BASE - (b.OD * OD_50_MULT) + OD_PRECISION_FIX)
-	b.ODMiss = AdjustOD(OD_MISS_BASE + OD_PRECISION_FIX)
+	b.OD300 = AdjustOD(HITWINDOW_300_BASE - (b.OverallDifficulty * HITWINDOW_300_MULT) + HITWINDOW_OFFSET)
+	b.OD100 = AdjustOD(HITWINDOW_100_BASE - (b.OverallDifficulty * HITWINDOW_100_MULT) + HITWINDOW_OFFSET)
+	b.OD50 = AdjustOD(HITWINDOW_50_BASE - (b.OverallDifficulty * HITWINDOW_50_MULT) + HITWINDOW_OFFSET)
+	b.ODMiss = AdjustOD(OD_MISS_BASE + HITWINDOW_OFFSET)
 	hitObjects := b.HitObjects
 
 	if !settings.Objects.StackEnabled {

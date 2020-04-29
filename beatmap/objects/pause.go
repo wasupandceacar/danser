@@ -7,12 +7,12 @@ import (
 )
 
 type Pause struct {
-	objData *basicData
+	objData *BasicData
 }
 
 func NewPause(data []string) *Pause {
 	pause := &Pause{}
-	pause.objData = &basicData{}
+	pause.objData = &BasicData{}
 	pause.objData.StartTime, _ = strconv.ParseInt(data[1], 10, 64)
 	pause.objData.EndTime, _ = strconv.ParseInt(data[2], 10, 64)
 	pause.objData.StartPos = bmath.NewVec2d(PLAYFIELD_WIDTH/2, PLAYFIELD_HEIGHT/2)
@@ -21,7 +21,7 @@ func NewPause(data []string) *Pause {
 	return pause
 }
 
-func (self Pause) GetBasicData() *basicData {
+func (self Pause) GetBasicData() *BasicData {
 	return self.objData
 }
 

@@ -94,13 +94,13 @@ func RunPlayField() {
 		// 开启EZ
 		if settings.VSplayer.Mods.EnableEZ {
 			beatMap.CircleSize = math.Min(beatMap.CircleSize*CS_EZ_HENSE, CS_MAX)
-			beatMap.AR = math.Min(beatMap.AR*AR_EZ_HENSE, AR_MAX)
+			beatMap.ApproachRate = math.Min(beatMap.ApproachRate*AR_EZ_HENSE, AR_MAX)
 		}
 
 		// 开启HR
 		if settings.VSplayer.Mods.EnableHR {
 			beatMap.CircleSize = math.Min(beatMap.CircleSize*CS_HR_HENSE, CS_MAX)
-			beatMap.AR = math.Min(beatMap.AR*AR_HR_HENSE, AR_MAX)
+			beatMap.ApproachRate = math.Min(beatMap.ApproachRate*AR_HR_HENSE, AR_MAX)
 		}
 
 		// 开启HD，为维持HD效果，关闭一些特效

@@ -11,8 +11,8 @@ import (
 type BeatMap struct {
 	Artist, ArtistUnicode, Name, NameUnicode, Difficulty, Creator, Source, Tags string
 	// 加入OD
-	SliderMultiplier, StackLeniency, CircleSize, AR, ARms, FadeIn, OD, OD300, OD100, OD50, ODMiss float64
-	Dir, File, Audio, Bg, MD5, PausesText, TimingPoints                                           string
+	SliderMultiplier, StackLeniency, CircleSize, ApproachRate, ARms, FadeIn, OverallDifficulty, OD300, OD100, OD50, ODMiss float64
+	Dir, File, Audio, Bg, MD5, PausesText, TimingPoints                                                                    string
 
 	LastModified, TimeAdded, PlayCount, LastPlayed, PreviewTime int64
 
@@ -23,7 +23,7 @@ type BeatMap struct {
 }
 
 func NewBeatMap() *BeatMap {
-	return &BeatMap{Timings: objects.NewTimings(), AR: 8.0, StackLeniency: 0.7}
+	return &BeatMap{Timings: objects.NewTimings(), ApproachRate: 8.0, StackLeniency: 0.7}
 }
 
 func (b *BeatMap) Reset() {

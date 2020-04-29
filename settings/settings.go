@@ -5,7 +5,7 @@ import (
 	"github.com/go-gl/mathgl/mgl32"
 )
 
-const SETTINGSVERSION = "v1"
+const SETTINGSVERSION = "v2"
 
 type general struct {
 	OsuSongsDir string

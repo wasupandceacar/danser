@@ -12,7 +12,7 @@ import (
 )
 
 type Circle struct {
-	objData *basicData
+	objData *BasicData
 	sample  int
 	Timings *Timings
 }
@@ -44,7 +44,7 @@ func DummyCircle(pos bmath.Vector2d, time int64) *Circle {
 }
 
 func DummyCircleInherit(pos bmath.Vector2d, time int64, inherit bool) *Circle {
-	circle := &Circle{objData: &basicData{}}
+	circle := &Circle{objData: &BasicData{}}
 	circle.objData.StartPos = pos
 	circle.objData.EndPos = pos
 	circle.objData.StartTime = time
@@ -54,7 +54,7 @@ func DummyCircleInherit(pos bmath.Vector2d, time int64, inherit bool) *Circle {
 	return circle
 }
 
-func (self Circle) GetBasicData() *basicData {
+func (self Circle) GetBasicData() *BasicData {
 	return self.objData
 }
 

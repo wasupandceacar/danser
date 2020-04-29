@@ -78,11 +78,11 @@ func parseDifficulty(line []string, beatMap *BeatMap) {
 		beatMap.Timings.SliderMult = float64(beatMap.SliderMultiplier)
 	}
 	if line[0] == "ApproachRate" {
-		beatMap.AR, _ = strconv.ParseFloat(line[1], 64)
+		beatMap.ApproachRate, _ = strconv.ParseFloat(line[1], 64)
 	}
 	// 加入OD
 	if line[0] == "OverallDifficulty" {
-		beatMap.OD, _ = strconv.ParseFloat(line[1], 64)
+		beatMap.OverallDifficulty, _ = strconv.ParseFloat(line[1], 64)
 	}
 	if line[0] == "CircleSize" {
 		beatMap.CircleSize, _ = strconv.ParseFloat(line[1], 64)
@@ -294,7 +294,7 @@ func ParseObjects(beatMap *BeatMap) {
 	calculateStackLeniency(beatMap)
 }
 
-func ParseObjectsbyPath(beatMap *BeatMap, filename string, isHR bool, isEZ bool) {
+func ParseObjectsByPath(beatMap *BeatMap, filename string, isHR bool, isEZ bool) {
 
 	file, err := os.Open(filename)
 	defer file.Close()

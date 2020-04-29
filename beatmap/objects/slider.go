@@ -39,7 +39,7 @@ func newReverse() (point *reversePoint) {
 }
 
 type Slider struct {
-	objData              *basicData
+	objData              *BasicData
 	multiCurve           sliders.SliderAlgo
 	Timings              *Timings
 	TPoint               TimingPoint
@@ -194,7 +194,7 @@ func NewSliderbyPath(data []string, number int64, isHR bool) *Slider {
 	return slider
 }
 
-func (self Slider) GetBasicData() *basicData {
+func (self Slider) GetBasicData() *BasicData {
 	return self.objData
 }
 

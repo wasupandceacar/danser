@@ -29,7 +29,7 @@ func ParseMapWithMods(filename string, isHR bool, isEZ bool) *beatmap.BeatMap {
 	if err == nil {
 		defer file.Close()
 		beatMap := beatmap.ParseBeatMap(file)
-		beatmap.ParseObjectsbyPath(beatMap, filename, isHR, isEZ)
+		beatmap.ParseObjectsByPath(beatMap, filename, isHR, isEZ)
 		return beatMap
 	} else {
 		panic(err)
@@ -60,21 +60,21 @@ func ParseHits(mapname string, pr *rplpa.Replay, errors []Error, addCSoffset flo
 
 	// 如果replay是HR，改变OD和CS
 	if mods&MOD_HR > 0 {
-		newOD := math.Min(OD_HR_HENSE*b.OD, OD_MAX)
-		OD300 = beatmap.AdjustOD(OD_300_BASE - (newOD * OD_300_MULT) + OD_PRECISION_FIX)
-		OD100 = beatmap.AdjustOD(OD_100_BASE - (newOD * OD_100_MULT) + OD_PRECISION_FIX)
-		OD50 = beatmap.AdjustOD(OD_50_BASE - (newOD * OD_50_MULT) + OD_PRECISION_FIX)
-		ODMiss = beatmap.AdjustOD(OD_MISS_BASE + OD_PRECISION_FIX)
+		newOD := math.Min(OD_HR_HENSE*b.OverallDifficulty, OD_MAX)
+		OD300 = beatmap.AdjustOD(HITWINDOW_300_BASE - (newOD * HITWINDOW_300_MULT) + HITWINDOW_OFFSET)
+		OD100 = beatmap.AdjustOD(HITWINDOW_100_BASE - (newOD * HITWINDOW_100_MULT) + HITWINDOW_OFFSET)
+		OD50 = beatmap.AdjustOD(HITWINDOW_50_BASE - (newOD * HITWINDOW_50_MULT) + HITWINDOW_OFFSET)
+		ODMiss = beatmap.AdjustOD(OD_MISS_BASE + HITWINDOW_OFFSET)
 		convertCs = float2unit(32 * (1 - 0.7*(math.Min(CS_HR_HENSE*b.CircleSize, CS_MAX)-5)/5))
 	}
 
 	// 如果replay是EZ，改变OD和CS
 	if mods&MOD_EZ > 0 {
-		newOD := b.OD * OD_EZ_HENSE
-		OD300 = beatmap.AdjustOD(OD_300_BASE - (newOD * OD_300_MULT) + OD_PRECISION_FIX)
-		OD100 = beatmap.AdjustOD(OD_100_BASE - (newOD * OD_100_MULT) + OD_PRECISION_FIX)
-		OD50 = beatmap.AdjustOD(OD_50_BASE - (newOD * OD_50_MULT) + OD_PRECISION_FIX)
-		ODMiss = beatmap.AdjustOD(OD_MISS_BASE + OD_PRECISION_FIX)
+		newOD := b.OverallDifficulty * OD_EZ_HENSE
+		OD300 = beatmap.AdjustOD(HITWINDOW_300_BASE - (newOD * HITWINDOW_300_MULT) + HITWINDOW_OFFSET)
+		OD100 = beatmap.AdjustOD(HITWINDOW_100_BASE - (newOD * HITWINDOW_100_MULT) + HITWINDOW_OFFSET)
+		OD50 = beatmap.AdjustOD(HITWINDOW_50_BASE - (newOD * HITWINDOW_50_MULT) + HITWINDOW_OFFSET)
+		ODMiss = beatmap.AdjustOD(OD_MISS_BASE + HITWINDOW_OFFSET)
 		convertCs = float2unit(32 * (1 - 0.7*(math.Min(b.CircleSize*CS_EZ_HENSE, 10)-5)/5))
 	}
 

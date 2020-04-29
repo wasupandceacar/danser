@@ -31,16 +31,18 @@ const MOD_SO = 4096
 const MOD_PF = 16384
 
 // OD参数
-const OD_300_BASE = 79
-const OD_100_BASE = 139
-const OD_50_BASE = 199
+const HITWINDOW_300_BASE = 79
+const HITWINDOW_100_BASE = 139
+const HITWINDOW_50_BASE = 199
+
+//TODO: Remove OD_MISS_BASE
 const OD_MISS_BASE = 399
 
-const OD_300_MULT = 6
-const OD_100_MULT = 8
-const OD_50_MULT = 10
+const HITWINDOW_300_MULT = 6
+const HITWINDOW_100_MULT = 8
+const HITWINDOW_50_MULT = 10
 
-const OD_PRECISION_FIX = 0.5
+const HITWINDOW_OFFSET = 0.5
 
 const OD_HR_HENSE = 1.4
 const OD_EZ_HENSE = 0.5
@@ -70,3 +72,6 @@ const BASE_STACK_OFFSET = -6.4
 
 // replay时间结束默认时间
 const REPLAY_END_TIME = -12345
+
+// slider tail judge offset
+const SLIDER_TAIL_JUDGE_OFFSET = 36
