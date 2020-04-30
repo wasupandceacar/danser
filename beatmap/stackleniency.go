@@ -45,7 +45,7 @@ func calculateStackLeniency(b *BeatMap) {
 	b.OD300 = AdjustOD(HITWINDOW_300_BASE - (b.OverallDifficulty * HITWINDOW_300_MULT) + HITWINDOW_OFFSET)
 	b.OD100 = AdjustOD(HITWINDOW_100_BASE - (b.OverallDifficulty * HITWINDOW_100_MULT) + HITWINDOW_OFFSET)
 	b.OD50 = AdjustOD(HITWINDOW_50_BASE - (b.OverallDifficulty * HITWINDOW_50_MULT) + HITWINDOW_OFFSET)
-	b.ODMiss = AdjustOD(OD_MISS_BASE + HITWINDOW_OFFSET)
+	b.ODMiss = AdjustOD(HITWINDOW_MISS + HITWINDOW_OFFSET)
 	hitObjects := b.HitObjects
 
 	if !settings.Objects.StackEnabled {
@@ -193,7 +193,7 @@ func calculateStackLeniencywithMods(b *BeatMap, isHR bool, isEZ bool) {
 	b.OD300 = AdjustOD(HITWINDOW_300_BASE - (b.OverallDifficulty * HITWINDOW_300_MULT) + HITWINDOW_OFFSET)
 	b.OD100 = AdjustOD(HITWINDOW_100_BASE - (b.OverallDifficulty * HITWINDOW_100_MULT) + HITWINDOW_OFFSET)
 	b.OD50 = AdjustOD(HITWINDOW_50_BASE - (b.OverallDifficulty * HITWINDOW_50_MULT) + HITWINDOW_OFFSET)
-	b.ODMiss = AdjustOD(OD_MISS_BASE + HITWINDOW_OFFSET)
+	b.ODMiss = AdjustOD(HITWINDOW_MISS + HITWINDOW_OFFSET)
 	hitObjects := b.HitObjects
 
 	if !settings.Objects.StackEnabled {

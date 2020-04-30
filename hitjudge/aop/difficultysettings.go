@@ -7,8 +7,8 @@ import (
 )
 
 type DifficultySettings struct {
-	OverallDifficulty, CircleSize                           float64
-	HitWindow300, HitWindow100, HitWindow50, RealCircleSize float64
+	OverallDifficulty, CircleSize                                                            float64
+	HitWindowMiss, HitWindow300, HitWindow100, HitWindow50, RealCircleSize, FollowCircleSize float64
 }
 
 func NewDifficultySettings(od, cs float64) DifficultySettings {
@@ -44,5 +44,7 @@ func (ds *DifficultySettings) calculateSettings() {
 	ds.HitWindow300 = osuconst.HITWINDOW_300_BASE - (ds.OverallDifficulty * osuconst.HITWINDOW_300_MULT) + osuconst.HITWINDOW_OFFSET
 	ds.HitWindow100 = osuconst.HITWINDOW_100_BASE - (ds.OverallDifficulty * osuconst.HITWINDOW_100_MULT) + osuconst.HITWINDOW_OFFSET
 	ds.HitWindow50 = osuconst.HITWINDOW_50_BASE - (ds.OverallDifficulty * osuconst.HITWINDOW_50_MULT) + osuconst.HITWINDOW_OFFSET
+	ds.HitWindowMiss = osuconst.HITWINDOW_MISS + osuconst.HITWINDOW_OFFSET
 	ds.RealCircleSize = 32 * (1 - 0.7*(ds.CircleSize-5)/5)
+	ds.FollowCircleSize = ds.RealCircleSize * osuconst.TICK_JUDGE_SCALE
 }

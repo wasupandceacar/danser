@@ -64,7 +64,7 @@ func ParseHits(mapname string, pr *rplpa.Replay, errors []Error, addCSoffset flo
 		OD300 = beatmap.AdjustOD(HITWINDOW_300_BASE - (newOD * HITWINDOW_300_MULT) + HITWINDOW_OFFSET)
 		OD100 = beatmap.AdjustOD(HITWINDOW_100_BASE - (newOD * HITWINDOW_100_MULT) + HITWINDOW_OFFSET)
 		OD50 = beatmap.AdjustOD(HITWINDOW_50_BASE - (newOD * HITWINDOW_50_MULT) + HITWINDOW_OFFSET)
-		ODMiss = beatmap.AdjustOD(OD_MISS_BASE + HITWINDOW_OFFSET)
+		ODMiss = beatmap.AdjustOD(HITWINDOW_MISS + HITWINDOW_OFFSET)
 		convertCs = float2unit(32 * (1 - 0.7*(math.Min(CS_HR_HENSE*b.CircleSize, CS_MAX)-5)/5))
 	}
 
@@ -74,7 +74,7 @@ func ParseHits(mapname string, pr *rplpa.Replay, errors []Error, addCSoffset flo
 		OD300 = beatmap.AdjustOD(HITWINDOW_300_BASE - (newOD * HITWINDOW_300_MULT) + HITWINDOW_OFFSET)
 		OD100 = beatmap.AdjustOD(HITWINDOW_100_BASE - (newOD * HITWINDOW_100_MULT) + HITWINDOW_OFFSET)
 		OD50 = beatmap.AdjustOD(HITWINDOW_50_BASE - (newOD * HITWINDOW_50_MULT) + HITWINDOW_OFFSET)
-		ODMiss = beatmap.AdjustOD(OD_MISS_BASE + HITWINDOW_OFFSET)
+		ODMiss = beatmap.AdjustOD(HITWINDOW_MISS + HITWINDOW_OFFSET)
 		convertCs = float2unit(32 * (1 - 0.7*(math.Min(b.CircleSize*CS_EZ_HENSE, 10)-5)/5))
 	}
 
@@ -1252,7 +1252,7 @@ func getTickRangeJudgePoint(time int64, hit1 *rplpa.ReplayData, hit2 *rplpa.Repl
 
 // 计算部分的pp
 func calculatePPbyNum(filename string, result TotalResult, objnum int) oppai.PPv2 {
-	return oppai.PPInfo(score.LoadMapbyNum(filename, objnum), &oppai.Parameters{
+	return oppai.PPInfo(score.LoadMapByNum(filename, objnum), &oppai.Parameters{
 		Combo:  result.Combo,
 		Mods:   result.Mods,
 		N300:   result.N300,

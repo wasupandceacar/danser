@@ -8,14 +8,14 @@ import (
 )
 
 // 部分载入map
-func LoadMapbyNum(filename string, objnum int) *oppai.Map {
+func LoadMapByNum(filename string, objnum int) *oppai.Map {
 	f, _ := os.Open(filename)
 	return oppai.ParsebyNum(f, objnum)
 }
 
 // 部分载入map，并计算难度信息
 func CalculateDiffbyNum(filename string, objnum int, mods uint32) oppai.PP {
-	beatmap := LoadMapbyNum(filename, objnum)
+	beatmap := LoadMapByNum(filename, objnum)
 	return oppai.PPInfo(beatmap, &oppai.Parameters{
 		Combo:  uint16(beatmap.MaxCombo),
 		Mods:   mods,

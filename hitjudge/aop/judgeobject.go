@@ -3,7 +3,9 @@ package aop
 import (
 	"danser/beatmap/objects"
 	"danser/bmath"
+	"danser/hitjudge"
 	"danser/osuconst"
+	"sort"
 )
 
 type JudgeObjectType int
@@ -27,6 +29,8 @@ type JudgeObject struct {
 
 	//the index of the slider if it belongs to a slider
 	SliderIndex int64
+
+	JudgeResult hitjudge.HitResult
 }
 
 func ConvertToJudgeObjects(hitObjects []objects.BaseObject) []JudgeObject {
@@ -43,6 +47,9 @@ func ConvertToJudgeObjects(hitObjects []objects.BaseObject) []JudgeObject {
 			}
 		}
 	}
+	sort.Slice(result, func(i, j int) bool {
+		return result[i].JudgeTime < result[j].JudgeTime
+	})
 	return result
 }
 
@@ -55,6 +62,7 @@ func convertSlider(slider *objects.Slider, sliderIndex int64) []JudgeObject {
 			JudgePosition: dummyCircles[0].GetBasicData().StartPos,
 			JudgeType:     NormalJudge,
 			SliderIndex:   sliderIndex,
+			JudgeResult:   hitjudge.Unjudged,
 		})
 	}
 	for i := 1; i < len(dummyCircles)-1; i++ {
@@ -63,6 +71,7 @@ func convertSlider(slider *objects.Slider, sliderIndex int64) []JudgeObject {
 			JudgePosition: dummyCircles[i].GetBasicData().StartPos,
 			JudgeType:     InstantJudge,
 			SliderIndex:   sliderIndex,
+			JudgeResult:   hitjudge.Unjudged,
 		})
 	}
 	result = append(result, convertSliderTail(slider, sliderIndex))
@@ -77,6 +86,7 @@ func convertSliderTail(slider *objects.Slider, sliderIndex int64) JudgeObject {
 			JudgePosition: slider.GetPointAt(slider.GetBasicData().StartTime + duration/2),
 			JudgeType:     InstantJudge,
 			SliderIndex:   sliderIndex,
+			JudgeResult:   hitjudge.Unjudged,
 		}
 	} else {
 		return JudgeObject{
@@ -84,6 +94,7 @@ func convertSliderTail(slider *objects.Slider, sliderIndex int64) JudgeObject {
 			JudgePosition: slider.GetPointAt(slider.GetBasicData().EndTime - osuconst.SLIDER_TAIL_JUDGE_OFFSET),
 			JudgeType:     InstantJudge,
 			SliderIndex:   sliderIndex,
+			JudgeResult:   hitjudge.Unjudged,
 		}
 	}
 }
@@ -94,5 +105,6 @@ func convertCircle(circle *objects.Circle) JudgeObject {
 		JudgePosition: circle.GetBasicData().StartPos,
 		JudgeType:     NormalJudge,
 		SliderIndex:   -1,
+		JudgeResult:   hitjudge.Unjudged,
 	}
 }
