@@ -29,6 +29,7 @@ type JudgeObject struct {
 
 	//the index of the slider if it belongs to a slider
 	SliderIndex int64
+	ObjectIndex int64
 
 	JudgeResult hitjudge.HitResult
 }
@@ -40,10 +41,10 @@ func ConvertToJudgeObjects(hitObjects []objects.BaseObject) []JudgeObject {
 		hitObject := hitObjects[i]
 		if hitObject != nil {
 			if slider, succeeded := hitObject.(*objects.Slider); succeeded {
-				result = append(result, convertSlider(slider, sliderIndex)...)
+				result = append(result, convertSlider(slider, sliderIndex, int64(i+1))...)
 				sliderIndex++
 			} else if circle, succeeded := hitObject.(*objects.Circle); succeeded {
-				result = append(result, convertCircle(circle))
+				result = append(result, convertCircle(circle, int64(i+1)))
 			}
 		}
 	}
@@ -53,7 +54,7 @@ func ConvertToJudgeObjects(hitObjects []objects.BaseObject) []JudgeObject {
 	return result
 }
 
-func convertSlider(slider *objects.Slider, sliderIndex int64) []JudgeObject {
+func convertSlider(slider *objects.Slider, sliderIndex int64, objectIndex int64) []JudgeObject {
 	var result []JudgeObject
 	dummyCircles := slider.GetAsDummyCircles()
 	if len(dummyCircles) > 0 {
@@ -63,6 +64,7 @@ func convertSlider(slider *objects.Slider, sliderIndex int64) []JudgeObject {
 			JudgeType:     NormalJudge,
 			SliderIndex:   sliderIndex,
 			JudgeResult:   hitjudge.Unjudged,
+			ObjectIndex:   objectIndex,
 		})
 	}
 	for i := 1; i < len(dummyCircles)-1; i++ {
@@ -72,13 +74,14 @@ func convertSlider(slider *objects.Slider, sliderIndex int64) []JudgeObject {
 			JudgeType:     InstantJudge,
 			SliderIndex:   sliderIndex,
 			JudgeResult:   hitjudge.Unjudged,
+			ObjectIndex:   objectIndex,
 		})
 	}
-	result = append(result, convertSliderTail(slider, sliderIndex))
+	result = append(result, convertSliderTail(slider, sliderIndex, objectIndex))
 	return result
 }
 
-func convertSliderTail(slider *objects.Slider, sliderIndex int64) JudgeObject {
+func convertSliderTail(slider *objects.Slider, sliderIndex int64, objectIndex int64) JudgeObject {
 	duration := slider.GetBasicData().EndTime - slider.GetBasicData().StartTime
 	if duration < 2*osuconst.SLIDER_TAIL_JUDGE_OFFSET {
 		return JudgeObject{
@@ -87,6 +90,7 @@ func convertSliderTail(slider *objects.Slider, sliderIndex int64) JudgeObject {
 			JudgeType:     InstantJudge,
 			SliderIndex:   sliderIndex,
 			JudgeResult:   hitjudge.Unjudged,
+			ObjectIndex:   objectIndex,
 		}
 	} else {
 		return JudgeObject{
@@ -95,16 +99,18 @@ func convertSliderTail(slider *objects.Slider, sliderIndex int64) JudgeObject {
 			JudgeType:     InstantJudge,
 			SliderIndex:   sliderIndex,
 			JudgeResult:   hitjudge.Unjudged,
+			ObjectIndex:   objectIndex,
 		}
 	}
 }
 
-func convertCircle(circle *objects.Circle) JudgeObject {
+func convertCircle(circle *objects.Circle, objectIndex int64) JudgeObject {
 	return JudgeObject{
 		JudgeTime:     circle.GetBasicData().StartTime,
 		JudgePosition: circle.GetBasicData().StartPos,
 		JudgeType:     NormalJudge,
 		SliderIndex:   -1,
 		JudgeResult:   hitjudge.Unjudged,
+		ObjectIndex:   objectIndex,
 	}
 }

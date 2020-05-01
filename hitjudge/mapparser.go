@@ -57,7 +57,6 @@ func ParseHits(mapname string, pr *rplpa.Replay, errors []Error, addCSoffset flo
 	OD50 := b.OD50
 	ODMiss := b.ODMiss
 	convertCs := float2unit(32 * (1 - 0.7*(b.CircleSize-5)/5))
-
 	// 如果replay是HR，改变OD和CS
 	if mods&MOD_HR > 0 {
 		newOD := math.Min(OD_HR_HENSE*b.OverallDifficulty, OD_MAX)

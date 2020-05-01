@@ -10,6 +10,7 @@ import (
 	"danser/bmath"
 	"danser/dance"
 	"danser/hitjudge"
+	"danser/hitjudge/aop"
 	. "danser/osuconst"
 	"danser/render"
 	"danser/render/effects"
@@ -397,6 +398,9 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 				//------------------------------------
 				t1 := time.Now()
 				objectResult, totalResult, _, _ := hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, rep, errs, NO_USE_CS_OFFSET)
+				_, totalResult2 := aop.Judge(beatMap, rep)
+				log.Printf("Result from the original : %v-%v-%v-%v (%v) (%v)\n", totalResult[len(totalResult)-1].N300, totalResult[len(totalResult)-1].N100, totalResult[len(totalResult)-1].N50, totalResult[len(totalResult)-1].Misses, totalResult[len(totalResult)-1].Acc, totalResult[len(totalResult)-1].Combo)
+				log.Printf("Result from the NEW : %v-%v-%v-%v (%v) (%v)\n", totalResult2[len(totalResult2)-1].N300, totalResult2[len(totalResult2)-1].N100, totalResult2[len(totalResult2)-1].N50, totalResult2[len(totalResult2)-1].Misses, totalResult2[len(totalResult2)-1].Acc, totalResult2[len(totalResult2)-1].Combo)
 				if !settings.VSplayer.ReplayandCache.ReplayDebug {
 					configurePlayer(player, i, rep, objectResult, totalResult)
 					resultcache.CacheResult(objectResult, totalResult, rep)
@@ -412,8 +416,8 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 			var rnum int
 			if settings.VSplayer.PlayerInfo.SpecifiedPlayers {
 				rnum = tmpplindex[i]
-			}else {
-				rnum = i+1
+			} else {
+				rnum = i + 1
 			}
 
 			rep := replay.ExtractReplay(replays[i])
@@ -427,15 +431,18 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 			}
 			//------------------------------------
 			t1 := time.Now()
-			objectResult, totalResult, allright, _ := hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, rep, errs, NO_USE_CS_OFFSET)
+			objectResult, totalResult, allRight, _ := hitjudge.ParseHits(settings.General.OsuSongsDir+beatMap.Dir+"/"+beatMap.File, rep, errs, NO_USE_CS_OFFSET)
+			_, totalResult2 := aop.Judge(beatMap, rep)
+			log.Printf("Result from the original : %v-%v-%v-%v (%v) (%v)\n", totalResult[len(totalResult)-1].N300, totalResult[len(totalResult)-1].N100, totalResult[len(totalResult)-1].N50, totalResult[len(totalResult)-1].Misses, totalResult[len(totalResult)-1].Acc, totalResult[len(totalResult)-1].Combo)
+			log.Printf("Result from the NEW : %v-%v-%v-%v (%v) (%v)\n", totalResult2[len(totalResult2)-1].N300, totalResult2[len(totalResult2)-1].N100, totalResult2[len(totalResult2)-1].N50, totalResult2[len(totalResult2)-1].Misses, totalResult2[len(totalResult2)-1].Acc, totalResult2[len(totalResult2)-1].Combo)
 			if !settings.VSplayer.ReplayandCache.ReplayDebug {
 				configurePlayer(player, i, rep, objectResult, totalResult)
 				loadwords = loadwords[:len(loadwords)-1]
 			} else {
 				// 记录出错情况
-				if allright {
+				if allRight {
 					right += 1
-				}else {
+				} else {
 					wrong += 1
 					wrongIndex = append(wrongIndex, rnum)
 				}
