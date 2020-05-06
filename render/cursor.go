@@ -202,11 +202,11 @@ func BeginCursorRender() {
 func EndCursorRender() {
 }
 
-func (cursor *Cursor) Draw(scale float64, batch *SpriteBatch, color mgl32.Vec4) {
-	cursor.DrawM(scale, batch, color, color)
+func (cursor *Cursor) Draw(scale float64, batch *SpriteBatch, color mgl32.Vec4, cursorsize float64) {
+	cursor.DrawM(scale, batch, color, color, cursorsize)
 }
 
-func (cursor *Cursor) DrawM(scale float64, batch *SpriteBatch, color mgl32.Vec4, color2 mgl32.Vec4) {
+func (cursor *Cursor) DrawM(scale float64, batch *SpriteBatch, color mgl32.Vec4, color2 mgl32.Vec4, cursorsize float64) {
 	gl.Disable(gl.DEPTH_TEST)
 
 	cursorFbo.Begin()
@@ -215,7 +215,7 @@ func (cursor *Cursor) DrawM(scale float64, batch *SpriteBatch, color mgl32.Vec4,
 
 	gl.BlendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
 
-	siz := settings.Cursor.CursorSize
+	siz := cursorsize
 
 	cursorShader.Begin()
 

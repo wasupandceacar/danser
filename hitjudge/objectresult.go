@@ -7,4 +7,5 @@ type ObjectResult struct {
 	JudgeTime int64
 	Result    HitResult
 	IsBreak   bool
+	HitError  int64
 }

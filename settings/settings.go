@@ -98,6 +98,10 @@ type skin struct {
 	NumberOffset int64
 }
 
+type special struct {
+	Compare   bool
+}
+
 type vsplayer struct {
 	PlayerInfo     *playerinfo
 	PlayerInfoUI   *playerinfoUI
@@ -110,6 +114,7 @@ type vsplayer struct {
 	ReplayandCache *replayandcache
 	ErrorFix       *errorfix
 	Skin           *skin
+	Special		   *special
 }
 
 //endregion

@@ -53,6 +53,16 @@ func RunPlayField() {
 
 		newSettings := settings.LoadSettings(SettingsVersion)
 
+		if settings.VSplayer.Special.Compare && settings.VSplayer.PlayerInfo.Players != 2 {
+			// 对比信息 mode 强制效果
+			log.Println("Compare mode on, must set player = 2! You set", settings.VSplayer.PlayerInfo.Players, ".")
+			settings.VSplayer.PlayerInfo.Players = 2
+			settings.VSplayer.PlayerInfoUI.ShowRealTimePP = true
+			settings.VSplayer.PlayerInfoUI.ShowRealTimeUR = true
+			settings.VSplayer.PlayerInfoUI.ShowPPAndURRank = false
+			settings.VSplayer.PlayerInfoUI.Rank1Highlight = false
+		}
+
 		player = nil
 		var beatMap *beatmap.BeatMap = nil
 

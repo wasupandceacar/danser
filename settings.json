@@ -5,7 +5,7 @@
 	},
 	"VSplayer": {
 		"PlayerInfo": {
-			"Players": 3,
+			"Players": 2,
 			"SpecifiedPlayers": false,
 			"SpecifiedLine": "6",
 			"SpecifiedColor": "WhiteCat:255,255,255|YakumoYukari:0,0,0"
@@ -46,14 +46,14 @@
 			"ShowHitCircleNumber": true
 		},
 		"MapInfo": {
-			"Title": "Kurikaeshi Hitotsubu",
-			"Difficulty": "Hitotsubu"
+			"Title": "Make a Move (Speed Up Ver.)",
+			"Difficulty": "Endless Fear"
 		},
 		"Mods": {
 			"EnableDT": false,
 			"EnableHT": false,
 			"EnableEZ": false,
-			"EnableHR": false,
+			"EnableHR": true,
 			"EnableHD": false
 		},
 		"Knockout": {
@@ -77,6 +77,9 @@
 			"EnableSkin": true,
 			"SkinDir": "skin\\rafis1\\",
 			"NumberOffset": 30
+		},
+		"Special": {
+			"Compare": true
 		}
 	},
 	"Graphics": {

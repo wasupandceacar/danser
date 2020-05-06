@@ -135,11 +135,16 @@ func ParseHits(mapname string, pr *rplpa.Replay, errors []Error, addCSoffset flo
 				// 检查从滑条开始到击中之前的sliderball情况，调整CS
 				CS_scale, earlytick, earlytickjudge, tail, tailjudge = checkSliderBallBeforeHit(nearestindex, lasttime, r, o, convertCs, CS_scale)
 
+				var objecthiterror int64
+
 				if isfind {
 					// 如果找到，判断hit结果，设置下一个index+1
 					keyhitresult, hiterror := judgeHitResult(nearestindex, lasttime, r, o.GetBasicData().StartTime, ODMiss, OD300, OD100, OD50)
 					if keyhitresult != HitMiss {
 						hiterrors = append(hiterrors, hiterror)
+						objecthiterror = hiterror
+					} else {
+						objecthiterror = NULL_HIT_ERROR
 					}
 					switch keyhitresult {
 					case Hit300:
@@ -190,6 +195,8 @@ func ParseHits(mapname string, pr *rplpa.Replay, errors []Error, addCSoffset flo
 					nowcombo = 0
 					keyindex = nearestindex
 					time = lasttime
+
+					objecthiterror = NULL_HIT_ERROR
 				}
 				maxcombo = int(math.Max(float64(maxcombo), float64(nowcombo)))
 				// 判断ticks
@@ -323,7 +330,7 @@ func ParseHits(mapname string, pr *rplpa.Replay, errors []Error, addCSoffset flo
 				} else {
 					//log.Println("Slider no breaks")
 				}
-				objectResults = append(objectResults, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().JudgeTime, sliderhitresult, isBreak})
+				objectResults = append(objectResults, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().JudgeTime, sliderhitresult, isBreak, objecthiterror})
 			}
 			// note
 			if o, ok := obj.(*objects.Circle); ok {
@@ -333,12 +340,18 @@ func ParseHits(mapname string, pr *rplpa.Replay, errors []Error, addCSoffset flo
 				// 占用key对note无用
 				isfind, nearestindex, lasttime, newkeysoccupied, _ := findNearestKey(b.Pauses, keyindex, time, r, o.GetBasicData().StartTime, o.GetBasicData().StartPos, ODMiss, OD50, convertCs, false, 0, keysoccupied)
 				copy(keysoccupied, newkeysoccupied)
+
+				var objecthiterror int64
+
 				if isfind {
 					// 如果找到，判断hit结果，设置下一个index+1
 					var hiterror int64
 					keyhitresult, hiterror = judgeHitResult(nearestindex, lasttime, r, o.GetBasicData().StartTime, ODMiss, OD300, OD100, OD50)
 					if keyhitresult != HitMiss {
 						hiterrors = append(hiterrors, hiterror)
+						objecthiterror = hiterror
+					} else {
+						hiterror = NULL_HIT_ERROR
 					}
 					switch keyhitresult {
 					case Hit300:
@@ -379,12 +392,14 @@ func ParseHits(mapname string, pr *rplpa.Replay, errors []Error, addCSoffset flo
 					totalhits = append(totalhits, 0)
 					keyindex = nearestindex
 					time = lasttime
+
+					objecthiterror = NULL_HIT_ERROR
 				}
 				if keyhitresult != HitMiss {
 					isBreak = false
 				}
 				maxcombo = int(math.Max(float64(maxcombo), float64(nowcombo)))
-				objectResults = append(objectResults, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().JudgeTime, keyhitresult, isBreak})
+				objectResults = append(objectResults, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().JudgeTime, keyhitresult, isBreak, objecthiterror})
 			}
 			// 转盘
 			if o, ok := obj.(*objects.Spinner); ok {
@@ -393,7 +408,7 @@ func ParseHits(mapname string, pr *rplpa.Replay, errors []Error, addCSoffset flo
 				nowcombo += 1
 				totalhits = append(totalhits, 300)
 				maxcombo = int(math.Max(float64(maxcombo), float64(nowcombo)))
-				objectResults = append(objectResults, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().JudgeTime, Hit300, false})
+				objectResults = append(objectResults, ObjectResult{o.GetBasicData().StartPos, o.GetBasicData().JudgeTime, Hit300, false, NULL_HIT_ERROR})
 			}
 		}
 		// 判定修正
@@ -1322,7 +1337,7 @@ func fixError(error Error, result []ObjectResult, count300 int, count100 int, co
 		break
 	}
 	// 修正结果数组
-	reresult = append(result[:len(result)-2], ObjectResult{lastresult.JudgePos, lastresult.JudgeTime, error.Result, error.IsBreak})
+	reresult = append(result[:len(result)-2], ObjectResult{lastresult.JudgePos, lastresult.JudgeTime, error.Result, error.IsBreak, NULL_HIT_ERROR})
 	// 修正combo
 	remaxcombo = maxcombo + error.MaxComboOffset
 	renowcombo = nowcombo + error.NowComboOffset

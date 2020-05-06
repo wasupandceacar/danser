@@ -70,3 +70,6 @@ const BASE_STACK_OFFSET = -6.4
 
 // replay时间结束默认时间
 const REPLAY_END_TIME = -12345
+
+// 空击打误差
+const NULL_HIT_ERROR = 12345

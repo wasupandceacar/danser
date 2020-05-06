@@ -170,6 +170,13 @@ type Player struct {
 
 	// 指定色彩
 	specificColorMap map[int][3]float32
+
+	// 对比信息参数
+	playerPosbaseX	float64
+	playerPosbaseY	float64
+	playerLastHitbaseX	float64
+	playerLastHitbaseY	float64
+	playerhiterrors [][]int64
 }
 
 //endregion
@@ -295,6 +302,10 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	}
 
 	//endregion
+
+	if settings.VSplayer.Special.Compare {
+		player.playerhiterrors = make([][]int64, 2, len(player.bMap.HitObjects))
+	}
 
 	//region player初始化
 	var tmpplindex []int
@@ -656,6 +667,25 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	player.lastMissPos = bmath.Vector2d{X: -1, Y: -1}
 	player.SameMissRate = 0
 
+	if settings.VSplayer.Special.Compare {
+		player.playerPosbaseX = settings.VSplayer.PlayerInfoUI.BaseX
+		height := settings.Graphics.WindowHeight
+		if settings.Graphics.Fullscreen {
+			height = settings.Graphics.Height
+		}
+		player.playerPosbaseY = float64(height / 2) + 3*player.lineoffset
+
+		player.playerLastHitbaseX = settings.VSplayer.PlayerInfoUI.BaseX
+		player.playerLastHitbaseY = float64(height / 2) - 0.5*player.lineoffset
+
+		// 重新设置玩家信息坐标
+		newBaseY := float64(height / 2) + 8*player.lineoffset
+		player.keybaseY = newBaseY
+		player.fontbaseY = newBaseY - 0.75*settings.VSplayer.PlayerInfoUI.BaseSize
+		player.rankbaseY = newBaseY - 0.25*settings.VSplayer.PlayerInfoUI.BaseSize
+		player.hitbaseY = newBaseY - 0.1*settings.VSplayer.PlayerInfoUI.BaseSize
+	}
+
 	//endregion
 
 	//region 计算实时难度
@@ -945,6 +975,32 @@ func configurePlayer(player *Player, k int, r *rplpa.Replay, result []hitjudge.O
 	player.controller[k].SetIsShow(true)
 	player.controller[k].SetHitResult(result)
 	player.controller[k].SetTotalResult(totalresult)
+
+	if settings.VSplayer.Special.Compare {
+		for _, objectresult := range result {
+			player.playerhiterrors[k] = append(player.playerhiterrors[k], objectresult.HitError)
+		}
+	}
+}
+
+// 获取当前时间下最后一个物件的索引
+func findLastObject(time int64, b *beatmap.BeatMap) int {
+	startflag := false
+	for k := 0; k < len(b.HitObjects); k++ {
+		object := b.HitObjects[k]
+		if time >= object.GetBasicData().StartTime {
+			if !startflag {
+				startflag = true
+			}
+		} else {
+			if !startflag {
+				return -1
+			} else {
+				return k-1
+			}
+		}
+	}
+	return len(b.HitObjects)-1
 }
 
 func (pl *Player) Show() {
@@ -1693,6 +1749,51 @@ func (pl *Player) Draw(_ float64) {
 
 	//endregion
 
+
+	//region 渲染更多对比信息
+
+	if settings.VSplayer.Special.Compare {
+		pl.batch.Begin()
+		pl.batch.SetCamera(pl.scamera.GetProjectionView())
+		// 渲染光标位置
+		for k := 0; k < pl.playerCount; k++ {
+			pl.font.Draw(pl.batch, pl.playerPosbaseX, pl.playerPosbaseY-float64(k)*pl.lineoffset, pl.fontsize, "Player " +  strconv.Itoa(k+1) + " Pos: "+fmt.Sprintf("%.4f", pl.controller[k].GetCursors()[0].RendPos))
+		}
+		// 渲染光标位置差
+		pl.font.Draw(pl.batch, pl.playerPosbaseX, pl.playerPosbaseY-2*pl.lineoffset, pl.fontsize, "Player Pos Delta: "+fmt.Sprintf("%.4f", bmath.Vector2d.Dst(pl.controller[0].GetCursors()[0].RendPos, pl.controller[1].GetCursors()[0].RendPos)))
+
+		// 计算上个物件的索引
+		hiterrork := findLastObject(pl.progressMs, pl.bMap)
+		// 渲染上次击打offset
+		for k := 0; k < pl.playerCount; k++ {
+			if hiterrork == -1 {
+				pl.font.Draw(pl.batch, pl.playerLastHitbaseX, pl.playerLastHitbaseY-float64(k)*pl.lineoffset, pl.fontsize, "Player "+strconv.Itoa(k+1)+" Last Hit Error: NaN")
+			} else {
+				hiterror := pl.playerhiterrors[k][hiterrork]
+				if hiterror == NULL_HIT_ERROR {
+					pl.font.Draw(pl.batch, pl.playerLastHitbaseX, pl.playerLastHitbaseY-float64(k)*pl.lineoffset, pl.fontsize, "Player "+strconv.Itoa(k+1)+" Last Hit Error: NaN")
+				} else {
+					pl.font.Draw(pl.batch, pl.playerLastHitbaseX, pl.playerLastHitbaseY-float64(k)*pl.lineoffset, pl.fontsize, "Player "+strconv.Itoa(k+1)+" Last Hit Error: "+strconv.FormatInt(hiterror, 10))
+				}
+			}
+		}
+		// 渲染offset的差
+		if hiterrork == -1 {
+			pl.font.Draw(pl.batch, pl.playerLastHitbaseX, pl.playerLastHitbaseY-2*pl.lineoffset, pl.fontsize, "Last Hit Error Delta: NaN")
+		} else {
+			hiterror1 := pl.playerhiterrors[0][hiterrork]
+			hiterror2 := pl.playerhiterrors[1][hiterrork]
+			if hiterror1 != NULL_HIT_ERROR && hiterror2 != NULL_HIT_ERROR {
+				pl.font.Draw(pl.batch, pl.playerLastHitbaseX, pl.playerLastHitbaseY-2*pl.lineoffset, pl.fontsize, "Last Hit Error Delta: "+strconv.FormatInt(hiterror1-hiterror2, 10))
+			} else {
+				pl.font.Draw(pl.batch, pl.playerLastHitbaseX, pl.playerLastHitbaseY-2*pl.lineoffset, pl.fontsize, "Last Hit Error Delta: NaN")
+			}
+		}
+		pl.batch.End()
+	}
+
+	//endregion
+
 	//region 无关4
 
 	if pl.start {
@@ -1847,7 +1948,12 @@ func (pl *Player) Draw(_ float64) {
 						ind = settings.DIVIDES*len(pl.controller[k].GetCursors()) - 1
 					}
 					colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.playerCount
-					g.DrawM(scale2, pl.batch, colors1[colornum], colors1[ind])
+					cursorsize := settings.Cursor.CursorSize
+					// 第一个光标加粗
+					if settings.VSplayer.Special.Compare && k==0 {
+						cursorsize *= 1.8
+					}
+					g.DrawM(scale2, pl.batch, colors1[colornum], colors1[ind], cursorsize)
 				}
 			}
 			render.EndCursorRender()
