@@ -31,7 +31,7 @@ func UImain(noGUI bool) {
 
 	MainWindow{
 		AssignTo: &vsw.MainWindow,
-		Title:    "osu vs player " + VERSION + " by " + OWNER,
+		Title:    APPNAME + " " + VERSION + " by " + OWNER,
 		Size:     Size{600, 400},
 		Layout:   VBox{},
 		Children: []Widget{

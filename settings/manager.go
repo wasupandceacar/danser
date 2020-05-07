@@ -87,9 +87,6 @@ func initDefaults() {
 			"skin\\",
 			0,
 		},
-		&special{
-			Compare: false,
-		},
 	}
 	Graphics = &graphics{1920, 1080, 1280, 720, true, false, 1000, 16}
 	Audio = &audio{0.5, 0.5, 0.5, 0, false, false}

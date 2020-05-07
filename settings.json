@@ -18,7 +18,7 @@
 			"ShowMouse2": false,
 			"ShowRealTimePP": true,
 			"RealTimePPGap": 800,
-			"ShowRealTimeUR": true,
+			"ShowRealTimeUR": false,
 			"ShowPPAndURRank": false,
 			"Rank1Highlight": false,
 			"HighlightMult": 1.3,
@@ -33,7 +33,7 @@
 			"RecordAlpha": 0.4
 		},
 		"DiffInfoUI": {
-			"ShowDiffInfo": false,
+			"ShowDiffInfo": true,
 			"DiffBaseX": 1049,
 			"DiffBaseY": 678,
 			"DiffBaseSize": 18,
@@ -77,9 +77,6 @@
 			"EnableSkin": true,
 			"SkinDir": "skin\\rafis1\\",
 			"NumberOffset": 30
-		},
-		"Special": {
-			"Compare": true
 		}
 	},
 	"Graphics": {

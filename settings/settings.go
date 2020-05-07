@@ -98,10 +98,6 @@ type skin struct {
 	NumberOffset int64
 }
 
-type special struct {
-	Compare   bool
-}
-
 type vsplayer struct {
 	PlayerInfo     *playerinfo
 	PlayerInfoUI   *playerinfoUI
@@ -114,7 +110,6 @@ type vsplayer struct {
 	ReplayandCache *replayandcache
 	ErrorFix       *errorfix
 	Skin           *skin
-	Special		   *special
 }
 
 //endregion
@@ -379,3 +374,5 @@ var DIVIDES = 2
 var SPEED = 1.0
 var PITCH = 1.0
 var TAG = 1
+
+var COMPARE = true

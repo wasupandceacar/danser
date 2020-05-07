@@ -1,6 +1,8 @@
 package build
 
-const VERSION = "0.5.1"
+const APPNAME = "osu rep comparer"
+
+const VERSION = "0.0.1"
 
 const OWNER = "wasupandceacar"
 

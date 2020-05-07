@@ -177,6 +177,8 @@ type Player struct {
 	playerLastHitbaseX	float64
 	playerLastHitbaseY	float64
 	playerhiterrors [][]int64
+	playerHitErrorDeltaMin   int64
+	playerHitErrorDeltaMax   int64
 }
 
 //endregion
@@ -303,7 +305,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 
 	//endregion
 
-	if settings.VSplayer.Special.Compare {
+	if settings.COMPARE {
 		player.playerhiterrors = make([][]int64, 2, len(player.bMap.HitObjects))
 	}
 
@@ -667,7 +669,7 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 	player.lastMissPos = bmath.Vector2d{X: -1, Y: -1}
 	player.SameMissRate = 0
 
-	if settings.VSplayer.Special.Compare {
+	if settings.COMPARE {
 		player.playerPosbaseX = settings.VSplayer.PlayerInfoUI.BaseX
 		height := settings.Graphics.WindowHeight
 		if settings.Graphics.Fullscreen {
@@ -684,6 +686,9 @@ func NewPlayer(beatMap *beatmap.BeatMap, win *glfw.Window, loadwords []font.Word
 		player.fontbaseY = newBaseY - 0.75*settings.VSplayer.PlayerInfoUI.BaseSize
 		player.rankbaseY = newBaseY - 0.25*settings.VSplayer.PlayerInfoUI.BaseSize
 		player.hitbaseY = newBaseY - 0.1*settings.VSplayer.PlayerInfoUI.BaseSize
+
+		player.playerHitErrorDeltaMin = 99999
+		player.playerHitErrorDeltaMax = -99999
 	}
 
 	//endregion
@@ -976,7 +981,7 @@ func configurePlayer(player *Player, k int, r *rplpa.Replay, result []hitjudge.O
 	player.controller[k].SetHitResult(result)
 	player.controller[k].SetTotalResult(totalresult)
 
-	if settings.VSplayer.Special.Compare {
+	if settings.COMPARE {
 		for _, objectresult := range result {
 			player.playerhiterrors[k] = append(player.playerhiterrors[k], objectresult.HitError)
 		}
@@ -1752,15 +1757,17 @@ func (pl *Player) Draw(_ float64) {
 
 	//region 渲染更多对比信息
 
-	if settings.VSplayer.Special.Compare {
+	if settings.COMPARE {
 		pl.batch.Begin()
 		pl.batch.SetCamera(pl.scamera.GetProjectionView())
+		pl.batch.SetColor(1, 1, 1, float64(colors1[0][3]))
 		// 渲染光标位置
 		for k := 0; k < pl.playerCount; k++ {
 			pl.font.Draw(pl.batch, pl.playerPosbaseX, pl.playerPosbaseY-float64(k)*pl.lineoffset, pl.fontsize, "Player " +  strconv.Itoa(k+1) + " Pos: "+fmt.Sprintf("%.4f", pl.controller[k].GetCursors()[0].RendPos))
 		}
 		// 渲染光标位置差
-		pl.font.Draw(pl.batch, pl.playerPosbaseX, pl.playerPosbaseY-2*pl.lineoffset, pl.fontsize, "Player Pos Delta: "+fmt.Sprintf("%.4f", bmath.Vector2d.Dst(pl.controller[0].GetCursors()[0].RendPos, pl.controller[1].GetCursors()[0].RendPos)))
+		dis :=  bmath.Vector2d.Dst(pl.controller[0].GetCursors()[0].RendPos, pl.controller[1].GetCursors()[0].RendPos)
+		pl.font.Draw(pl.batch, pl.playerPosbaseX, pl.playerPosbaseY-2*pl.lineoffset, pl.fontsize, "Player Pos Delta: "+fmt.Sprintf("%.4f", dis))
 
 		// 计算上个物件的索引
 		hiterrork := findLastObject(pl.progressMs, pl.bMap)
@@ -1784,11 +1791,26 @@ func (pl *Player) Draw(_ float64) {
 			hiterror1 := pl.playerhiterrors[0][hiterrork]
 			hiterror2 := pl.playerhiterrors[1][hiterrork]
 			if hiterror1 != NULL_HIT_ERROR && hiterror2 != NULL_HIT_ERROR {
-				pl.font.Draw(pl.batch, pl.playerLastHitbaseX, pl.playerLastHitbaseY-2*pl.lineoffset, pl.fontsize, "Last Hit Error Delta: "+strconv.FormatInt(hiterror1-hiterror2, 10))
+				hiterrordelta := hiterror1-hiterror2
+				pl.font.Draw(pl.batch, pl.playerLastHitbaseX, pl.playerLastHitbaseY-2*pl.lineoffset, pl.fontsize, "Last Hit Error Delta: "+strconv.FormatInt(hiterrordelta, 10))
+				pl.playerHitErrorDeltaMin = int64(math.Min(float64(pl.playerHitErrorDeltaMin), float64(hiterrordelta)))
+				pl.playerHitErrorDeltaMax = int64(math.Max(float64(pl.playerHitErrorDeltaMax), float64(hiterrordelta)))
 			} else {
 				pl.font.Draw(pl.batch, pl.playerLastHitbaseX, pl.playerLastHitbaseY-2*pl.lineoffset, pl.fontsize, "Last Hit Error Delta: NaN")
 			}
 		}
+		// 渲染最大最小offset差
+		drawMin := "NaN"
+		if pl.playerHitErrorDeltaMin != 99999 {
+			drawMin = strconv.FormatInt(pl.playerHitErrorDeltaMin, 10)
+		}
+		pl.font.Draw(pl.batch, pl.playerLastHitbaseX, pl.playerLastHitbaseY-3*pl.lineoffset, pl.fontsize, "Min Hit Error Delta: "+drawMin)
+		drawMax := "NaN"
+		if pl.playerHitErrorDeltaMax != -99999 {
+			drawMax = strconv.FormatInt(pl.playerHitErrorDeltaMax, 10)
+		}
+		pl.font.Draw(pl.batch, pl.playerLastHitbaseX, pl.playerLastHitbaseY-4*pl.lineoffset, pl.fontsize, "Max Hit Error Delta: "+drawMax)
+
 		pl.batch.End()
 	}
 
@@ -1950,7 +1972,7 @@ func (pl *Player) Draw(_ float64) {
 					colornum := (settings.VSplayer.PlayerFieldUI.CursorColorSkipNum * k * len(pl.controller[k].GetCursors())) % pl.playerCount
 					cursorsize := settings.Cursor.CursorSize
 					// 第一个光标加粗
-					if settings.VSplayer.Special.Compare && k==0 {
+					if settings.COMPARE && k==0 {
 						cursorsize *= 1.8
 					}
 					g.DrawM(scale2, pl.batch, colors1[colornum], colors1[ind], cursorsize)

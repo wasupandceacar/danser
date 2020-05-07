@@ -53,14 +53,16 @@ func RunPlayField() {
 
 		newSettings := settings.LoadSettings(SettingsVersion)
 
-		if settings.VSplayer.Special.Compare && settings.VSplayer.PlayerInfo.Players != 2 {
+		if settings.COMPARE {
 			// 对比信息 mode 强制效果
-			log.Println("Compare mode on, must set player = 2! You set", settings.VSplayer.PlayerInfo.Players, ".")
 			settings.VSplayer.PlayerInfo.Players = 2
+			settings.VSplayer.PlayerInfo.SpecifiedPlayers = false
 			settings.VSplayer.PlayerInfoUI.ShowRealTimePP = true
 			settings.VSplayer.PlayerInfoUI.ShowRealTimeUR = true
 			settings.VSplayer.PlayerInfoUI.ShowPPAndURRank = false
 			settings.VSplayer.PlayerInfoUI.Rank1Highlight = false
+			settings.VSplayer.Knockout.EnableKnockout = false
+			settings.VSplayer.PlayerFieldUI.CursorColorSkipNum = 1
 		}
 
 		player = nil
@@ -151,7 +153,7 @@ func RunPlayField() {
 				panic(err)
 			}
 
-			win.SetTitle("osu vs player " + VERSION + " by " + OWNER + " on " + beatMap.Artist + " - " + beatMap.Name + " [" + beatMap.Difficulty + "]")
+			win.SetTitle(APPNAME + " " + VERSION + " by " + OWNER + " on " + beatMap.Artist + " - " + beatMap.Name + " [" + beatMap.Difficulty + "]")
 			icon, _ := utils.LoadImage("assets/textures/dansercoin.png")
 			icon2, _ := utils.LoadImage("assets/textures/dansercoin48.png")
 			icon3, _ := utils.LoadImage("assets/textures/dansercoin24.png")
