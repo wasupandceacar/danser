@@ -13,7 +13,7 @@ import (
 type Cache struct {
 	ObjectResults []hitjudge.ObjectResult
 	TotalResults  []hitjudge.TotalResult
-	Version       int
+	Version       string
 }
 
 func CacheResult(objectResults []hitjudge.ObjectResult, totalResults []hitjudge.TotalResult, rep *rplpa.Replay) {
